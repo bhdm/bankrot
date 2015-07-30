@@ -1,0 +1,80 @@
+{% extends 'BankrotSiteBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('.showform').click(function(){
+                if ($('.form').css('display') == 'block'){
+                    $('.form').fadeOut();
+                }else{
+                    $('.form').fadeIn();
+                }
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="bs-component">
+        <ul class="nav nav-tabs">
+            <li class="active"></li>
+            <li class=""></li>
+        </ul>
+    </div>
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a href="{{ path('warning_registry_list') }}" >Подозрительные торги</a></li>
+        <li><a href="{{ path('warning_arbitration_list') }}">Арбитражные управляющие</a></li>
+    </ul>
+
+    <h2 class="page-header">Подозрительные торги</h2>
+    {% if app.user %}
+        <button class="btn btn-default showform"><b>+</b> оставить заявку</button>
+        <br />
+        <br />
+        <div>
+            <div class="form" style="display: none">
+                <form method="POST" action="{{ path('warning_registry_add') }}">
+                    {{ form_widget(form) }}
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    <div class="infinite-scroll">
+        <table class="table">
+            <tr>
+                <th>Дата</th>
+                <th>Название лота</th>
+                <th>Ссылка</th>
+            </tr>
+            {% for item in pagination %}
+                <tr>
+                    <td>{{ item.date | date('d.m.Y') }}</td>
+                    <td>{{ item.lotTitle }}</td>
+                    <td>{{ item.lotLink }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+    <div id="show" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Карточка лота</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" id="tradelink">Перейти на площадку торгов</button>
+                    <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
