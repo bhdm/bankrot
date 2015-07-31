@@ -5,6 +5,7 @@ namespace Bankrot\SiteBundle\Controller;
 use Bankrot\SiteBundle\Entity\DropRule;
 use Bankrot\SiteBundle\Entity\Lot;
 use Bankrot\SiteBundle\Entity\LotRepository;
+use Bankrot\SiteBundle\Entity\LotWatch;
 use Bankrot\SiteBundle\Service\Calendar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -128,11 +129,18 @@ class LotsController extends Controller
                             }
                         }
 
-                        $lot->addDropRule($newDropRule);
+
                     }
                 }
 
                 if ($isValid) {
+                    $em->persist($newDropRule);
+                    $em->flush($newDropRule);
+                    $em->refresh($newDropRule);
+
+                    $lot->addDropRule($newDropRule);
+                    $lot->setOwner($this->getUser());
+                    $lot->setCategory(null);
                     $em->persist($lot);
                     $em->flush();
 
@@ -264,14 +272,14 @@ class LotsController extends Controller
 
     /**
      * Показывает календарь событий на данный месяц данного года
-     * @Route("/lots/calendar/{year}/{month}", name = "calendar", options={"expose"=true} , defaults = {"year" = null, "month" = null}, requirements = {"year" = "\d+", "month" = "\d+"})
+     * @Route("/lots/calendar/{lotId}/{year}/{month}", name = "calendar", options={"expose"=true} , defaults = {"year" = null, "month" = null}, requirements = {"year" = "\d+", "month" = "\d+"})
      */
-    public function calendarAction($year, $month)
+    public function calendarAction($lotId, $year, $month)
     {
         $calendar = new Calendar();
         $calendar->setMonth($month);
         $calendar->setYear($year);
-
+        $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($lotId);
         $events = null;
 
         $monthTable     = $calendar->getMonthTable();
@@ -313,6 +321,34 @@ class LotsController extends Controller
             'prevMonthYear'   => $calendar->getPrevMonthYear(),
             'events'          => $events,
             'typeCalendar'    => 'all',
+            'lot'             => $lot
         ));
+    }
+
+    /**
+     * @Route("/lots/addShow/{lotId}", name="add_lot_show", options={"expose"=true})
+     */
+    public function addLotShowAction(Request $request, $lotId){
+        if ($request->getMethod() == 'POST'){
+            $date = new \DateTime($request->request->get('date'));
+            $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($lotId);
+            if ($lot){
+                $show = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findOneBy(array('lot' => $lot, 'day' => $date));
+                if (!$show){
+                    $show = new LotWatch();
+                    $show->setOwner($this->getUser());
+                    $show->setDay($date);
+                    $show->setLot($lot);
+                    $show->setPrice($lot->getPrice());
+                    $this->getDoctrine()->getManager()->persist($show);
+                    $this->getDoctrine()->getManager()->flush($show);
+                    return new JsonResponse('add');
+                }else{
+                    $this->getDoctrine()->getManager()->remove($show);
+                    $this->getDoctrine()->getManager()->flush($show);
+                    return new JsonResponse('remove');
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="{{ _charset }}"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>{% block title '' %}</title>
+
+    {% block stylesheets %}
+        <!--<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.3.4/css/bootstrap.min.css"/>-->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.3.0/css/font-awesome.min.css"/>
+
+        {% stylesheets filter='cssrewrite, ?yui_css'
+
+
+        'bundles/bankrotsite/css/jQueryFormStyler.css'
+        'vendor/Bootflat/css/bootstrap.min.css'
+        'vendor/Bootflat/css/site.min.css'
+        'vendor/fontawesome/css/font-awesome.min.css'
+        'bundles/bankrotsite/css/layout.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+<body>
+{% block content_wrapper %}
+<main class="container">
+    {% block content '' %}
+</main>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+    {% javascripts filter='?closure'
+    'vendor/Bootflat/js/jquery-1.10.1.min.js'
+    'vendor/Bootflat/js/site.min.js'
+    'vendor/Bootflat/bootflat/js/icheck.min.js'
+    'vendor/Bootflat/bootflat/js/jquery.fs.selecter.min.js'
+    'vendor/Bootflat/bootflat/js/jquery.fs.stepper.min.js'
+    'vendor/jquery.inputmask/dist/jquery.inputmask.bundle.min.js'
+    'bundles/bankrotsite/js/layout.js'
+    'bundles/bankrotsite/js/jQueryFormStyler.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $(document).ready(function(){
+            $('input[type="file"]').styler()
+        });
+    </script>
+{% endblock %}
+</body>
+</html>

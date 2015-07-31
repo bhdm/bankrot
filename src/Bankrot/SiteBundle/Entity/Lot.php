@@ -152,7 +152,7 @@ class Lot
 
     public function getName() { return $this->name; }
 
-    public function setCategory(Category $category) { $this->category = $category; }
+    public function setCategory( $category) { $this->category = $category; }
 
     public function getCategory() { return $this->category; }
 

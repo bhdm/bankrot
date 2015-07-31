@@ -1,20 +1,43 @@
-{% extends 'BankrotSiteBundle::layout.html.twig' %}
+{% extends 'BankrotSiteBundle::layout_mini.html.twig' %}
 
 {% block javascripts %}
     {{ parent() }}
-
+    <script>
+        $(document).ready(function(){
+            $('.calendar td').click(function(){
+                var date = $(this).attr('data-date');
+                var item  = $(this);
+                $.ajax({
+                    {#url: "{{ path('add_lot_show') }}",#}
+                    url: Routing.generate('add_lot_show', {'lotId': {{ lot.id }}}),
+                    data: 'date='+date,
+                    type: 'POST',
+                    success: function(html){
+                        if (html == 'add'){
+                            item.addClass('showLot');
+                        }else{
+                            item.removeClass('showLot');
+                        }
+                    }
+                });
+            })
+        })
+    </script>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
 <style>
+    .showLot{
+        background: #0782C1;
+    }
     .calendar {
         border-collapse: collapse;
         width:           92%;
         margin:          0 auto;
     }
     .calendar, .calendar td, .calendar th {
-        border: 1px solid #CACACA;
+        border: 1px solid #A9A9A9;
     }
     .calendar td, .calendar th {
         padding: 5px;
@@ -130,6 +153,19 @@
     .oneEvent {
         background-color: #d9eef1;
     }
+    .calendar{
+        background: #bee4e7 !important;
+        color: #044F67;
+    }
+    .calendar .red{
+        background: #e8d5d5 !important;
+    }
+    .calendar .showLot{
+        background: #0782C1 !important;
+    }
+    .calendar td{
+        cursor: pointer;
+    }
 </style>
 {% endblock %}
 
@@ -141,13 +177,13 @@
         <tr>
             <td>
                 <a style="float: left" class="no-underline"
-                   href="{{ path('calendar', { 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
+                   href="{{ path('calendar', { 'lotId': lot.id, 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
                     Предыдущий месяц</a>
             </td>
             <td style="font-size: 20px">{{ monthName | lower }} {{ year }}</td>
             <td>
                 <a style="float: right" class="no-underline"
-                   href="{{ path('calendar', { 'year': nextMonthYear, 'month': nextMonth}) }}">Следующий
+                   href="{{ path('calendar', { 'lotId': lot.id, 'year': nextMonthYear, 'month': nextMonth}) }}">Следующий
                     месяц &rarr;</a>
             </td>
         </tr>
@@ -164,8 +200,8 @@
             <th>Среда</th>
             <th>Четверг</th>
             <th>Пятница</th>
-            <th>Суббота</th>
-            <th>Воскресенье</th>
+            <th class="red">Суббота</th>
+            <th class="red">Воскресенье</th>
         </tr>
 
         {% set break = false %}
@@ -189,7 +225,7 @@
 							<td class="{{ day ? (day['events'] ? 'calendar_cell_full oneEvent') }}{{ loop.index > 5 ? ' red' }}">
 							{% endif %}
 							-->
-                    <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}">
+                    <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}">
                         {% if day['events'] %}
                         <a class="calendar_day_link" data="{{ day['number'] }}" href="{{ path('events_for_date', {'specialty' : spec ,'specialization' : specialization , 'year': year, 'month': month, 'day': day['number']}) }}">
                             {% endif %}

@@ -32,12 +32,12 @@ class LoadLotWatchData extends AbstractFixture implements OrderedFixtureInterfac
         }
 
         for ($i = 0, $l = count($lotIds) * count($usrIds); $i < $l; $i++) {
-            $lot = $manager->getRepository('AppBundle:Lot')->find($lotIds[array_rand($lotIds)]);
+            $lot = $manager->getRepository('BankrotSiteBundle:Lot')->find($lotIds[array_rand($lotIds)]);
 
             if ($lot->getBeginDate()) {
                 if (0 === rand(0, 2)) {
                     $lw = new LotWatch();
-                    $lw->setOwner($manager->getRepository('AppBundle:User')->find($usrIds[array_rand($usrIds)]));
+                    $lw->setOwner($manager->getRepository('BankrotSiteBundle:User')->find($usrIds[array_rand($usrIds)]));
                     $lw->setLot($lot);
                     $lw->setPrice(rand(0, 1000000));
                     $lw->setCutOffPrice(rand(10, 5000));

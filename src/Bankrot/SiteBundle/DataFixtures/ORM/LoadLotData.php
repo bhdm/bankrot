@@ -14,8 +14,8 @@ class LoadLotData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $lorem = new Generator();
-        $categories = $manager->getRepository('AppBundle:Category')->findAll();
-        $lotStatuses = $manager->getRepository('AppBundle:LotStatus')->findAll();
+        $categories = $manager->getRepository('BankrotSiteBundle:Category')->findAll();
+        $lotStatuses = $manager->getRepository('BankrotSiteBundle:LotStatus')->findAll();
 
         for ($i = 0; $i < 500; $i++) {
             $this->loadSingle($manager, $lorem, $categories, $lotStatuses);
