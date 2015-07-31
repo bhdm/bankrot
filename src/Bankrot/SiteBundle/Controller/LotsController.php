@@ -5,6 +5,7 @@ namespace Bankrot\SiteBundle\Controller;
 use Bankrot\SiteBundle\Entity\DropRule;
 use Bankrot\SiteBundle\Entity\Lot;
 use Bankrot\SiteBundle\Entity\LotRepository;
+use Bankrot\SiteBundle\Service\Calendar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -258,5 +259,60 @@ class LotsController extends Controller
         $em->flush();
 
         return new JsonResponse(true);
+    }
+
+
+    /**
+     * Показывает календарь событий на данный месяц данного года
+     * @Route("/lots/calendar/{year}/{month}", name = "calendar", options={"expose"=true} , defaults = {"year" = null, "month" = null}, requirements = {"year" = "\d+", "month" = "\d+"})
+     */
+    public function calendarAction($year, $month)
+    {
+        $calendar = new Calendar();
+        $calendar->setMonth($month);
+        $calendar->setYear($year);
+
+        $events = null;
+
+        $monthTable     = $calendar->getMonthTable();
+        $numberOfEvents = count($events);
+
+        foreach ($monthTable as $rowKey => $row) {
+            foreach ($monthTable[$rowKey] as $colKey => $element) {
+                if ($element) {
+                    $monthTable[$rowKey][$colKey]['events'] = array();
+                }
+                if ($element['number'] < 10) {
+                    $tmp_element = '0' . $element['number'];
+                }
+                else {
+                    $tmp_element = $element['number'];
+                }
+                for ($i = 0; $i < $numberOfEvents; $i++) {
+                    if ($events[$i]->getStarts()->format('Ymd') <= $calendar->getYear() . $calendar->getMonthD() . $tmp_element AND $events[$i]->getEnds()->format('Ymd') >= $calendar->getYear() . $calendar->getMonthD() . $tmp_element) {
+                        $monthTable[$rowKey][$colKey]['events'][] = $events[$i]->getTitle();
+                    }
+                }
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $nowYear  = date('Y', time()) + 1; //Добавляем год что бы посмотреть события и на следующий год
+        $fullYear = $month === '0';
+
+        return $this->render('BankrotSiteBundle:Lots:calendar.html.twig', array(
+            'calendar'        => $monthTable,
+            'monthName'       => $calendar->getMonthName(),
+            'year'            => $calendar->getYear(),
+            'month'           => $calendar->getMonth(),
+            'fullYear'        => $fullYear,
+            'nextMonth'       => $calendar->getNextMonth(),
+            'prevMonth'       => $calendar->getPrevMonth(),
+            'nextMonthYear'   => $calendar->getNextMonthYear(),
+            'prevMonthYear'   => $calendar->getPrevMonthYear(),
+            'events'          => $events,
+            'typeCalendar'    => 'all',
+        ));
     }
 }
