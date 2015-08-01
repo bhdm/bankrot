@@ -27,7 +27,7 @@ main {
     margin-right: 10px;
 }
 .soon .status-marker {
-    background-color: yellow;
+    background-color: #ffe009;
 }
 .ready .status-marker {
     background-color: green;
@@ -35,6 +35,6 @@ main {
 .late .status-marker {
     background-color: red;
 }
-.soon a {color: yellow;}
+.soon a {color: #ffe009;}
 .ready a {color: green;}
 .late a {color: red;}

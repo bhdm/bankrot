@@ -108,44 +108,47 @@ class LotsController extends Controller
                     }
                 }
 
-                $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
-                $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
-                $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
-                $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
-                $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
+                if ($request->request->get('lot')['newDropRulePeriod']){
+                    $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
+                    $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
+                    $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
+                    $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
+                    $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
 
-                if ($newDropRulePeriod || $newDropRulePeriodWork) {
-                    $newDropRule = new DropRule();
+                    if ($newDropRulePeriod || $newDropRulePeriodWork) {
+                        $newDropRule = new DropRule();
 
-                    if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
-                    if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
+                        if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
+                        if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
 
-                    if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
-                        if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
-                        if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
+                        if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
+                            if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
+                            if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
 
-                        if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
-                            $m[0] = explode('-', $m[0]);
+                            if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
+                                $m[0] = explode('-', $m[0]);
 
-                            try {
-                                $newDropRule->setBeginDate(new \DateTime($m[0][0]));
-                                $newDropRule->setEndDate(new \DateTime($m[0][1]));
-                            } catch (\Exception $e) {
-                                $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
-                                $isValid = false;
+                                try {
+                                    $newDropRule->setBeginDate(new \DateTime($m[0][0]));
+                                    $newDropRule->setEndDate(new \DateTime($m[0][1]));
+                                } catch (\Exception $e) {
+                                    $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
+                                    $isValid = false;
+                                }
                             }
+
+
                         }
-
-
                     }
                 }
 
                 if ($isValid) {
-                    $em->persist($newDropRule);
-                    $em->flush($newDropRule);
-                    $em->refresh($newDropRule);
-
-                    $lot->addDropRule($newDropRule);
+                    if (isset($newDropRule) && $newDropRule){
+                        $em->persist($newDropRule);
+                        $em->flush($newDropRule);
+                        $em->refresh($newDropRule);
+                        $lot->addDropRule($newDropRule);
+                    }
                     $lot->setOwner($this->getUser());
                     $lot->setCategory(null);
                     $em->persist($lot);
