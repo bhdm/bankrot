@@ -10,11 +10,18 @@ use Bankrot\SiteBundle\Service\Calendar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class LotsController
+ * @package Bankrot\SiteBundle\Controller
+  @Security("has_role('ROLE_USER')")
+ */
 class LotsController extends Controller
 {
     /**
@@ -29,7 +36,7 @@ class LotsController extends Controller
         $repository = $this->getDoctrine()->getManager()->getRepository('BankrotSiteBundle:Lot');
         $search = $request->query->get('search');
         if ($this->getUser()){
-            $user = $this->getUser();
+            $user = $this->getUser()->getId();
         }else{
             $user = null;
         }

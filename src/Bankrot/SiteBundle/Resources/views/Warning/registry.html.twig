@@ -49,7 +49,7 @@
             </tr>
             {% for item in pagination %}
                 <tr>
-                    <td>{{ item.date | date('d.m.Y') }}</td>
+                    <td>{{ item.created | date('d.m.Y') }}</td>
                     <td>{{ item.lotTitle }}</td>
                     <td>{{ item.lotLink }}</td>
                 </tr>
