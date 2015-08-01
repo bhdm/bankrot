@@ -19,10 +19,10 @@ class ReestrController extends Controller{
         const ENTITY_NAME = 'Reestr';
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/", name="admin_reestr_list")
+     * @Route("/{type}", name="admin_reestr_list", defaults={"type" = 0})
      * @Template()
      */
-    public function listAction(){
+    public function listAction($type = 0){
         $items = $this->getDoctrine()->getRepository('BankrotSiteBundle:'.self::ENTITY_NAME)->findAll();
 
         $paginator  = $this->get('knp_paginator');
@@ -32,7 +32,7 @@ class ReestrController extends Controller{
             20
         );
 
-        return array('pagination' => $pagination);
+        return array('pagination' => $pagination, 'type' => $type);
     }
 
     /**

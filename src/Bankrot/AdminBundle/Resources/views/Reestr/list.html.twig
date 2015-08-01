@@ -12,41 +12,233 @@
 
 {% block content %}
     <div class="well">
-        <table class="table">
-            <tr>
-                <th>№</th>
-                <th>Название</th>
-                <th>Ссылка</th>
-                <th>Пользователь</th>
-                <th></th>
-                <th class="setting">Инструменты</th>
-            </tr>
-            {% for item in pagination %}
+        <ul class="nav nav-tabs nav-justified">
+            <li class="{{ type == 0 ? 'active' : '' }}"><a href="{{ path('admin_reestr_list',{'type' : 0}) }}" >Должники</a></li>
+            <li class="{{ type == 1 ? 'active' : '' }}"><a href="{{ path('admin_reestr_list',{'type' : 1}) }}">CPO</a></li>
+            <li class="{{ type == 2 ? 'active' : '' }}"><a href="{{ path('admin_reestr_list',{'type' : 2}) }}">Арбитр. управ.</a></li>
+            <li class="{{ type == 3 ? 'active' : '' }}"><a href="{{ path('admin_reestr_list',{'type' : 3}) }}">Орг. торгов</a></li>
+            <li class="{{ type == 4 ? 'active' : '' }}"><a href="{{ path('admin_reestr_list',{'type' : 4}) }}">Торг. площадки</a></li>
+            <li class="{{ type == 5 ? 'active' : '' }}"><a href="{{ path('admin_reestr_list',{'type' : 5}) }}">Диск. лица</a></li>
+        </ul>
+        <br />
+        <br />
+
+        {% if type == 0 %}
+            <table class="table" style="width: 100%">
                 <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.lotTitle }}</td>
-                    <td>{{ item.lotLink }}</td>
-                    <td>{{ item.user.username }}</td>
-                    <td></td>
-                    <td class="setting">
-                        {% spaceless %}
-                        <a href="{{ path('admin_reestr_edit',{'id' : item.id}) }}">
-                            <button type="button" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                        </a>
-                            &nbsp;
-                            &nbsp;
-                        <a href="{{ path('admin_reestr_remove',{'id' : item.id}) }}">
-                            <button type="button" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                        </a>
-                        {% endspaceless %}
-                    </td>
+                    <th>Категория</th>
+                    <th>Должник</th>
+                    <th>ИНН</th>
+                    <th>ОГРН</th>
+                    <th>Регион</th>
+                    <th>Адрес</th>
+                    <th></th>
                 </tr>
-            {% endfor%}
-        </table>
+                {% for item in pagination %}
+                    <tr>
+                        <td>{{ item.aSubCategory }}</td>
+                        <td>{{ item.aFullTitle }}</td>
+                        <td>{{ item.aInn }}</td>
+                        <td>{{ item.aOgrn }}</td>
+                        <td>{{ item.aRegion }}</td>
+                        <td>{{ item.aAdrs }}</td>
+                        <td class="setting">
+                            {% spaceless %}
+                                <a href="{{ path('admin_reestr_edit',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a href="{{ path('admin_reestr_remove',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </a>
+                            {% endspaceless %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if type == 1 %}
+            <table class="table" style="width: 100%">
+                <tr>
+                    <th>Рег. Номер</th>
+                    <th>Наименование СРО</th>
+                    <th>Управляющих</th>
+                    <th></th>
+                </tr>
+                {% for item in pagination %}
+                    <tr>
+                        <td>{{ item.bNumber }}</td>
+                        <td>{{ item.bTitle }}</td>
+                        <td>{{ item.bCountManager }}</td>
+                        <td class="setting">
+                            {% spaceless %}
+                                <a href="{{ path('admin_reestr_edit',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a href="{{ path('admin_reestr_remove',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </a>
+                            {% endspaceless %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if type == 2 %}
+            <table class="table" style="width: 100%">
+                <tr>
+                    <th>ФИО</th>
+                    <th>Рег. номер</th>
+                    <th>Дата<br />регистрации</th>
+                    <td>СРО</td>
+                    <th></th>
+                </tr>
+                {% for item in pagination %}
+                    <tr>
+                        <td>{{ item.cLastName }} {{ item.cFirstName }} {{ item.cSurName }}</td>
+                        <td>{{ item.cNumber }}</td>
+                        <td>{{ item.cDate | date('d.m.Y')}}</td>
+                        <td>{{ item.cCpo }}</td>
+                        <th></th>
+                        <td class="setting">
+                            {% spaceless %}
+                                <a href="{{ path('admin_reestr_edit',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a href="{{ path('admin_reestr_remove',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </a>
+                            {% endspaceless %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if type == 3 %}
+            <table class="table" style="width: 100%">
+                <tr>
+                    <th>Наименование</th>
+                    <th>Регион</th>
+                    <th>Адрес</th>
+                    <th></th>
+                </tr>
+                {% for item in pagination %}
+                    <tr>
+                        <td>{{ item.dFullTitle }}</td>
+                        <td>{{ item.dRegion }}</td>
+                        <td>{{ item.dAdrs }}</td>
+                        <td class="setting">
+                            {% spaceless %}
+                                <a href="{{ path('admin_reestr_edit',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a href="{{ path('admin_reestr_remove',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </a>
+                            {% endspaceless %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if type == 4 %}
+            <table class="table" style="width: 100%">
+                <tr>
+                    <th>Площадка</th>
+                    <th>Сайт</th>
+                    <th>Адрес</th>
+                    <th></th>
+                </tr>
+                {% for item in pagination %}
+                    <tr>
+                        <td>{{ item.eTitle }}</td>
+                        <td>{{ item.eSite }}</td>
+                        <td>{{ item.eFullTitle  }}</td>
+                        <td class="setting">
+                            {% spaceless %}
+                                <a href="{{ path('admin_reestr_edit',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a href="{{ path('admin_reestr_remove',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </a>
+                            {% endspaceless %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if type == 5 %}
+            <table class="table" style="width: 100%">
+                <tr>
+                    <th>ФИО</th>
+                    <th>Организация</th>
+                    <th>Должность</th>
+                    <th>Дата начала дисквалификации</th>
+                    <th>Дата окончания дисквалификации</th>
+                    <th></th>
+                </tr>
+                {% for item in pagination %}
+                    <tr>
+                        <td>{{ item.fFio }}</td>
+                        <td>{{ item.fworkPlace }}</td>
+                        <td>{{ item.fPost  }}</td>
+                        <td>{{ item.fDateStart | date('d.m.Y')  }}</td>
+                        <td>{{ item.fDateEnd  | date('d.m.Y') }}</td>
+                        <td class="setting">
+                            {% spaceless %}
+                                <a href="{{ path('admin_reestr_edit',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a href="{{ path('admin_reestr_remove',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </a>
+                            {% endspaceless %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
         <nav>
             {{ knp_pagination_render(pagination) }}
         </nav>
