@@ -3,9 +3,12 @@
 namespace Bankrot\SiteBundle\Controller;
 
 use Bankrot\ParserBundle\Parser\UserAgentGenerator;
+use Bankrot\SiteBundle\Form\ReestrType;
+use Bankrot\SiteBundle\Form\Type\ReestrShowType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,5 +33,24 @@ class ReestrController extends Controller
         );
 
         return array('pagination' => $pagination, 'type' => $type );
+    }
+
+    /**
+     * @Security("has_role('ROLE_SUBSCRIPTION')")
+     * @Route("/list/{type}/{id}", name="reestr_show")
+     * @Template("")
+     */
+    public function showAction($type, $id){
+        $reestr = $this->getDoctrine()->getRepository('BankrotSiteBundle:Reestr')->findOneById($id);
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm( new ReestrShowType($em),$reestr, [
+            'disabled' => true,
+        ]);
+
+        return array(
+            'reestr' => $reestr,
+            'type' => $type,
+            'form' => $form->createView(),
+        );
     }
 }

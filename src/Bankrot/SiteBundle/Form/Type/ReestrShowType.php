@@ -1,12 +1,12 @@
 <?php
 
-namespace Bankrot\SiteBundle\Form;
+namespace Bankrot\SiteBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ReestrType extends AbstractType
+class ReestrShowType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -98,8 +98,6 @@ class ReestrType extends AbstractType
             ->add('fDateStart' , null , array('label' => 'Дата начала', 'attr' => array('class' => 'f')))
             ->add('fDateEnd' , null , array('label' => 'Дата истечения', 'attr' => array('class' => 'f')))
             ->add('fNumber' , null , array('label' => 'Номер дела', 'attr' => array('class' => 'f')))
-
-            ->add('submit', 'submit', array('label' => 'Отправить', 'attr' => array('class' => 'btn btn-primary')));
         ;
     }
 

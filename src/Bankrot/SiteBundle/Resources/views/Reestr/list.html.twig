@@ -41,7 +41,17 @@
             {% for item in pagination %}
                 <tr>
                     <td>{{ item.aSubCategory }}</td>
-                    <td>{{ item.aFullTitle }}</td>
+                    <td>
+                        {% if is_granted('ROLE_SUBSCRIPTION') %}
+                            <a href="{{ path('reestr_show',{'type' : item.category, 'id' : item.id}) }}">
+                                {{ item.aFullTitle }}
+                            </a>
+                        {% else %}
+                            <a href="#" style="cursor: not-allowed">
+                                {{ item.aFullTitle }}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ item.aInn }}</td>
                     <td>{{ item.aOgrn }}</td>
                     <td>{{ item.aRegion }}</td>

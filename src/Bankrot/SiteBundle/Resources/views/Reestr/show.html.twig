@@ -1,0 +1,40 @@
+{% extends 'BankrotSiteBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            var type = '{{ type == 0 ? 'a' : type == 1 ? 'b' : type == 2 ? 'c' : type == 3 ? 'd' : type == 4 ? 'e' : 'f' }}';
+            $('.form-group').css('display', 'none');
+            $('.'+type).parent().css('display', 'block');
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h2 class="page-header">Реестр / Подробная информация</h2>
+
+    {{ form_widget(form) }}
+
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+    <div id="show" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Карточка лота</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" id="tradelink">Перейти на площадку торгов</button>
+                    <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

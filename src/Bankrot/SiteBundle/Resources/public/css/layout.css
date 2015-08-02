@@ -38,3 +38,15 @@ main {
 .soon a {color: #ffe009;}
 .ready a {color: green;}
 .late a {color: red;}
+
+.pagination{
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+.pagination ul{
+    list-style: none;
+}
+.pagination ul li{
+    display: inline;
+}
