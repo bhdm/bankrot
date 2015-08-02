@@ -290,7 +290,8 @@ class LotsController extends Controller
         $calendar->setMonth($month);
         $calendar->setYear($year);
         $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($lotId);
-        $events = null;
+        $events = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findByLot($lot);
+        $dropRule = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->findByLot($lot);
 
         $monthTable     = $calendar->getMonthTable();
         $numberOfEvents = count($events);
@@ -307,9 +308,55 @@ class LotsController extends Controller
                     $tmp_element = $element['number'];
                 }
                 for ($i = 0; $i < $numberOfEvents; $i++) {
-                    if ($events[$i]->getStarts()->format('Ymd') <= $calendar->getYear() . $calendar->getMonthD() . $tmp_element AND $events[$i]->getEnds()->format('Ymd') >= $calendar->getYear() . $calendar->getMonthD() . $tmp_element) {
-                        $monthTable[$rowKey][$colKey]['events'][] = $events[$i]->getTitle();
+                    #Здесь к каждому дню приписываем следим или нет в этом лоте
+                    if ($events[$i]->getDay()->format('Ymd') == $calendar->getYear() . $calendar->getMonthD() . $tmp_element ) {
+                        $monthTable[$rowKey][$colKey]['events'][] = $events[$i]->getLot()->getName();
                     }
+                    #Здесь к каждому дню приписываем следим или нет в этом лоте
+                        foreach($dropRule as $dr){
+                            if (
+                                $dr->getBeginDate()->format('Ymd') <= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
+                                &&
+                                $dr->getEndDate()->format('Ymd') >= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
+                            ){
+                                # Если попали сюда, то за данный день отвечает этот dropRule
+
+                                #Дата начала отсчитывания
+                                $date1 = strtotime($dr->getBeginDate()->format('Y-m-d'));
+
+                                #Дата текущей ячейки
+                                $date2 = $calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $tmp_element;
+                                $date2 = strtotime($date2);
+
+                                #Кол-во отсчетов
+                                $diff = $date2-$date1;
+                                $diff = floor($diff/(60*60*24));
+                                $diff = $diff / $dr->getPeriod();
+                                $diff =  floor($diff);
+
+                                if ($dr->getOrder()){
+                                    # в процентах от начальной суммы
+                                    $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - ($lot->getInitialPrice()/100*$dr->getOrder())*$diff;
+
+                                }else{
+                                    # в процентах от текущего периода
+                                    if ($dr->getOrderCurrent()){
+                                        $price = $lot->getInitialPrice();
+                                        for ($k = 0; $k <= $diff; $k ++){
+                                            $price +=  ($price/100*$dr->getOrder());
+                                        }
+                                        $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - $price;
+                                    }else{
+                                        $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice();
+                                    }
+                                }
+                                # Если стоимость отсечения меньше
+                                if ($monthTable[$rowKey][$colKey]['price'] < $lot->getCutOffPrice()){
+                                    $monthTable[$rowKey][$colKey]['price']  = $lot->getInitialPrice();
+                                }
+
+                            }
+                        }
                 }
             }
         }
@@ -341,6 +388,7 @@ class LotsController extends Controller
     public function addLotShowAction(Request $request, $lotId){
         if ($request->getMethod() == 'POST'){
             $date = new \DateTime($request->request->get('date'));
+            $price = $request->request->get('price');
             $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($lotId);
             if ($lot){
                 $show = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findOneBy(array('lot' => $lot, 'day' => $date));
@@ -349,7 +397,7 @@ class LotsController extends Controller
                     $show->setOwner($this->getUser());
                     $show->setDay($date);
                     $show->setLot($lot);
-                    $show->setPrice($lot->getPrice());
+                    $show->setPrice($price);
                     $this->getDoctrine()->getManager()->persist($show);
                     $this->getDoctrine()->getManager()->flush($show);
                     return new JsonResponse('add');

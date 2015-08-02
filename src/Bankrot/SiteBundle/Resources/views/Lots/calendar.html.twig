@@ -4,20 +4,34 @@
     {{ parent() }}
     <script>
         $(document).ready(function(){
+            $('#boxCancel').click(function(){
+                $('.box').fadeOut();
+            });
             $('.calendar td').click(function(){
                 var date = $(this).attr('data-date');
+                var price = $(this).attr('data-price');
                 var item  = $(this);
+
+                $('#box-date').val(date);
+                $('#box-price').val(price);
+                $('.box').fadeIn();
+
+            });
+
+            $('#boxOk').click(function(){
+                var date = $('#box-date').val();
+                var price = $('#box-price2').val();
                 $.ajax({
-                    {#url: "{{ path('add_lot_show') }}",#}
                     url: Routing.generate('add_lot_show', {'lotId': {{ lot.id }}}),
-                    data: 'date='+date,
+                    data: 'date='+date+'&price='+price,
                     type: 'POST',
                     success: function(html){
                         if (html == 'add'){
-                            item.addClass('showLot');
-                        }else{
-                            item.removeClass('showLot');
+                            window.location.reload();
                         }
+//                        else{
+//                            item.removeClass('showLot');
+//                        }
                     }
                 });
             })
@@ -166,6 +180,19 @@
     .calendar td{
         cursor: pointer;
     }
+    .box{
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #CCC;
+        border-radius: 10px;
+        position: absolute;
+        left: 50%;
+        top: 168px;
+        z-index: 999;
+        background-color: #D4D4D4;
+        margin-left: -150px;
+        display: none;
+    }
 </style>
 {% endblock %}
 
@@ -225,19 +252,14 @@
 							<td class="{{ day ? (day['events'] ? 'calendar_cell_full oneEvent') }}{{ loop.index > 5 ? ' red' }}">
 							{% endif %}
 							-->
-                    <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}">
+                    <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}"
+                        data-price="{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}0{% endif %}">
                         {% if day['events'] %}
-                        <a class="calendar_day_link" data="{{ day['number'] }}" href="{{ path('events_for_date', {'specialty' : spec ,'specialization' : specialization , 'year': year, 'month': month, 'day': day['number']}) }}">
-                            {% endif %}
-                            {{ day['number'] }}
-
-                            <span class="asterisk">
-										&nbsp;
-
-										</span>
-                            {% if day['events'] %}
-                        </a>
+                            *
                         {% endif %}
+
+                            {{ day['number'] }}
+                            {% if day['events'] %}*{% endif %}
                         {% else %}
                         <td class="{{ loop.index > 5 ? ' red' }}">
                     {% endif %}
@@ -251,6 +273,28 @@
             </tr>
         {% endfor %}
     </table>
+    <br />
+    <br />
+    <div class="box">
+        <div class="form-group">
+            <label>Дата</label>
+            <input id="box-date" class="form-control" value="" disabled="disabled">
+        </div>
+        <div class="form-group">
+            <label>Цена</label>
+            <input id="box-price" class="form-control" value="" disabled="disabled">
+        </div>
+        <div class="form-group">
+            <label>Цена своя</label>
+            <input id="box-price2" class="form-control" value="">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" id="boxOk">Сохранить</button>
+            <button class="btn btn-danger" type="submit" id="boxCancel">Отмена</button>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block footer %}
@@ -266,8 +310,8 @@
                     <div class="content"></div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal" id="tradelink">Перейти на площадку торгов</button>
-                    <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button class="btn btn-primary" data-dismiss="modal" >Перейти на площадку торгов</button>
+                    <button class="btn btn-default" data-dismiss="modal" >Закрыть</button>
                 </div>
             </div>
         </div>
