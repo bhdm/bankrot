@@ -87,6 +87,14 @@ fos_user:
     registration:
         form:
             type: bankrot_site_user_registration
+        confirmation:
+            enabled:    true
+#                template:   BankrotSiteBundle:Mail:confirm.html.twig
+            from_email:
+                address: isbankrot@gmail.com
+                sender_name: Bankrot.ru
+    service:
+        mailer:  fos_user.mailer.twig_swift
 
 #stof_doctrine_extensions:
 #    default_locale: %locale%

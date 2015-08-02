@@ -35,6 +35,10 @@ class MenuBuilder
                 ->getParent()
             ->addChild('Контакты', ['route' => 'page','routeParameters'=>['url' => 'contacts']])
                 ->getParent()
+            ->addChild('Регистрация', ['route' => 'fos_user_registration_register'])
+                ->getParent()
+            ->addChild('Регистрация', ['route' => 'fos_user_registration_register'])
+                ->setCurrent('fos_user_registration_register' === $currentRoute);
             ;
 
         return $menu;
