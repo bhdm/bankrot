@@ -25,6 +25,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="Subscription", mappedBy="user")
+     */
+    protected $subscriptions;
+
+    /**
      * @ORM\OneToMany(targetEntity="Registry", mappedBy="user")
      */
     protected $registries;
@@ -61,6 +66,7 @@ class User extends BaseUser
         $this->arbitrations = new ArrayCollection();
         $this->registries = new ArrayCollection();
         $this->lots = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
 
@@ -134,5 +140,54 @@ class User extends BaseUser
     public function removeLot(Lot $lot) { $this->lots->removeElement($lot); }
 
     public function getLots() { return $this->lots; }
+
+    /**
+     * @return mixed
+     */
+    public function getSubscriptions()
+    {
+        return $this->subscriptions;
+    }
+
+    /**
+     * @param mixed $subscriptions
+     */
+    public function setSubscriptions($subscriptions)
+    {
+        $this->subscriptions = $subscriptions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegistries()
+    {
+        return $this->registries;
+    }
+
+    /**
+     * @param mixed $registries
+     */
+    public function setRegistries($registries)
+    {
+        $this->registries = $registries;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArbitrations()
+    {
+        return $this->arbitrations;
+    }
+
+    /**
+     * @param mixed $arbitrations
+     */
+    public function setArbitrations($arbitrations)
+    {
+        $this->arbitrations = $arbitrations;
+    }
+
 
 }
