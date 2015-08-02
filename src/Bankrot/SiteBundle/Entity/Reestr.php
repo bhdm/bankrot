@@ -20,6 +20,16 @@ class Reestr extends BaseEntity
      */
     protected $category;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $link;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $pars = 0;
+
 
     # ##########
     # Должники #
@@ -1446,6 +1456,38 @@ class Reestr extends BaseEntity
     public function setEFullTitle($eFullTitle)
     {
         $this->eFullTitle = $eFullTitle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param mixed $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPars()
+    {
+        return $this->pars;
+    }
+
+    /**
+     * @param mixed $pars
+     */
+    public function setPars($pars = 0)
+    {
+        $this->pars = $pars;
     }
 
 
