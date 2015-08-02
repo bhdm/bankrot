@@ -130,5 +130,9 @@
 </div>
 
 {{ form_end(form) }}
+
+    {% if lot.dropRules | length > 0 %}
+        <iframe src="{{ path('calendar',{'lotId' : lot.id }) }}" width="100%" height="800" style="border: 0; overflow: hidden" scrolling="no"></iframe>
+    {% endif %}
 {% endblock %}
 
