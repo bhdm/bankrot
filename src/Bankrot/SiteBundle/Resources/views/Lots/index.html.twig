@@ -110,7 +110,7 @@
                     {% set marker_class = "" %}
                 {% endif %}
                 <tr data-route="{{ path('lots', { id: lw.lot.id }) }}" class="{{ marker_class }}">
-                    <td><span class="img-circle status-marker"></span>{{ lw.lot.name }}[{{ lw.getDay.date|day_diff }}][{{ lw.getLot.getEndDate.date|day_diff }}][{{ marker_class }}]</td>
+                    <td><span class="img-circle status-marker"></span>{{ lw.lot.name }}</td> {#[{{ lw.getDay.date|day_diff }}][{{ lw.getLot.getEndDate.date|day_diff }}][{{ marker_class }}]#}
                     <td>{{ lw.lot.category }}</td>
                     <td>{{ lw.day|date('d.m.Y') }}</td>
                     <td>{{ lw.price }}</td>

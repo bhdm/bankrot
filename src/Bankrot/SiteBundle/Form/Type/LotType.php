@@ -13,7 +13,7 @@ class LotType extends AbstractType
     {
         $builder
             ->add('name', null, ['label' => 'Наименование', 'attr' => ['placeholder' => 'Введите наименование']])
-            ->add('category', null, ['label' => 'Категория'])
+            ->add('category', 'entity', ['label' => 'Категория',  'class'=>'Bankrot\SiteBundle\Entity\Category',  'property'=>'name'])
             ->add('url', 'url', ['label' => 'Ссылка на лот', 'attr' => ['placeholder' => 'Введите ссылку на лот'],'required' => false,])
             ->add('phone', null, ['label' => 'Телефон', 'attr' => ['placeholder' => 'Введите телефон'],'required' => false,])
             ->add('price', null, ['label' => 'Рыночная стоимость', 'attr' => ['placeholder' => 'Введите рыночную стоимость'],'required' => false,])
@@ -26,7 +26,9 @@ class LotType extends AbstractType
             ->add('depositPricePercent', null, ['attr' => ['placeholder' => 'Введите значение в процентах от начальной стоимости'],'required' => false,])
             ->add('depositPricePercentCurrent', null, ['attr' => ['placeholder' => 'Введите значение в процентах от стоимости текущего периода'],'required' => false,])
             ->add('lotStatus', null, ['label' => 'Статус лота','required' => false,])
-//            ->add('lotStatus', null, ['label' => 'Статус лота', 'empty_value' => '-'])
+//            ->add('', null, ['label' => 'Статус лота', 'empty_value' => '-'])
+            ->add('lotStatus', 'entity', ['label' => 'Статус лота',  'class'=>'Bankrot\SiteBundle\Entity\LotStatus',  'property'=>'name'])
+
             ->add('livePeriod', 'text', ['mapped' => false, 'label' => 'Период жизни лота', 'attr' => [
                 'data-inputmask' => '99.99.9999 - 99.99.9999', 
                 'placeholder' => 'Введите период жизни лота',

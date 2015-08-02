@@ -150,7 +150,7 @@ class LotsController extends Controller
                         $lot->addDropRule($newDropRule);
                     }
                     $lot->setOwner($this->getUser());
-                    $lot->setCategory(null);
+//                    $lot->setCategory(null);
                     $em->persist($lot);
                     $em->flush();
 
