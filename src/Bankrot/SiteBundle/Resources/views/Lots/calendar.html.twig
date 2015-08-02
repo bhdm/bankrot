@@ -10,10 +10,12 @@
             $('.calendar td').click(function(){
                 var date = $(this).attr('data-date');
                 var price = $(this).attr('data-price');
+                var deposit = $(this).attr('data-deposit');
                 var item  = $(this);
 
                 $('#box-date').val(date);
                 $('#box-price').val(price);
+                $('#box-deposit').val(deposit);
                 $('.box').fadeIn();
 
             });
@@ -253,13 +255,20 @@
 							{% endif %}
 							-->
                     <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}"
-                        data-price="{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}0{% endif %}">
+                        data-price="{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}{% endif %}"
+                        data-deposit="{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] }}{% else %}{% endif %}">
                         {% if day['events'] %}
-                            *
+                        *
                         {% endif %}
 
                             {{ day['number'] }}
-                            {% if day['events'] %}*{% endif %}
+
+                            {#{% if day['events'] %}#}
+                            {##}
+                            {#{% endif %}#}
+                            <br />
+                            <div style="font-size: 10px">{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}{% endif %}</div>
+                            <div style="font-size: 10px">{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] }}{% else %}{% endif %}</div>
                         {% else %}
                         <td class="{{ loop.index > 5 ? ' red' }}">
                     {% endif %}
@@ -283,6 +292,10 @@
         <div class="form-group">
             <label>Цена</label>
             <input id="box-price" class="form-control" value="" disabled="disabled">
+        </div>
+        <div class="form-group">
+            <label>Задаток</label>
+            <input id="box-deposit" class="form-control" value="" disabled="disabled">
         </div>
         <div class="form-group">
             <label>Цена своя</label>

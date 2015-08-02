@@ -312,51 +312,64 @@ class LotsController extends Controller
                     if ($events[$i]->getDay()->format('Ymd') == $calendar->getYear() . $calendar->getMonthD() . $tmp_element ) {
                         $monthTable[$rowKey][$colKey]['events'][] = $events[$i]->getLot()->getName();
                     }
-                    #Здесь к каждому дню приписываем следим или нет в этом лоте
-                        foreach($dropRule as $dr){
-                            if (
-                                $dr->getBeginDate()->format('Ymd') <= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
-                                &&
-                                $dr->getEndDate()->format('Ymd') >= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
-                            ){
-                                # Если попали сюда, то за данный день отвечает этот dropRule
+                }
+                #Здесь к каждому дню приписываем следим или нет в этом лоте
+                $lastPrice = $lot->getInitialPrice();
+                foreach($dropRule as $dr){
+                    if (
+                        $dr->getBeginDate()->format('Ymd') <= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
+                        &&
+                        $dr->getEndDate()->format('Ymd') >= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
+                    ){
+                        # Если попали сюда, то за данный день отвечает этот dropRule
 
-                                #Дата начала отсчитывания
-                                $date1 = strtotime($dr->getBeginDate()->format('Y-m-d'));
+                        #Дата начала отсчитывания
+                        $date1 = strtotime($dr->getBeginDate()->format('Y-m-d'));
 
-                                #Дата текущей ячейки
-                                $date2 = $calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $tmp_element;
-                                $date2 = strtotime($date2);
+                        #Дата текущей ячейки
+                        $date2 = $calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $tmp_element;
+                        $date2 = strtotime($date2);
 
-                                #Кол-во отсчетов
-                                $diff = $date2-$date1;
-                                $diff = floor($diff/(60*60*24));
-                                $diff = $diff / $dr->getPeriod();
-                                $diff =  floor($diff);
+                        #Кол-во отсчетов
+                        $diff = $date2-$date1;
+                        $diff = floor($diff/(60*60*24));
+                        $diff = $diff / $dr->getPeriod();
+                        $diff =  floor($diff);
 
-                                if ($dr->getOrder()){
-                                    # в процентах от начальной суммы
-                                    $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - ($lot->getInitialPrice()/100*$dr->getOrder())*$diff;
+                        if ($dr->getOrder()){
+                            # в процентах от начальной суммы
+                            $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - ($lot->getInitialPrice()/100*$dr->getOrder())*$diff;
 
-                                }else{
-                                    # в процентах от текущего периода
-                                    if ($dr->getOrderCurrent()){
-                                        $price = $lot->getInitialPrice();
-                                        for ($k = 0; $k <= $diff; $k ++){
-                                            $price +=  ($price/100*$dr->getOrder());
-                                        }
-                                        $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - $price;
-                                    }else{
-                                        $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice();
-                                    }
+                        }else{
+                            # в процентах от текущего периода
+                            if ($dr->getOrderCurrent()){
+                                $price = $lot->getInitialPrice();
+                                for ($k = 0; $k <= $diff; $k ++){
+                                    $price +=  ($price/100*$dr->getOrder());
                                 }
-                                # Если стоимость отсечения меньше
-                                if ($monthTable[$rowKey][$colKey]['price'] < $lot->getCutOffPrice()){
-                                    $monthTable[$rowKey][$colKey]['price']  = $lot->getInitialPrice();
-                                }
-
+                                $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - $price;
+                            }else{
+                                $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice();
                             }
                         }
+                        # Если стоимость отсечения меньше
+                        if ($monthTable[$rowKey][$colKey]['price'] < $lot->getCutOffPrice()){
+                            $monthTable[$rowKey][$colKey]['price']  = $lot->getCutOffPrice();
+                        }
+                        $lastPrice = $monthTable[$rowKey][$colKey]['price'];
+
+                        # Теперь просчитываем стоимость задатка
+                        if ($lot->getDepositPrice()){
+                            $monthTable[$rowKey][$colKey]['depositPrice']  = $lot->getDepositPrice();
+                        }elseif($lot->getDepositPricePercent()){
+                            $monthTable[$rowKey][$colKey]['depositPrice']  = $lot->getInitialPrice()/100*$lot->getDepositPricePercent();
+                        }elseif($lot->getDepositPricePercentCurrent()){
+                            $monthTable[$rowKey][$colKey]['depositPrice']  = $monthTable[$rowKey][$colKey]['price']/100*$lot->getDepositPricePercent();
+                        }else{
+                            $monthTable[$rowKey][$colKey]['depositPrice']  = 0;
+                        }
+
+                    }
                 }
             }
         }
