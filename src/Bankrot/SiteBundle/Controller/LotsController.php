@@ -403,6 +403,7 @@ class LotsController extends Controller
             if ( $dr == null || $dr->getEndDate() < $currentDate || $dr->getBeginDate() > $currentDate ){
                 $dr = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->search($lotId,$currentDate);
                 if ($dr){
+                    # Если новый DR обнуляем период и начальная стоимость в этом периоде
                     $priceBeginPeriod = $price;
                     $currentPeriod = 0;
                 }
@@ -468,8 +469,9 @@ class LotsController extends Controller
            if ($currentDate > $lot->getEndDate()){
                break;
            }
+            # Максимальный срок лота 100 дней, потом можно увеличить
            $si++;
-           if ($si > 91){
+           if ($si > 100){
                break;
            }
         }
