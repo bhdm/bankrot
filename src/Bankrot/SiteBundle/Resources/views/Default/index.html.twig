@@ -8,8 +8,20 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="page-header">Мониторинг</h1>
-
+    <h2 class="page-header">Мониторинг</h2>
+    <div class="form-group row">
+        <form method="GET">
+            <div class="col-xs-1">
+                <label style="font-size: 16px;padding-top: 6px;">Поиск</label>
+            </div>
+            <div class="col-xs-6">
+                <input type="text" class="form-control" name="search" placeholder="Введите текст для поиска" value="{{ search ? search : '' }}">
+            </div>
+            <div class="col-xs-2">
+                <input class="btn btn-primary" type="submit"  value="Найти">
+            </div>
+        </form>
+    </div>
     <div class="infinite-scroll">
         <table class="table table-hover" id="lots">
             <thead>
@@ -38,14 +50,10 @@
                 </tr>
             {% endfor %}
             </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="8">
-                    <a class="btn btn-block btn-link" href="{{ path('home_paged', { page: page + 1 }) }}">еще</a>
-                </td>
-            </tr>
-            </tfoot>
         </table>
+        <nav>
+            {{ knp_pagination_render(lots) }}
+        </nav>
     </div>
 {% endblock %}
 

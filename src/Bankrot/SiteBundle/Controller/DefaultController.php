@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -16,15 +17,20 @@ class DefaultController extends Controller
      * @Route("/page{page}", name="home_paged", requirements={"page": "\d+"})
      * @Template()
      */
-    public function indexAction($page)
+    public function indexAction(Request $request)
     {
-        $lots = $this->getDoctrine()
-            ->getRepository('BankrotParserBundle:Lot')
-            ->findBy([], ['createdAt' => 'DESC'], 10, 10 * $page);
+        $search = $request->query->get('search');
+        $items = $this->getDoctrine()->getRepository('BankrotParserBundle:Lot')->search($search);
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $items,
+            $this->get('request')->query->get('page', 1),
+            50
+        );
 
         return [
-            'lots' => $lots,
-            'page' => $page,
+            'lots' => $pagination,
+            'search' => $search
         ];
     }
 
