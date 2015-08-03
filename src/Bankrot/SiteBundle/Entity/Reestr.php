@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="PageRepository")
+ * @ORM\Entity(repositoryClass="ReestrRepository")
  */
 class Reestr extends BaseEntity
 {

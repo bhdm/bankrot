@@ -9,7 +9,7 @@ class ForumAnswerRepository extends EntityRepository
     public function search($string){
         $result= $this
             ->createQueryBuilder('f')
-            ->from('WzcMainBundle:ForumAnswer','f')
+            ->from('bankrotSiteBundle:ForumAnswer','f')
             ->where('f.body LIKE %:string% ')
             ->setParameter('string', $string)
             ->getQuery()

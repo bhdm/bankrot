@@ -17,13 +17,26 @@
 
 {% block content %}
     <h2 class="page-header">Реестр</h2>
+    <div class="form-group row">
+        <form method="GET">
+            <div class="col-xs-1">
+                <label style="font-size: 16px;padding-top: 6px;">Поиск</label>
+            </div>
+            <div class="col-xs-6">
+                <input type="text" class="form-control" name="search" placeholder="Введите текст для поиска">
+            </div>
+            <div class="col-xs-2">
+                <input class="btn btn-primary" type="submit"  value="Найти">
+            </div>
+        </form>
+    </div>
     <ul class="nav nav-tabs nav-justified">
-        <li class="{{ type == 0 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 0}) }}" >Должники</a></li>
-        <li class="{{ type == 1 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 1}) }}">CPO</a></li>
-        <li class="{{ type == 2 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 2}) }}">Арбитр. управ.</a></li>
-        <li class="{{ type == 3 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 3}) }}">Орг. торгов</a></li>
-        <li class="{{ type == 4 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 4}) }}">Торг. площадки</a></li>
-        <li class="{{ type == 5 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 5}) }}">Диск. лица</a></li>
+        <li class="{{ type == 0 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 0}) }}{{ search ? '?search='~search : '' }}" >Должники</a></li>
+        <li class="{{ type == 1 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 1}) }}{{ search ? '?search='~search : '' }}">CPO</a></li>
+        <li class="{{ type == 2 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 2}) }}{{ search ? '?search='~search : '' }}">Арбитр. управ.</a></li>
+        <li class="{{ type == 3 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 3}) }}{{ search ? '?search='~search : '' }}">Орг. торгов</a></li>
+        <li class="{{ type == 4 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 4}) }}{{ search ? '?search='~search : '' }}">Торг. площадки</a></li>
+        <li class="{{ type == 5 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 5}) }}{{ search ? '?search='~search : '' }}">Диск. лица</a></li>
     </ul>
     <br />
     <br />

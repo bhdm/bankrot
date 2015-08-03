@@ -23,8 +23,9 @@ class ReestrController extends Controller
      * @Route("/list/{type}", name="reestr_list" , defaults={"type"=0})
      * @Template("")
      */
-    public function listAction($type = 0){
-        $items = $this->getDoctrine()->getRepository('BankrotSiteBundle:Reestr')->findByCategory($type);
+    public function listAction(Request $request, $type = 0){
+        $search = $request->query->get('search');
+        $items = $this->getDoctrine()->getRepository('BankrotSiteBundle:Reestr')->search($type, $search);
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $items,
@@ -32,7 +33,7 @@ class ReestrController extends Controller
             50
         );
 
-        return array('pagination' => $pagination, 'type' => $type );
+        return array('pagination' => $pagination, 'type' => $type, 'search' => $search );
     }
 
     /**
