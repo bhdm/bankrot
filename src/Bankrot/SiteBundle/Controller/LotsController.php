@@ -291,7 +291,7 @@ class LotsController extends Controller
         $calendar->setYear($year);
         $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($lotId);
         $events = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findByLot($lot);
-        $dropRule = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->findByLot($lot);
+        $dropRule = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->findBy(array('lot' => $lot),['beginDate' => 'ASC']);
 
         $monthTable     = $calendar->getMonthTable();
         $numberOfEvents = count($events);
@@ -315,64 +315,165 @@ class LotsController extends Controller
                 }
                 #Здесь к каждому дню приписываем следим или нет в этом лоте
                 $lastPrice = $lot->getInitialPrice();
-                foreach($dropRule as $dr){
-                    if (
-                        $dr->getBeginDate()->format('Ymd') <= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
-                        &&
-                        $dr->getEndDate()->format('Ymd') >= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
-                    ){
-                        # Если попали сюда, то за данный день отвечает этот dropRule
+//                foreach($dropRule as $dr){
+//                    if (
+//                        $dr->getBeginDate()->format('Ymd') <= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
+//                        &&
+//                        $dr->getEndDate()->format('Ymd') >= $calendar->getYear() . $calendar->getMonthD() . $tmp_element
+//                    ){
+//                        # Если попали сюда, то за данный день отвечает этот dropRule
+//                        #Дата начала отсчитывания
+//                        $date1 = strtotime($dr->getBeginDate()->format('Y-m-d'));
+//
+//                        #Дата текущей ячейки
+//                        $date2 = $calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $tmp_element;
+//                        $date2 = strtotime($date2);
+//
+//                        #Кол-во отсчетов
+//                        $diff = $date2-$date1;
+//                        $diff = floor($diff/(60*60*24));
+//                        $diff = $diff / $dr->getPeriod();
+//                        $diff =  floor($diff);
+//
+//                        if ($dr->getOrder()){
+//                            # в процентах от начальной суммы
+//                            $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - ($lot->getInitialPrice()/100*$dr->getOrder())*$diff;
+//
+//                        }else{
+//                            # в процентах от текущего периода
+//                            if ($dr->getOrderCurrent()){
+//                                $price = $lot->getInitialPrice();
+//                                for ($k = 0; $k <= $diff; $k ++){
+//                                    $price +=  ($price/100*$dr->getOrder());
+//                                }
+//                                $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - $price;
+//                            }else{
+//                                $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice();
+//                            }
+//                        }
+//                        # Если стоимость отсечения меньше
+//                        if ($monthTable[$rowKey][$colKey]['price'] < $lot->getCutOffPrice()){
+//                            $monthTable[$rowKey][$colKey]['price']  = $lot->getCutOffPrice();
+//                        }
+//                        $lastPrice = $monthTable[$rowKey][$colKey]['price'];
+//
+//                        # Теперь просчитываем стоимость задатка
+//                        if ($lot->getDepositPrice()){
+//                            $monthTable[$rowKey][$colKey]['depositPrice']  = $lot->getDepositPrice();
+//                        }elseif($lot->getDepositPricePercent()){
+//                            $monthTable[$rowKey][$colKey]['depositPrice']  = $lot->getInitialPrice()/100*$lot->getDepositPricePercent();
+//                        }elseif($lot->getDepositPricePercentCurrent()){
+//                            $monthTable[$rowKey][$colKey]['depositPrice']  = $monthTable[$rowKey][$colKey]['price']/100*$lot->getDepositPricePercent();
+//                        }else{
+//                            $monthTable[$rowKey][$colKey]['depositPrice']  = 0;
+//                        }
+//
+//                    }
+//                }
 
-                        #Дата начала отсчитывания
-                        $date1 = strtotime($dr->getBeginDate()->format('Y-m-d'));
-
-                        #Дата текущей ячейки
-                        $date2 = $calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $tmp_element;
-                        $date2 = strtotime($date2);
-
-                        #Кол-во отсчетов
-                        $diff = $date2-$date1;
-                        $diff = floor($diff/(60*60*24));
-                        $diff = $diff / $dr->getPeriod();
-                        $diff =  floor($diff);
-
-                        if ($dr->getOrder()){
-                            # в процентах от начальной суммы
-                            $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - ($lot->getInitialPrice()/100*$dr->getOrder())*$diff;
-
-                        }else{
-                            # в процентах от текущего периода
-                            if ($dr->getOrderCurrent()){
-                                $price = $lot->getInitialPrice();
-                                for ($k = 0; $k <= $diff; $k ++){
-                                    $price +=  ($price/100*$dr->getOrder());
-                                }
-                                $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice() - $price;
-                            }else{
-                                $monthTable[$rowKey][$colKey]['price'] = $lot->getInitialPrice();
-                            }
-                        }
-                        # Если стоимость отсечения меньше
-                        if ($monthTable[$rowKey][$colKey]['price'] < $lot->getCutOffPrice()){
-                            $monthTable[$rowKey][$colKey]['price']  = $lot->getCutOffPrice();
-                        }
-                        $lastPrice = $monthTable[$rowKey][$colKey]['price'];
-
-                        # Теперь просчитываем стоимость задатка
-                        if ($lot->getDepositPrice()){
-                            $monthTable[$rowKey][$colKey]['depositPrice']  = $lot->getDepositPrice();
-                        }elseif($lot->getDepositPricePercent()){
-                            $monthTable[$rowKey][$colKey]['depositPrice']  = $lot->getInitialPrice()/100*$lot->getDepositPricePercent();
-                        }elseif($lot->getDepositPricePercentCurrent()){
-                            $monthTable[$rowKey][$colKey]['depositPrice']  = $monthTable[$rowKey][$colKey]['price']/100*$lot->getDepositPricePercent();
-                        }else{
-                            $monthTable[$rowKey][$colKey]['depositPrice']  = 0;
-                        }
-
-                    }
-                }
             }
         }
+
+
+        $currentDate = $lot->getBeginDate();
+        $si = 0;
+        $currentPeriod = 0;
+        $dr = null;
+        $price = $lot->getInitialPrice();
+        $depositPrice = $lot->getInitialPrice();
+//        $priceBeginPeriod = $lot->getInitialPrice();
+        while (true){
+
+            # Находим день недели этого дня
+            $dint = mktime (0,0,0,$currentDate->format('m'),$currentDate->format('d'),$currentDate->format('Y'));
+            $den = date("w",$dint);
+            if($den==0) $den=7;
+            $plus=7-$den;
+            $week = ceil((date("j",$dint)+$plus)/7);
+            $week = $week-1;
+            $dayOfWeek = date("w", mktime(0,0,0,$currentDate->format('m'),$currentDate->format('d'),$currentDate->format('Y')));
+            if ($dayOfWeek == 0){
+                $dayOfWeek = 7;
+            }
+            $dayOfWeek --;
+
+            $item = &$monthTable[$week][$dayOfWeek];
+
+            # получаем DropRule
+            if ( $dr == null || $dr->getEndDate() < $currentDate || $dr->getBeginDate() > $currentDate ){
+                $dr = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->search($lotId,$currentDate);
+                if ($dr){
+                    $priceBeginPeriod = $price;
+                    $currentPeriod = 0;
+                }
+            }
+
+            if ($dr){
+
+                if ($dr->getPeriod()){
+                    $currentPeriod ++;
+                }elseif($dr->getPeriodWork() && $dayOfWeek < 6){
+                    $currentPeriod ++;
+                }
+
+                # Высчитываем price
+                if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || $dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork()){
+                    if ($dr->getOrder()){
+                        # в процентах от начальной суммы
+                        $price -= ($lot->getInitialPrice()/100*$dr->getOrder());
+                    }elseif ($dr->getOrderCurrent()){
+                        # в процентах от текущего периода
+                        $price -= $price - ($priceBeginPeriod/100*$dr->getOrderCurrent());
+                    }
+
+
+                    # Теперь просчитываем стоимость задатка
+                    if ($lot->getDepositPrice()){
+                        $depositPrice = $lot->getDepositPrice();
+                    }elseif($lot->getDepositPricePercent()){
+                        $depositPrice = $lot->getInitialPrice()/100*$lot->getDepositPricePercent();
+                    }elseif($lot->getDepositPricePercentCurrent()){
+                        $depositPrice = $priceBeginPeriod/100*$lot->getDepositPricePercentCurrent();
+                    }else{
+                        $depositPrice = 0;
+                    }
+                }
+
+
+
+                    # Если стоимость отсечения меньше
+                    if ($price < $lot->getCutOffPrice()){
+                        $price  = $lot->getCutOffPrice();
+                    }
+                $lastPrice = $price;
+            }
+
+
+            # Записываем информацию о цене
+            if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
+                $item['price'] = $price;
+                $item['depositPrice'] = $depositPrice;
+            }
+
+
+
+
+
+            if ($currentPeriod == $dr->getPeriod()){
+                $currentPeriod = 0;
+            }
+
+
+           $currentDate->modify('+1 day');
+           if ($currentDate > $lot->getEndDate()){
+               break;
+           }
+           $si++;
+           if ($si > 91){
+               break;
+           }
+        }
+
 
         $em = $this->getDoctrine()->getManager();
 
