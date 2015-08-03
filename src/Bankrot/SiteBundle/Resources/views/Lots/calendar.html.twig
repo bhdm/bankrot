@@ -195,51 +195,73 @@
         margin-left: -150px;
         display: none;
     }
+    .showlist{
+        padding-left: 25px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        border-bottom: 1px solid #CCC;
+        width: 300px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
     <h2 class="page-header">Календарь</h2>
 
-
-    <table style="width: 100%">
-        <tr>
-            <td>
-                <a style="float: left" class="no-underline"
-                   href="{{ path('calendar', { 'lotId': lot.id, 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
-                    Предыдущий месяц</a>
-            </td>
-            <td style="font-size: 20px">{{ monthName | lower }} {{ year }}</td>
-            <td>
-                <a style="float: right" class="no-underline"
-                   href="{{ path('calendar', { 'lotId': lot.id, 'year': nextMonthYear, 'month': nextMonth}) }}">Следующий
-                    месяц &rarr;</a>
-            </td>
-        </tr>
-    </table>
-    <p style="overflow: hidden;">
-
-
-
-    </p>
-    <table class="calendar">
-        <tr>
-            <th>Понедельник</th>
-            <th>Вторник</th>
-            <th>Среда</th>
-            <th>Четверг</th>
-            <th>Пятница</th>
-            <th class="red">Суббота</th>
-            <th class="red">Воскресенье</th>
-        </tr>
-
-        {% set break = false %}
-
-        {% for row in calendar if not break %}
+    <div>
+        {% for i in events %}
+        <div class="row showlist">
+            <div class="col-xs-6">{{ i.day | date('d.m.Y') }}</div>
+            <div class="col-xs-3">{{ i.price }}</div>
+            <div class="col-xs-3">
+                <a href="{{ path('remove_lot_show',{'id' : i.id}) }}">
+                    <button type="button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div style="position: relative">
+        <table style="width: 100%">
             <tr>
-                {% for day in row %}
-                    {% if day %}
-                        <!--
+                <td>
+                    <a style="float: left" class="no-underline"
+                       href="{{ path('calendar', { 'lotId': lot.id, 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
+                        Предыдущий месяц</a>
+                </td>
+                <td style="font-size: 20px">{{ monthName | lower }} {{ year }}</td>
+                <td>
+                    <a style="float: right" class="no-underline"
+                       href="{{ path('calendar', { 'lotId': lot.id, 'year': nextMonthYear, 'month': nextMonth}) }}">Следующий
+                        месяц &rarr;</a>
+                </td>
+            </tr>
+        </table>
+        <p style="overflow: hidden;">
+
+
+
+        </p>
+        <table class="calendar">
+            <tr>
+                <th>Понедельник</th>
+                <th>Вторник</th>
+                <th>Среда</th>
+                <th>Четверг</th>
+                <th>Пятница</th>
+                <th class="red">Суббота</th>
+                <th class="red">Воскресенье</th>
+            </tr>
+
+            {% set break = false %}
+
+            {% for row in calendar if not break %}
+                <tr>
+                    {% for day in row %}
+                        {% if day %}
+                            <!--
 							{% if day['events'] | length == 0 %}
 							<td class="{{ loop.index > 5 ? ' red' }}">
 							{% elseif day['events'] | length >= 10 %}
@@ -254,12 +276,12 @@
 							<td class="{{ day ? (day['events'] ? 'calendar_cell_full oneEvent') }}{{ loop.index > 5 ? ' red' }}">
 							{% endif %}
 							-->
-                    <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}"
-                        data-price="{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}{% endif %}"
-                        data-deposit="{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] }}{% else %}{% endif %}">
-                        {% if day['events'] %}
-                        *
-                        {% endif %}
+                        <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}"
+                            data-price="{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}{% endif %}"
+                            data-deposit="{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] }}{% else %}{% endif %}">
+                            {% if day['events'] %}
+                                *
+                            {% endif %}
 
                             {{ day['number'] }}
 
@@ -270,42 +292,44 @@
                             <div style="font-size: 10px">{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}{% endif %}</div>
                             <div style="font-size: 10px">{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] }}{% else %}{% endif %}</div>
                         {% else %}
-                        <td class="{{ loop.index > 5 ? ' red' }}">
-                    {% endif %}
-                    </td>
-                    {% if day is null %}
-                        {% set break = true %}
-                    {% else %}
-                        {% set break = false %}
-                    {% endif %}
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
-    <br />
-    <br />
-    <div class="box">
-        <div class="form-group">
-            <label>Дата</label>
-            <input id="box-date" class="form-control" value="" disabled="disabled">
-        </div>
-        <div class="form-group">
-            <label>Цена</label>
-            <input id="box-price" class="form-control" value="" disabled="disabled">
-        </div>
-        <div class="form-group">
-            <label>Задаток</label>
-            <input id="box-deposit" class="form-control" value="" disabled="disabled">
-        </div>
-        <div class="form-group">
-            <label>Цена своя</label>
-            <input id="box-price2" class="form-control" value="">
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary" type="submit" id="boxOk">Сохранить</button>
-            <button class="btn btn-danger" type="submit" id="boxCancel">Отмена</button>
+                            <td class="{{ loop.index > 5 ? ' red' }}">
+                        {% endif %}
+                        </td>
+                        {% if day is null %}
+                            {% set break = true %}
+                        {% else %}
+                            {% set break = false %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <br />
+        <br />
+        <div class="box">
+            <div class="form-group">
+                <label>Дата</label>
+                <input id="box-date" class="form-control" value="" disabled="disabled">
+            </div>
+            <div class="form-group">
+                <label>Цена</label>
+                <input id="box-price" class="form-control" value="" disabled="disabled">
+            </div>
+            <div class="form-group">
+                <label>Задаток</label>
+                <input id="box-deposit" class="form-control" value="" disabled="disabled">
+            </div>
+            <div class="form-group">
+                <label>Цена своя</label>
+                <input id="box-price2" class="form-control" value="">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" id="boxOk">Сохранить</button>
+                <button class="btn btn-danger" type="submit" id="boxCancel">Отмена</button>
+            </div>
         </div>
     </div>
+
 
 
 {% endblock %}

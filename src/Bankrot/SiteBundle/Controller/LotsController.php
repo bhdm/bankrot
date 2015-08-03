@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class LotsController
  * @package Bankrot\SiteBundle\Controller
-  @Security("has_role('ROLE_USER')")
+@Security("has_role('ROLE_USER')")
  */
 class LotsController extends Controller
 {
@@ -421,5 +421,17 @@ class LotsController extends Controller
                 }
             }
         }
+    }
+
+
+    /**
+     * @Route("/lots/removeShow/{id}", name="remove_lot_show")
+     */
+    public function removeLotShowAction(Request $request, $id){
+        $show = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findOneByid($id);
+        $this->getDoctrine()->getManager()->remove($show);
+        $this->getDoctrine()->getManager()->flush($show);
+        return $this->redirect($request->headers->get('referer'));
+
     }
 }
