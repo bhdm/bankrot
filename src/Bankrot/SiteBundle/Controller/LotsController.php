@@ -412,12 +412,12 @@ class LotsController extends Controller
 
                 if ($dr->getPeriod()){
                     $currentPeriod ++;
-                }elseif($dr->getPeriodWork() && $dayOfWeek < 6){
+                }elseif($dr->getPeriodWork() && $dayOfWeek < 5){
                     $currentPeriod ++;
                 }
 
                 # Высчитываем price
-                if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || $dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork()){
+                if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || ($dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork())){
                     if ($dr->getOrder()){
                         # в процентах от начальной суммы
                         $price -= ($lot->getInitialPrice()/100*$dr->getOrder());
@@ -459,7 +459,7 @@ class LotsController extends Controller
 
 
 
-            if ($currentPeriod == $dr->getPeriod()){
+            if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || ($dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork())){
                 $currentPeriod = 0;
             }
 
