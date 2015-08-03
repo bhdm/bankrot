@@ -21,6 +21,7 @@
         'bundles/bankrotsite/css/layout.css' %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
+        <link rel="stylesheet" href="http://fancyapps.com/fancybox/source/jquery.fancybox.css"/>
     {% endblock %}
 </head>
 <body>
@@ -66,9 +67,14 @@
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script src="http://fancyapps.com/fancybox/source/jquery.fancybox.js"></script>
     <script>
         $(document).ready(function(){
             $('input[type="file"]').styler()
+
+            $('.fanc').fancybox({
+                type: 'ajax'
+            });
         });
     </script>
 {% endblock %}
