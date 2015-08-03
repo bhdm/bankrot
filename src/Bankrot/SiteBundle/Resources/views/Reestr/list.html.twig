@@ -23,7 +23,7 @@
                 <label style="font-size: 16px;padding-top: 6px;">Поиск</label>
             </div>
             <div class="col-xs-6">
-                <input type="text" class="form-control" name="search" placeholder="Введите текст для поиска">
+                <input type="text" class="form-control" name="search" placeholder="Введите текст для поиска" value="{{ search ? search : '' }}">
             </div>
             <div class="col-xs-2">
                 <input class="btn btn-primary" type="submit"  value="Найти">
