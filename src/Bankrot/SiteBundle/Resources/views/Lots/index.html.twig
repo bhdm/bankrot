@@ -100,11 +100,15 @@
             </thead>
             <tbody>
             {% for lw in lots %}
-                {% if lw.getDay.date|day_diff == 0 %}
+                {% set date = lw.getDay|date('Y-m-d') ~'00:00:00' %}
+                {% set curDate = 'now'|date('Y-m-d') ~'00:00:00' %}
+                {% set lastDate = '+5 day'|date('Y-m-d') ~'00:00:00' %}
+
+                {% if date|date == curDate | date %}
                     {% set marker_class = "ready" %}
-                {% elseif lw.getDay.date|day_diff < 5 %}
+                {% elseif date|date  <  lastDate|date %}
                     {% set marker_class = "soon" %}
-                {% elseif lw.getLot.getEndDate.date|day_diff <= 0 %}
+                {% elseif date|date >= date|date %}
                     {% set marker_class = "late" %}
                 {% else %}
                     {% set marker_class = "" %}

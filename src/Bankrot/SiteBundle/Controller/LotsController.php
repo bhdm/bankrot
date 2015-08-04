@@ -426,18 +426,6 @@ class LotsController extends Controller
                         # в процентах от текущего периода
                         $price -= $price - ($priceBeginPeriod/100*$dr->getOrderCurrent());
                     }
-
-
-                    # Теперь просчитываем стоимость задатка
-                    if ($lot->getDepositPrice()){
-                        $depositPrice = $lot->getDepositPrice();
-                    }elseif($lot->getDepositPricePercent()){
-                        $depositPrice = $lot->getInitialPrice()/100*$lot->getDepositPricePercent();
-                    }elseif($lot->getDepositPricePercentCurrent()){
-                        $depositPrice = $priceBeginPeriod/100*$lot->getDepositPricePercentCurrent();
-                    }else{
-                        $depositPrice = 0;
-                    }
                 }
 
 
@@ -447,6 +435,18 @@ class LotsController extends Controller
                         $price  = $lot->getCutOffPrice();
                     }
                 $lastPrice = $price;
+            }
+
+
+            # Теперь просчитываем стоимость задатка
+            if ($lot->getDepositPrice()){
+                $depositPrice = $lot->getDepositPrice();
+            }elseif($lot->getDepositPricePercent()){
+                $depositPrice = $lot->getInitialPrice()/100*$lot->getDepositPricePercent();
+            }elseif($lot->getDepositPricePercentCurrent()){
+                $depositPrice = $priceBeginPeriod/100*$lot->getDepositPricePercentCurrent();
+            }else{
+                $depositPrice = 0;
             }
 
 
