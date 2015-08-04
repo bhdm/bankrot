@@ -4,6 +4,7 @@ namespace Bankrot\SiteBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Role\SwitchUserRole;
 
 class MenuBuilder
 {
@@ -17,7 +18,7 @@ class MenuBuilder
     public function createMainMenu(RequestStack $requestStack)
     {
         $menu = $this->factory->createItem('root');
-
+//        $securityContext = $this->container->get('security.context');
         $currentRoute = $requestStack->getCurrentRequest()->get('_route');
 
         $menu
@@ -37,12 +38,41 @@ class MenuBuilder
                 ->getParent()
             ->addChild('Регистрация', ['route' => 'fos_user_registration_register'])
                 ->getParent()
-            ->addChild('Регистрация', ['route' => 'fos_user_registration_register'])
-                ->setCurrent('fos_user_registration_register' === $currentRoute);
-            ;
+            ->addChild('Войти', ['route' => 'fos_user_security_login'])
+                ->getParent();
 
         return $menu;
     }
+
+    public function createAuthMenu(RequestStack $requestStack)
+    {
+        $menu = $this->factory->createItem('root');
+//        $securityContext = $this->container->get('security.context');
+        $currentRoute = $requestStack->getCurrentRequest()->get('_route');
+
+        $menu
+            ->setChildrenAttribute('class', 'nav navbar-nav')
+            ->addChild('Торги', ['route' => 'home'])
+            ->getParent()
+            ->addChild('Планировщик', ['route' => 'lots_list'])
+            ->setCurrent(0 === strpos($currentRoute, 'lots'))
+            ->getParent()
+            ->addChild('Реестры', ['route' => 'reestr_list'])//
+            ->getParent()
+            ->addChild('Форум', ['route' => 'forum_index'])
+            ->getParent()
+            ->addChild('Будьте осторожны', ['route' => 'warning_registry_list'])
+            ->getParent()
+            ->addChild('Контакты', ['route' => 'page','routeParameters'=>['url' => 'contacts']])
+            ->getParent()
+            ->addChild('Профиль', ['route' => 'fos_user_profile_show'])
+            ->getParent()
+            ->addChild('Выйти', ['route' => 'fos_user_security_logout'])
+            ->getParent();
+
+        return $menu;
+    }
+
 
     public function createLotsMenu(RequestStack $requestStack)
     {

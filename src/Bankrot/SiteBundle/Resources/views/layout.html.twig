@@ -31,7 +31,11 @@
             <a href="/" class="navbar-brand"><i class="fa fa-home"></i></a>
         </div>
         <div class="navbar-left">
-            {{ knp_menu_render('main', { currentClass: 'active' }) }}
+            {% if is_granted('ROLE_USER') %}
+                {{ knp_menu_render('auth', { currentClass: 'active' }) }}
+            {% else %}
+                {{ knp_menu_render('main', { currentClass: 'active' }) }}
+            {% endif %}
         </div>
     </div>
 </nav>
