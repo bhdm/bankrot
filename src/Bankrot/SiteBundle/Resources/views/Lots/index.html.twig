@@ -46,9 +46,19 @@
                 {% set reportingPeriodList = 0 %}
 
                 {% for lw in lots %}
-                    {% if lw.isTargetPeriod %}{% set targetPeriodLots = targetPeriodLots + 1 %}{% endif %}
-                    {% if lw.isControlPeriod %}{% set controlPeriodLots = controlPeriodLots + 1 %}{% endif %}
-                    {% if lw.isReportingPeriod %}{% set reportingPeriodList = reportingPeriodList + 1 %}{% endif %}
+                    {% set date = lw.getDay|date('Y-m-d') ~'00:00:00' %}
+                    {% set curDate = 'now'|date('Y-m-d') ~'00:00:00' %}
+                    {% set lastDate = '+5 day'|date('Y-m-d') ~'00:00:00' %}
+
+                    {% if date|date == curDate | date %}
+                        {% set targetPeriodLots = targetPeriodLots+1 %}
+                    {% elseif date|date  <  lastDate|date %}
+                        {% set controlPeriodLots = controlPeriodLots+1 %}
+                    {% elseif date|date >= date|date %}
+                        {% set reportingPeriodList = reportingPeriodList+1 %}
+                    {% else %}
+                        {% set marker_class = "" %}
+                    {% endif %}
                 {% endfor %}
                 <p class="clearfix">
                     <strong class="pull-left">Целевой период</strong>
