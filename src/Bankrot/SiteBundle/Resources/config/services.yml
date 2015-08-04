@@ -31,3 +31,8 @@ services:
         class: Bankrot\SiteBundle\Form\Type\RegistrationFormType
         tags:
             - { name: form.type, alias: bankrot_site_user_registration }
+
+    bankrot_site.profile.form.type:
+            class: Bankrot\SiteBundle\Form\Type\ProfileFormType
+            tags:
+                - { name: form.type, alias: bankrot_site_user_profile_edit }

@@ -93,6 +93,9 @@ fos_user:
             from_email:
                 address: isbankrot@gmail.com
                 sender_name: Bankrot.ru
+    profile:
+        form:
+            type: bankrot_site_user_profile_edit
     service:
         mailer:  fos_user.mailer.twig_swift
 

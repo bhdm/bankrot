@@ -25,6 +25,26 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @Column(type="string")
+     */
+    protected $lastName;
+
+    /**
+     * @Column(type="string")
+     */
+    protected $firstName;
+
+    /**
+     * @Column(type="string", nullable=true)
+     */
+    protected $surName;
+
+    /**
+     * @Column(type="string", nullable=true)
+     */
+    protected $phone;
+
+    /**
      * @ORM\OneToMany(targetEntity="Subscription", mappedBy="user")
      */
     protected $subscriptions;
@@ -38,6 +58,7 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Arbitration", mappedBy="user")
      */
     protected $arbitrations;
+
 
     /**
      * @Column(type="datetime", nullable=true)
@@ -188,6 +209,71 @@ class User extends BaseUser
     {
         $this->arbitrations = $arbitrations;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param mixed $lastName
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param mixed $firstName
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSurName()
+    {
+        return $this->surName;
+    }
+
+    /**
+     * @param mixed $surName
+     */
+    public function setSurName($surName)
+    {
+        $this->surName = $surName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
 
 
 }

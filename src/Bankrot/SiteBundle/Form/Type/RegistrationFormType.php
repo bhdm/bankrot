@@ -9,8 +9,21 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        var_dump($builder->get('email'));
-//        var_dump(get_class_methods($builder->get('email')));
+        parent::buildForm($builder, $options);
+
+        $builder->add('username', null, ['label' => 'Логин:']);
+        $builder->add('email', null, ['label' => 'Email:']);
+        $builder->add('lastName', null, ['label' => 'Фамилия:']);
+        $builder->add('firstName', null, ['label' => 'Имя:']);
+        $builder->add('surName', null, ['label' => 'Отчество:']);
+        $builder->add('phone', null, ['label' => 'Телефон:']);
+        $builder->add('plainPassword', 'repeated', array(
+            'type' => 'password',
+            'invalid_message' => 'пароли не совпадают',
+            'first_options'  => array('label' => 'Пароль:'),
+            'second_options' => array('label' => 'Повторите пароль:'),
+        ));
+//        $builder->add('register', 'submit', ['label' => 'Зарегистрироваться','attr' => ['class' => 'btn-primary']]);
     }
 
     public function getParent()
