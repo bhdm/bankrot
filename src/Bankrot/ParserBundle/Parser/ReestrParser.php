@@ -24,7 +24,7 @@ class ReestrParser
         $this->em = $em;
     }
 
-    public function sync() #Callable $iterationCb = null
+    public function sync($output) #Callable $iterationCb = null
     {
         $fileName = '/var/www/blog/web/parsA.xls'; # Файл будет лежать в папке WEB и называться parsA.xls
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
@@ -33,10 +33,11 @@ class ReestrParser
         #######################
         # Парсер по должникам #
         #######################
-        for ($i = 1 ; true ; $i++){
-            if ($excel->setActiveSheetIndex(0)->getCell('B'.$i) == ''){
-                break;
-            }
+        for ($i = 1 ; $i <= 1981 ; $i++){
+//            if ($excel->setActiveSheetIndex(0)->getCell('B'.$i) == ''){
+//                $output->writeln('Выход');
+//                break;
+//            }
             $category = $excel->setActiveSheetIndex(0)->getCell('A'.$i);
             $fullName = $excel->setActiveSheetIndex(0)->getCell('B'.$i);
             $inn = $excel->setActiveSheetIndex(0)->getCell('C'.$i);
@@ -63,15 +64,16 @@ class ReestrParser
                 $reestr->setPars(0);
                 $this->em->persist($reestr);
                 $this->em->flush($reestr);
+                $output->writeln($link);
             }
         }
 
 
     }
 
-    public function getFullInfo(){
-        $reestrs = $this->em->getRepository('BankrotSiteBundle:reestr')->findByPars(0);
-        foreach($reestrs as $reestr){
+    public function getFullInfo($output){
+        $reestrs = $this->em->getRepository('BankrotSiteBundle:Reestr')->findByPars(0);
+        foreach($reestrs as $k => $reestr){
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_URL, $reestr->getLink());
@@ -107,7 +109,9 @@ class ReestrParser
                     }
                 );
 
+            $reestr->setPars(1);
             $this->em->flush();
+            $output->writeln($k);
         }
     }
 }

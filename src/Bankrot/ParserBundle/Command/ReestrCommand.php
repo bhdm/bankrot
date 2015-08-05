@@ -20,11 +20,11 @@ class ReestrCommand extends ContainerAwareCommand
         $parser = $this->getContainer()->get('bankrot_parser.reestrparser');
 
         $output->writeln('<info>Синхронизация началась</info>');
-        $parser->sync();
+        $parser->sync($output);
         $output->writeln('<info>Синхронизация завершена</info>');
 
         $output->writeln('<info>Получение полной информации</info>');
-        $parser->getFullInfo();
+        $parser->getFullInfo($output);
         $output->writeln('<info>Получение полной информации завершено</info>');
     }
 }
