@@ -84,7 +84,17 @@
             {% for item in pagination %}
                 <tr>
                     <td>{{ item.bNumber }}</td>
-                    <td>{{ item.bTitle }}</td>
+                    <td>
+                        {% if is_granted('ROLE_SUBSCRIPTION') %}
+                            <a href="{{ path('reestr_show',{'type' : item.category, 'id' : item.id}) }}">
+                                {{ item.bTitle }}
+                            </a>
+                        {% else %}
+                            <a href="#" style="cursor: not-allowed">
+                                {{ item.bTitle }}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ item.bCountManager }}</td>
                 </tr>
             {% endfor %}
@@ -96,15 +106,25 @@
             <tr>
                 <th>ФИО</th>
                 <th>Рег. номер</th>
-                <th>Дата<br />регистрации</th>
                 <td>СРО</td>
+                <th>Дата<br />регистрации</th>
             </tr>
             {% for item in pagination %}
                 <tr>
-                    <td>{{ item.cLastName }} {{ item.cFirstName }} {{ item.cSurName }}</td>
+                    <td>
+                        {% if is_granted('ROLE_SUBSCRIPTION') %}
+                            <a href="{{ path('reestr_show',{'type' : item.category, 'id' : item.id}) }}">
+                                {{ item.cLastName }} {{ item.cFirstName }} {{ item.cSurName }}
+                            </a>
+                        {% else %}
+                            <a href="#" style="cursor: not-allowed">
+                                {{ item.cLastName }} {{ item.cFirstName }} {{ item.cSurName }}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ item.cNumber }}</td>
                     <td>{{ item.cCpo }}</td>
-                    <td>{{ item.cDate }}</td>
+                    <td>{{ item.cDate |date ('d.m.Y')}}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -119,7 +139,17 @@
             </tr>
             {% for item in pagination %}
                 <tr>
-                    <td>{{ item.dFullTitle }}</td>
+                    <td>
+                        {% if is_granted('ROLE_SUBSCRIPTION') %}
+                            <a href="{{ path('reestr_show',{'type' : item.category, 'id' : item.id}) }}">
+                                {{ item.dFullTitle }}
+                            </a>
+                        {% else %}
+                            <a href="#" style="cursor: not-allowed">
+                                {{ item.dFullTitle }}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ item.dRegion }}</td>
                     <td>{{ item.dAdrs }}</td>
                 </tr>
@@ -136,7 +166,17 @@
             </tr>
             {% for item in pagination %}
                 <tr>
-                    <td>{{ item.eTitle }}</td>
+                    <td>
+                        {% if is_granted('ROLE_SUBSCRIPTION') %}
+                            <a href="{{ path('reestr_show',{'type' : item.category, 'id' : item.id}) }}">
+                                {{ item.eTitle }}
+                            </a>
+                        {% else %}
+                            <a href="#" style="cursor: not-allowed">
+                                {{ item.eTitle }}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ item.eSite }}</td>
                     <td>{{ item.eFullTitle  }}</td>
                 </tr>
@@ -155,7 +195,17 @@
             </tr>
             {% for item in pagination %}
                 <tr>
-                    <td>{{ item.fFio }}</td>
+                    <td>
+                        {% if is_granted('ROLE_SUBSCRIPTION') %}
+                            <a href="{{ path('reestr_show',{'type' : item.category, 'id' : item.id}) }}">
+                                {{ item.fFio }}
+                            </a>
+                        {% else %}
+                            <a href="#" style="cursor: not-allowed">
+                                {{ item.fFio }}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ item.fworkPlace }}</td>
                     <td>{{ item.fPost  }}</td>
                     <td>{{ item.fDateStart | date('d.m.Y')  }}</td>

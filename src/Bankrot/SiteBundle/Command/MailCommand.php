@@ -39,7 +39,8 @@ class MailCommand extends ContainerAwareCommand
 
         # рассылка по 100 пользователям за цикл
         for ($i = 0, $c = count($users); $i < $c; $i++) {
-            if ($users[$i]->getRoles()[0] == 'ROLE_SUBSCRIPTION')
+            $r = $users[$i]->getRoles();
+            if ($r[0] == 'ROLE_SUBSCRIPTION')
             $html = $templating->render($this->template, array(
                 'user'       => $users[$i],
             ));
