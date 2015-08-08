@@ -11,6 +11,7 @@ use Bankrot\SiteBundle\Entity\User;
 
 class AuthController extends Controller
 {
+
     /**
      * @Route("/admin/login", name="login")
      * @Template()

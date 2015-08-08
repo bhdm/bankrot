@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use Bankrot\SiteBundle\Entity\Arbitration;
-use Bankrot\SiteBundle\Form\ArbitrationType;
+use Bankrot\SiteBundle\Form\ArbitrationAdminType;
 
 /**
  * Class ArbitrationController
@@ -43,7 +43,7 @@ class WarningArbitrationController extends Controller{
     public function addAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $item = new Arbitration();
-        $form = $this->createForm(new ArbitrationType($em), $item);
+        $form = $this->createForm(new ArbitrationAdminType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){
@@ -67,7 +67,7 @@ class WarningArbitrationController extends Controller{
     public function editAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
         $item = $this->getDoctrine()->getRepository('BankrotSiteBundle:'.self::ENTITY_NAME)->findOneById($id);
-        $form = $this->createForm(new ArbitrationType($em), $item);
+        $form = $this->createForm(new ArbitrationAdminType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){

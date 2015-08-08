@@ -14,9 +14,9 @@ class IndexController extends Controller
      * @Route("/admin", name="admin_main")
      * @Template()
      */
-    public function indexAction()
+    public function mainAction()
     {
-        return array();
+        return $this->redirect($this->generateUrl('admin_page_list'));
     }
 
 

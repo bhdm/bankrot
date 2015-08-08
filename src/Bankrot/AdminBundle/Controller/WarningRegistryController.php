@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use Bankrot\SiteBundle\Entity\Registry;
-use Bankrot\SiteBundle\Form\RegistryType;
+use Bankrot\SiteBundle\Form\RegistryAdminType;
 
 /**
  * Class RegistryController
@@ -43,7 +43,7 @@ class WarningRegistryController extends Controller{
     public function addAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $item = new Registry();
-        $form = $this->createForm(new RegistryType($em), $item);
+        $form = $this->createForm(new RegistryAdminType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){
@@ -67,7 +67,7 @@ class WarningRegistryController extends Controller{
     public function editAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
         $item = $this->getDoctrine()->getRepository('BankrotSiteBundle:'.self::ENTITY_NAME)->findOneById($id);
-        $form = $this->createForm(new RegistryType($em), $item);
+        $form = $this->createForm(new RegistryAdminType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){

@@ -201,6 +201,11 @@ class Reestr extends BaseEntity
      */
     protected $cDate;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $cRegion;
+
 
     # #####################
     # Организаторы торгов #
@@ -1489,6 +1494,23 @@ class Reestr extends BaseEntity
     {
         $this->pars = $pars;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCRegion()
+    {
+        return $this->cRegion;
+    }
+
+    /**
+     * @param mixed $cRegion
+     */
+    public function setCRegion($cRegion)
+    {
+        $this->cRegion = $cRegion;
+    }
+
 
 
 }

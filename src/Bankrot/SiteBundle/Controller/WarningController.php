@@ -51,6 +51,7 @@ class WarningController extends Controller
         if ($request->getMethod() == 'POST') {
             if ($formData->isValid()) {
                 $item = $formData->getData();
+                $item->setEnabled(false);
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);
@@ -90,6 +91,7 @@ class WarningController extends Controller
         if ($request->getMethod() == 'POST') {
             if ($formData->isValid()) {
                 $item = $formData->getData();
+                $item->setEnabled(false);
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);

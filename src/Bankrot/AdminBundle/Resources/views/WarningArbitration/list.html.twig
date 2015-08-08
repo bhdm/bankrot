@@ -19,6 +19,7 @@
                 <th>Ссылка</th>
                 <th>Пользователь</th>
                 <th></th>
+                <th></th>
                 <th class="setting">Инструменты</th>
             </tr>
             {% for item in pagination %}
@@ -27,6 +28,7 @@
                     <td>{{ item.lotTitle }}</td>
                     <td>{{ item.lotLink }}</td>
                     <td>{{ item.user.username }}</td>
+                    <td>{{ item.enabled == true ? 'Активен' : 'Заблокирован' }}</td>
                     <td></td>
                     <td class="setting">
                         {% spaceless %}

@@ -4,6 +4,7 @@ namespace Bankrot\ParserBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReestrCommand extends ContainerAwareCommand
@@ -12,19 +13,48 @@ class ReestrCommand extends ContainerAwareCommand
     {
         $this
             ->setName('bankrot:reestr')
-            ->setDescription('Синхронизация реестра fedresurs.ru.');
+            ->setDescription('Синхронизация реестра fedresurs.ru.')
+            ->addOption('type',null,InputOption::VALUE_REQUIRED,'Тип парсера 0-5ы');
+
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $parser = $this->getContainer()->get('bankrot_parser.reestrparser');
 
-        $output->writeln('<info>Синхронизация началась</info>');
-        $parser->sync($output);
-        $output->writeln('<info>Синхронизация завершена</info>');
+        $type = $input->getOption('type');
 
-        $output->writeln('<info>Получение полной информации</info>');
-        $parser->getFullInfo($output);
-        $output->writeln('<info>Получение полной информации завершено</info>');
+        if ($type == 1){
+            $output->writeln('<info>Синхронизация началась</info>');
+            $parser->syncA($output);
+            $output->writeln('<info>Синхронизация завершена</info>');
+
+            $output->writeln('<info>Получение полной информации</info>');
+            $parser->getFullInfoA($output);
+            $output->writeln('<info>Получение полной информации завершено</info>');
+        }
+        if ($type == 2){
+            $output->writeln('<info>Синхронизация началась</info>');
+            $parser->syncB($output);
+            $output->writeln('<info>Синхронизация завершена</info>');
+
+            $output->writeln('<info>Получение полной информации</info>');
+            $parser->getFullInfoB($output);
+            $output->writeln('<info>Получение полной информации завершено</info>');
+        }
+        if ($type == 3){
+            $output->writeln('<info>Синхронизация началась C</info>');
+            $parser->syncC($output);
+            $output->writeln('<info>Синхронизация завершена C</info>');
+        }
+        if ($type == 4){
+//            $output->writeln('<info>Синхронизация началась</info>');
+//            $parser->syncD($output);
+//            $output->writeln('<info>Синхронизация завершена</info>');
+
+            $output->writeln('<info>Получение полной информации</info>');
+            $parser->getFullInfoD($output);
+            $output->writeln('<info>Получение полной информации завершено</info>');
+        }
     }
 }
