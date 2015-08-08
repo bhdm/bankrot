@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MailCommand extends ContainerAwareCommand
 {
-    protected $sendTo; # doctor # reset # 7binary@gmail.com
+    protected $sendTo; # doctor # reset #
     protected $subject = 'Портал';
     protected $template = 'BLogBundle:Digest:digest_14_07.html.twig';
 
@@ -58,31 +58,31 @@ class MailCommand extends ContainerAwareCommand
         }
     }
 
-    public function send($email, $to, $body, $subject, $local = false)
-    {
-        $mail = new \PHPMailer();
-
-        $mail->isSMTP();
-        $mail->isHTML(true);
-        $mail->CharSet  = 'UTF-8';
-        $mail->From     = 'noreply@evrika.ru';
-        $mail->FromName = 'Портал';
-        $mail->Subject  = $subject;
-        $mail->Host     = '127.0.0.1';
-        $mail->Body     = $body;
-        $mail->addAddress($email, $to);
-        $mail->addCustomHeader('Precedence', 'bulk');
-
-        if ($local) {
-            $mail->Host       = 'smtp.yandex.ru';
-            $mail->From       = 'binacy@yandex.ru';
-            $mail->SMTPSecure = 'ssl';
-            $mail->Port       = 465;
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'binacy@yandex.ru';
-            $mail->Password   = 'oijoijoij';
-        }
-
-        return $mail->send() ? null : $mail->ErrorInfo;
-    }
+//    public function send($email, $to, $body, $subject, $local = false)
+//    {
+//        $mail = new \PHPMailer();
+//
+//        $mail->isSMTP();
+//        $mail->isHTML(true);
+//        $mail->CharSet  = 'UTF-8';
+//        $mail->From     = 'noreply@evrika.ru';
+//        $mail->FromName = 'Портал';
+//        $mail->Subject  = $subject;
+//        $mail->Host     = '127.0.0.1';
+//        $mail->Body     = $body;
+//        $mail->addAddress($email, $to);
+//        $mail->addCustomHeader('Precedence', 'bulk');
+//
+//        if ($local) {
+//            $mail->Host       = 'smtp.yandex.ru';
+//            $mail->From       = 'binacy@yandex.ru';
+//            $mail->SMTPSecure = 'ssl';
+//            $mail->Port       = 465;
+//            $mail->SMTPAuth   = true;
+//            $mail->Username   = '@yandex.ru';
+//            $mail->Password   = '';
+//        }
+//
+//        return $mail->send() ? null : $mail->ErrorInfo;
+//    }
 }
