@@ -152,7 +152,7 @@ class ReestrParser
     }
 
     public function getFullInfoB($output){
-        $reestrs = $this->em->getRepository('BankrotSiteBundle:Reestr')->findByCategory(3);
+        $reestrs = $this->em->getRepository('BankrotSiteBundle:Reestr')->findByCategory(1);
         foreach($reestrs as $k => $reestr){
             if ($reestr->getPars() == 0){
                 $ch = curl_init();
@@ -165,18 +165,18 @@ class ReestrParser
 
                 curl_close($ch);
 
-                (new Crawler($r))
-                    ->filter('#ctl00_cphBody_trName td')
-                    ->last()
-                    ->reduce(
-                        function (Crawler $sets, $i) use (& $reestr) {
-                            $str = $sets->html();
-                            $td = trim(strip_tags($str));
-                            if ($td) {
-                                $reestr->setBRegisterDate($td);
-                            }
-                        }
-                    );
+//                (new Crawler($r))
+//                    ->filter('#ctl00_cphBody_trName td')
+//                    ->last()
+//                    ->reduce(
+//                        function (Crawler $sets, $i) use (& $reestr) {
+//                            $str = $sets->html();
+//                            $td = trim(strip_tags($str));
+//                            if ($td) {
+//                                $reestr->setBRegisterDate($td);
+//                            }
+//                        }
+//                    );
                 (new Crawler($r))
                     ->filter('#ctl00_cphBody_trInn td')
                     ->last()
@@ -324,8 +324,63 @@ class ReestrParser
                         }
                     );
                 $reestr->setPars(1);
+//                var_dump($reestr);
+//                exit;
                 $this->em->flush();
                 $output->writeln($k);
+            }
+        }
+    }
+
+    public function syncC($output)
+    {
+        $fileName = '/var/www/blog/web/parsC.xls'; # Файл будет лежать в папке WEB и называться parsA.xls
+        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+        $excel = $objReader->load($fileName);
+
+        ############
+        # Парсер C #
+        ############
+        for ($i = 2; $i <= 7667; $i++) {
+
+            $output->writeln($i);
+            $reestr = null;
+            if ($reestr == null) {
+                $output->write('.');
+                $reestr = new Reestr();
+                $output->write('.');
+                $reestr->setCategory(2);
+                $output->write('.');
+                $reestr->setCLastName($excel->setActiveSheetIndex(0)->getCell('A' . $i)->getValue());
+                $output->write('.');
+                $reestr->setCFirstName($excel->setActiveSheetIndex(0)->getCell('B' . $i)->getValue());
+                $output->write('.');
+                $reestr->setCSurName($excel->setActiveSheetIndex(0)->getCell('C' . $i)->getValue());
+                $output->write('.');
+                $reestr->setCCpo($excel->setActiveSheetIndex(0)->getCell('F' . $i)->getValue());
+                $output->write('.');
+                $d = new \DateTime();
+                $date = $excel->setActiveSheetIndex(0)->getCell('H' . $i)->getValue();
+                $date = \PHPExcel_Shared_Date::ExcelToPHP($date);
+                $d->setTimestamp($date);
+                $output->write('.');
+                $reestr->setCDate($d);
+                $output->write('.');
+                $reestr->setCInn(null);
+                $output->write('.');
+                $reestr->setCNumber($excel->setActiveSheetIndex(0)->getCell('E' . $i)->getValue());
+                $output->write('.');
+                $reestr->setCRegion($excel->setActiveSheetIndex(0)->getCell('D' . $i)->getValue());
+                $output->write('.');
+//                var_dump($reestr);
+//                exit;
+                $output->write($reestr->getCLastName());
+                $reestr->setPars(0);
+                $output->write('.');
+                $this->em->persist($reestr);
+                $output->write('.');
+                $this->em->flush($reestr);
+                $output->writeLn('!');
             }
         }
     }
@@ -475,55 +530,188 @@ class ReestrParser
         }
     }
 
-    public function syncC($output)
+    public function syncE($output)
     {
-        $fileName = '/var/www/blog/web/parsC.xls'; # Файл будет лежать в папке WEB и называться parsA.xls
+        $fileName = '/var/www/blog/web/parsE.xls'; # Файл будет лежать в папке WEB и называться parsA.xls
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
         $excel = $objReader->load($fileName);
 
-        ############
-        # Парсер C #
-        ############
-        for ($i = 2; $i <= 7667; $i++) {
-
-            $output->writeln($i);
-            $reestr = null;
+        for ($i = 1; $i <= 100; $i++) {
+            if ($excel->setActiveSheetIndex(0)->getCell('B'.$i) == ''){
+                $output->writeln('Выход');
+                break;
+            }
+            $title = $excel->setActiveSheetIndex(0)->getCell('C' . $i)->getValue();
+            $title2 = $excel->setActiveSheetIndex(0)->getCell('A' . $i)->getValue();
+            $site = $excel->setActiveSheetIndex(0)->getCell('B' . $i)->getValue();
+            $link = $excel->setActiveSheetIndex(0)->getCell('A' . $i)->getHyperlink()->getUrl();
+            $reestr = $this->em->getRepository('BankrotSiteBundle:Reestr')->findBy(array(
+                'eFullTitle' => $title,
+                'eTitle' => $title2,
+                'link' => $link
+            ));
             if ($reestr == null) {
-                $output->write('.');
                 $reestr = new Reestr();
-                $output->write('.');
-                $reestr->setCategory(2);
-                $output->write('.');
-                $reestr->setCLastName($excel->setActiveSheetIndex(0)->getCell('A' . $i)->getValue());
-                $output->write('.');
-                $reestr->setCFirstName($excel->setActiveSheetIndex(0)->getCell('B' . $i)->getValue());
-                $output->write('.');
-                $reestr->setCSurName($excel->setActiveSheetIndex(0)->getCell('C' . $i)->getValue());
-                $output->write('.');
-                $reestr->setCCpo($excel->setActiveSheetIndex(0)->getCell('F' . $i)->getValue());
-                $output->write('.');
-                $d = new \DateTime();
-                $date = $excel->setActiveSheetIndex(0)->getCell('H' . $i)->getValue();
-                $date = \PHPExcel_Shared_Date::ExcelToPHP($date);
-                $d->setTimestamp($date);
-                $output->write('.');
-                $reestr->setCDate($d);
-                $output->write('.');
-                $reestr->setCInn(null);
-                $output->write('.');
-                $reestr->setCNumber($excel->setActiveSheetIndex(0)->getCell('E' . $i)->getValue());
-                $output->write('.');
-                $reestr->setCRegion($excel->setActiveSheetIndex(0)->getCell('D' . $i)->getValue());
-                $output->write('.');
-//                var_dump($reestr);
-//                exit;
-                $output->write($reestr->getCLastName());
+                $reestr->setCategory(4);
+                $reestr->setEFullTitle($title);
+                $reestr->setETitle($title2);
+                $reestr->setESite($site);
                 $reestr->setPars(0);
-                $output->write('.');
+                $reestr->setLink($link);
                 $this->em->persist($reestr);
-                $output->write('.');
                 $this->em->flush($reestr);
-                $output->writeLn('!');
+                $output->writeln($link);
+            }
+        }
+    }
+
+    public function getFullInfoE($output){
+        $reestrs = $this->em->getRepository('BankrotSiteBundle:Reestr')->findByCategory(4);
+        foreach($reestrs as $k => $reestr){
+            if ($reestr->getPars() == 0){
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, $reestr->getLink());
+                curl_setopt($ch, CURLOPT_USERAGENT, UserAgentGenerator::get());
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                $r = iconv('utf8', 'cp1251', curl_exec($ch));
+
+                curl_close($ch);
+
+                (new Crawler($r))
+                    ->filter('#ctl00_cphBody_trAddress td')
+                    ->last()
+                    ->reduce(
+                        function (Crawler $sets, $i) use (& $reestr) {
+                            $str = $sets->html();
+                            $td = trim(strip_tags($str));
+                            if ($td) {
+                                $reestr->setEAdrs($td);
+                            }
+                        }
+                    );
+                (new Crawler($r))
+                    ->filter('#ctl00_cphBody_trInn td')
+                    ->last()
+                    ->reduce(
+                        function (Crawler $sets, $i) use (& $reestr) {
+                            $str = $sets->html();
+                            $td = trim(strip_tags($str));
+                            if ($td) {
+                                $reestr->setEInn($td);
+                            }
+                        }
+                    );
+                (new Crawler($r))
+                    ->filter('#ctl00_cphBody_trOgrn td')
+                    ->last()
+                    ->reduce(
+                        function (Crawler $sets, $i) use (& $reestr) {
+                            $str = $sets->html();
+                            $td = trim(strip_tags($str));
+                            if ($td) {
+                                $reestr->setEOgrn($td);
+                            }
+                        }
+                    );
+
+                $reestr->setPars(1);
+                $this->em->flush();
+                $output->writeln($k);
+            }
+        }
+    }
+
+    public function syncF($output)
+    {
+        $fileName = '/var/www/blog/web/parsE.xls'; # Файл будет лежать в папке WEB и называться parsA.xls
+        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+        $excel = $objReader->load($fileName);
+
+        for ($i = 1; $i <= 100; $i++) {
+            if ($excel->setActiveSheetIndex(0)->getCell('B'.$i) == ''){
+                $output->writeln('Выход');
+                break;
+            }
+            $title = $excel->setActiveSheetIndex(0)->getCell('C' . $i)->getValue();
+            $title2 = $excel->setActiveSheetIndex(0)->getCell('A' . $i)->getValue();
+            $site = $excel->setActiveSheetIndex(0)->getCell('B' . $i)->getValue();
+            $link = $excel->setActiveSheetIndex(0)->getCell('A' . $i)->getHyperlink()->getUrl();
+            $reestr = $this->em->getRepository('BankrotSiteBundle:Reestr')->findBy(array(
+                'eFullTitle' => $title,
+                'eTitle' => $title2,
+                'link' => $link
+            ));
+            if ($reestr == null) {
+                $reestr = new Reestr();
+                $reestr->setCategory(5);
+                $reestr->setEFullTitle($title);
+                $reestr->setETitle($title2);
+                $reestr->setESite($site);
+                $reestr->setPars(0);
+                $reestr->setLink($link);
+                $this->em->persist($reestr);
+                $this->em->flush($reestr);
+                $output->writeln($link);
+            }
+        }
+    }
+
+    public function getFullInfoF($output){
+        $reestrs = $this->em->getRepository('BankrotSiteBundle:Reestr')->findByCategory(5);
+        foreach($reestrs as $k => $reestr){
+            if ($reestr->getPars() == 0){
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, $reestr->getLink());
+                curl_setopt($ch, CURLOPT_USERAGENT, UserAgentGenerator::get());
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                $r = iconv('utf8', 'cp1251', curl_exec($ch));
+
+                curl_close($ch);
+
+                (new Crawler($r))
+                    ->filter('#ctl00_cphBody_trAddress td')
+                    ->last()
+                    ->reduce(
+                        function (Crawler $sets, $i) use (& $reestr) {
+                            $str = $sets->html();
+                            $td = trim(strip_tags($str));
+                            if ($td) {
+                                $reestr->setEAdrs($td);
+                            }
+                        }
+                    );
+                (new Crawler($r))
+                    ->filter('#ctl00_cphBody_trInn td')
+                    ->last()
+                    ->reduce(
+                        function (Crawler $sets, $i) use (& $reestr) {
+                            $str = $sets->html();
+                            $td = trim(strip_tags($str));
+                            if ($td) {
+                                $reestr->setEInn($td);
+                            }
+                        }
+                    );
+                (new Crawler($r))
+                    ->filter('#ctl00_cphBody_trOgrn td')
+                    ->last()
+                    ->reduce(
+                        function (Crawler $sets, $i) use (& $reestr) {
+                            $str = $sets->html();
+                            $td = trim(strip_tags($str));
+                            if ($td) {
+                                $reestr->setEOgrn($td);
+                            }
+                        }
+                    );
+
+                $reestr->setPars(1);
+                $this->em->flush();
+                $output->writeln($k);
             }
         }
     }

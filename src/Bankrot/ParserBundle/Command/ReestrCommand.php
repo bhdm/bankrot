@@ -35,7 +35,7 @@ class ReestrCommand extends ContainerAwareCommand
         }
         if ($type == 2){
             $output->writeln('<info>Синхронизация началась</info>');
-            $parser->syncB($output);
+//            $parser->syncB($output);
             $output->writeln('<info>Синхронизация завершена</info>');
 
             $output->writeln('<info>Получение полной информации</info>');
@@ -48,12 +48,22 @@ class ReestrCommand extends ContainerAwareCommand
             $output->writeln('<info>Синхронизация завершена C</info>');
         }
         if ($type == 4){
-//            $output->writeln('<info>Синхронизация началась</info>');
-//            $parser->syncD($output);
-//            $output->writeln('<info>Синхронизация завершена</info>');
+            $output->writeln('<info>Синхронизация началась</info>');
+            $parser->syncD($output);
+            $output->writeln('<info>Синхронизация завершена</info>');
 
             $output->writeln('<info>Получение полной информации</info>');
             $parser->getFullInfoD($output);
+            $output->writeln('<info>Получение полной информации завершено</info>');
+        }
+
+        if ($type == 5){
+            $output->writeln('<info>Синхронизация началась</info>');
+            $parser->syncE($output);
+            $output->writeln('<info>Синхронизация завершена</info>');
+
+            $output->writeln('<info>Получение полной информации</info>');
+            $parser->getFullInfoE($output);
             $output->writeln('<info>Получение полной информации завершено</info>');
         }
     }
