@@ -1,4 +1,4 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "FOSUserBundle::layout2.html.twig" %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
@@ -15,36 +15,43 @@
             </ul>
         </div>
     {% endif %}
+    <div class="row">
+        <div class="col-xs-6">
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+                <div class="form-group">
+                    <label class="control-label required" for="username">{{ 'security.login.username'|trans }}</label>
+                    <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}"
+                           autofocus required placeholder="Введите имя пользователя"/>
+                </div>
 
-    <form action="{{ path("fos_user_security_check") }}" method="post">
-        <div class="form-group">
-            <label class="control-label required" for="username">{{ 'security.login.username'|trans }}</label>
-            <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}"
-                   autofocus required placeholder="Введите имя пользователя"/>
+                <div class="form-group">
+                    <label class="control-label required" for="password">{{ 'security.login.password'|trans }}</label>
+                    <input class="form-control" type="password" id="password" name="_password"
+                           required placeholder="Введите пароль"/>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="_remember_me" value="on"/>
+                            {{ 'security.login.remember_me'|trans }}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input class="btn btn-primary" type="submit" id="_submit" name="_submit"
+                           value="{{ 'security.login.submit'|trans }}"/>
+
+                    <a class="btn btn-link" href="{{ path('fos_user_resetting_request') }}">Забыли пароль?</a>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-            <label class="control-label required" for="password">{{ 'security.login.password'|trans }}</label>
-            <input class="form-control" type="password" id="password" name="_password"
-                   required placeholder="Введите пароль"/>
+        <div class="col-xs-6">
+            <b>У Вас нету аккаунта? </b><br />
+            <a href="{{ path('fos_user_registration_register') }}">Зарегистрироваться</a>
         </div>
-
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="_remember_me" value="on"/>
-                    {{ 'security.login.remember_me'|trans }}
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <input class="btn btn-primary" type="submit" id="_submit" name="_submit"
-                   value="{{ 'security.login.submit'|trans }}"/>
-
-            <a class="btn btn-link" href="{{ path('fos_user_resetting_request') }}">Забыли пароль?</a>
-
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
-        </div>
-    </form>
+    </div>
 {% endblock fos_user_content %}

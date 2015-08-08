@@ -4,6 +4,7 @@ namespace Bankrot\SiteBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Role\SwitchUserRole;
 
 class MenuBuilder
@@ -36,19 +37,21 @@ class MenuBuilder
                 ->getParent()
             ->addChild('Контакты', ['route' => 'page','routeParameters'=>['url' => 'contacts']])
                 ->getParent()
-            ->addChild('Регистрация', ['route' => 'fos_user_registration_register'])
-                ->getParent()
-            ->addChild('Войти', ['route' => 'fos_user_security_login'])
+//            ->addChild('', ['route' => 'fos_user_registration_register'])
+//                ->getParent()
+            ->addChild('Вход / Регистрация', ['route' => 'fos_user_security_login'])
                 ->getParent();
 
         return $menu;
     }
 
-    public function createAuthMenu(RequestStack $requestStack)
+    public function createAuthMenu(RequestStack $requestStack, SecurityContext $securityContext)
     {
         $menu = $this->factory->createItem('root');
 //        $securityContext = $this->container->get('security.context');
         $currentRoute = $requestStack->getCurrentRequest()->get('_route');
+        $user = $securityContext->getToken()->getUser();
+
 
         $menu
             ->setChildrenAttribute('class', 'nav navbar-nav')
@@ -65,7 +68,7 @@ class MenuBuilder
             ->getParent()
             ->addChild('Контакты', ['route' => 'page','routeParameters'=>['url' => 'contacts']])
             ->getParent()
-            ->addChild('Профиль', ['route' => 'fos_user_profile_show'])
+            ->addChild($user->getLastName().' '.$user->getFirstName(), ['route' => 'fos_user_profile_show'])
             ->getParent()
             ->addChild('Выйти', ['route' => 'fos_user_security_logout'])
             ->getParent();

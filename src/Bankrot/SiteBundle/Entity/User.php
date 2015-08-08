@@ -88,6 +88,7 @@ class User extends BaseUser
         $this->registries = new ArrayCollection();
         $this->lots = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
+        $this->addRole('ROLE_SUBSCRIPTION');
     }
 
 
