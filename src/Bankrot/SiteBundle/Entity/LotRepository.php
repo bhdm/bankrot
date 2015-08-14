@@ -17,8 +17,8 @@ class LotRepository extends EntityRepository
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('lw.owner', ':owner'),
                 $qb->expr()->isNotNull('l.initialPrice'),
-                $qb->expr()->isNull('ls.isTrash')
-//                $qb->expr()->neq('ls.isTrash', 1)
+//                $qb->expr()->isNull('ls.isTrash')
+                $qb->expr()->neq('ls.isTrash', 1)
             ))
             ->setParameter('owner', $owner);
         if (!empty($search)) {
@@ -37,17 +37,22 @@ class LotRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('l');
         $qb
+            ->leftJoin('BankrotSiteBundle:LotWatch', 'lw', 'WITH', 'lw.lot = l')
             ->innerJoin('BankrotSiteBundle:LotStatus', 'ls', 'WITH', 'ls = l.lotStatus')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('l.owner', ':owner'),
-                $qb->expr()->isNull('l.initialPrice'),
-                $qb->expr()->neq('ls.isTrash', 1)
+//                $qb->expr()->isNull('l.initialPrice'),
+                $qb->expr()->eq('ls.isTrash', 0)
             ))
+            ->andWhere('lw.id is NULL')
+            ->groupBy('l.id')
             ->orderBy('l.createdAt', 'desc')
             ->setParameters([
                 'owner' => $owner,
             ]);
 
+//        echo $qb->getQuery()->getSQL();
+//        exit;
         return $qb->getQuery()
             ->getResult();
     }

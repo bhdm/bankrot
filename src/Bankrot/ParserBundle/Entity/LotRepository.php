@@ -27,6 +27,7 @@ class LotRepository extends EntityRepository
             ->leftJoin('r.debtor','d')
             ->leftJoin('r.attrs','a')
             ->where($str)
+            ->orderBy('r.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
         return $result;

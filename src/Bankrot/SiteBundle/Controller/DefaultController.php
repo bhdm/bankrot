@@ -25,7 +25,7 @@ class DefaultController extends Controller
         $pagination = $paginator->paginate(
             $items,
             $this->get('request')->query->get('page', 1),
-            50
+            30
         );
 
         return [

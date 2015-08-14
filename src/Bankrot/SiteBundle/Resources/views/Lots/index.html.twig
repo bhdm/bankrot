@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-bottom: 70px">
         <br/>
         <br/>
         <br/>
@@ -128,7 +128,7 @@
                     <td>{{ lw.lot.category }}</td>
                     <td>{{ lw.day|date('d.m.Y') }}</td>
                     <td>{{ lw.price }}</td>
-                    <td>{{ lw.getLot().getLotStatus() != null ? lw.getLot().getLotStatus().getName() : '' }}</td>
+                    <td>{{ lw.getLot().getLotStatus() != null ? lw.getLot.getLotStatus : '' }}</td>
                 </tr>
             {% endfor %}
             </tbody>
