@@ -460,8 +460,10 @@ class LotsController extends Controller
 
 
 
-            if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || ($dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork())){
-                $currentPeriod = 0;
+            if (isset($dr)){
+                if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || ($dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork())){
+                    $currentPeriod = 0;
+                }
             }
 
 

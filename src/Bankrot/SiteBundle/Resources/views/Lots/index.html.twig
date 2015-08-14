@@ -52,9 +52,9 @@
                     {% set dateLot = lw.lot.endDate|date('Y-m-d') ~'00:00:00' %}
 
                     {% if date|date("U") <= curDate | date("U") and  curDate|date("U") <= dateLot|date("U") %}
-                        {% set targetPeriodLots = targetPeriodLots+1 %}
-                    {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
                         {% set controlPeriodLots = controlPeriodLots+1 %}
+                    {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
+                        {% set targetPeriodLots = targetPeriodLots+1 %}
                     {% elseif curDate|date("U") > dateLot|date("U") %}
                         {% set reportingPeriodList = reportingPeriodList+1 %}
                     {% else %}
@@ -64,11 +64,11 @@
                 {% endfor %}
                 <p class="clearfix">
                     <strong class="pull-left">Целевой период</strong>
-                    <span class="pull-right">{{ controlPeriodLots  }} лотов</span>
+                    <span class="pull-right">{{ targetPeriodLots}} лотов</span>
                 </p>
                 <p class="clearfix">
                     <strong class="pull-left">Контрольный период</strong>
-                    <span class="pull-right">{{ targetPeriodLots}} лотов</span>
+                    <span class="pull-right">{{ controlPeriodLots  }} лотов</span>
                 </p>
                 <p class="clearfix">
                     <strong class="pull-left">Истекший период</strong>
@@ -98,8 +98,8 @@
         <div class="table-filter text-right">
             <ul class="list-inline list-unstyled">
                 <li><a href="#">Все</a></li>
-                <li class="soon"><a href="#" data-filter="soon">Целевые</a></li>
-                <li class="ready"><a href="#" data-filter="ready">Контрольные</a></li>
+                <li class="soon"><a href="#" data-filter="ready">Контрольные</a></li>
+                <li class="ready"><a href="#" data-filter="soon">Целевые</a></li>
                 <li class="late"><a href="#" data-filter="late">Истекшие</a></li>
             </ul>
         </div>
@@ -121,9 +121,9 @@
                 {% set dateLot = lw.lot.endDate|date('Y-m-d') ~'00:00:00' %}
 
                 {% if date|date("U") <= curDate | date("U") and  curDate|date("U") <= dateLot|date("U") %}
-                    {% set marker_class = "ready" %}
-                {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
                     {% set marker_class = "soon" %}
+                {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
+                    {% set marker_class = "ready" %}
                 {% elseif curDate|date("U") > dateLot|date("U") %}
                     {% set marker_class = "late" %}
                 {% else %}
