@@ -9,15 +9,16 @@
             </div>
         </div>
     </div>
-
+    <br />
+    <br /><br />
+    <br /><br />
     <div class="container">
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+        <ul class="nav nav-tabs nav-justified">
+            <li class="{{ status == 9 ? 'active' : '' }}"><a href="{{ path('lots_list_archive',{'status' : 0}) }}" >Купленные мной</a></li>
+            <li class="{{ status == 10 ? 'active' : '' }}"><a href="{{ path('lots_list_archive',{'status' : 1}) }}" >Купленные не мной</a></li>
+        </ul>
+        <br />
+        <br />
 
         <div class="row">
             <div class="col-sm-12">
@@ -26,7 +27,7 @@
                     <tr>
                         <th>Название</th>
                         <th>Категория</th>
-                        <th>Статус</th>
+                        {#<th>Статус</th>#}
                         <th>Рыночная стоимость</th>
                     </tr>
                     </thead>
@@ -35,7 +36,7 @@
                         <tr data-route="{{ path('lots', { id: lot.id }) }}">
                             <td>{{ lot.name }}</td>
                             <td>{{ lot.category }}</td>
-                            <td>{{ lot.lotStatus }}</td>
+                            {#<td>{{ lot.lotStatus }}</td>#}
                             <td>{{ lot.price }}</td>
                         </tr>
                     {% endfor %}

@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -132,5 +133,10 @@ class DefaultController extends Controller
     public function pageAction($url){
         $page = $this->getDoctrine()->getRepository('BankrotSiteBundle:Page')->findOneByUrl($url);
         return array('page' => $page);
+    }
+
+    public function messageAction(){
+        $msg = $this->getDoctrine()->getRepository('BankrotSiteBundle:Notify')->findOneByEnabled(true);
+        return new Response(($msg->getBody() ? $msg->getBody() : 'Нету сообщений'));
     }
 }

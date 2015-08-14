@@ -19,7 +19,7 @@ class DropRule
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Lot", inversedBy="attachments")
+     * @ORM\ManyToOne(targetEntity="Lot", inversedBy="attachments", cascade={"remove"})
      */
     private $lot;
 

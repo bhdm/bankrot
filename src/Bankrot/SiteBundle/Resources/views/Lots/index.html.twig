@@ -64,11 +64,11 @@
                 {% endfor %}
                 <p class="clearfix">
                     <strong class="pull-left">Целевой период</strong>
-                    <span class="pull-right">{{ targetPeriodLots}} лотов</span>
+                    <span class="pull-right">{{ controlPeriodLots  }} лотов</span>
                 </p>
                 <p class="clearfix">
                     <strong class="pull-left">Контрольный период</strong>
-                    <span class="pull-right">{{ controlPeriodLots  }} лотов</span>
+                    <span class="pull-right">{{ targetPeriodLots}} лотов</span>
                 </p>
                 <p class="clearfix">
                     <strong class="pull-left">Истекший период</strong>
@@ -121,9 +121,9 @@
                 {% set dateLot = lw.lot.endDate|date('Y-m-d') ~'00:00:00' %}
 
                 {% if date|date("U") <= curDate | date("U") and  curDate|date("U") <= dateLot|date("U") %}
-                    {% set marker_class = "soon" %}
-                {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
                     {% set marker_class = "ready" %}
+                {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
+                    {% set marker_class = "soon" %}
                 {% elseif curDate|date("U") > dateLot|date("U") %}
                     {% set marker_class = "late" %}
                 {% else %}
@@ -133,7 +133,7 @@
                     <td><span class="img-circle status-marker"></span>{{ lw.lot.name }}</td> {#[{{ lw.getDay.date|day_diff }}][{{ lw.getLot.getEndDate.date|day_diff }}][{{ marker_class }}]#}
                     <td>{{ lw.lot.category }}</td>
                     <td>{{ lw.day|date('d.m.Y') }}</td>
-                    <td>{{ lw.price }}</td>
+                    <td>{{ lw.price|number_format(0, '.', ',') }}</td>
                     <td>{{ lw.getLot().getLotStatus() != null ? lw.getLot.getLotStatus : '' }}</td>
                 </tr>
             {% endfor %}

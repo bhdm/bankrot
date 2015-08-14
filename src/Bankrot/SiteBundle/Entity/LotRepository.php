@@ -38,13 +38,15 @@ class LotRepository extends EntityRepository
         $qb = $this->createQueryBuilder('l');
         $qb
             ->leftJoin('BankrotSiteBundle:LotWatch', 'lw', 'WITH', 'lw.lot = l')
-            ->innerJoin('BankrotSiteBundle:LotStatus', 'ls', 'WITH', 'ls = l.lotStatus')
-            ->where($qb->expr()->andX(
-                $qb->expr()->eq('l.owner', ':owner'),
+            ->leftJoin('BankrotSiteBundle:LotStatus', 'ls', 'WITH', 'ls = l.lotStatus')
+//            ->where($qb->expr()->andX(
+//                $qb->expr()->eq('l.owner', ':owner')
 //                $qb->expr()->isNull('l.initialPrice'),
-                $qb->expr()->eq('ls.isTrash', 0)
-            ))
-            ->andWhere('lw.id is NULL')
+//                $qb->expr()->eq('ls.isTrash', 0)
+//            ))
+            ->where('lw.id is NULL')
+            ->andWhere('l.owner = :owner ')
+            ->andWhere('ls.id = 0')
             ->groupBy('l.id')
             ->orderBy('l.createdAt', 'desc')
             ->setParameters([
@@ -57,14 +59,15 @@ class LotRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findArchiveLots(User $owner)
+    public function findArchiveLots(User $owner, $status)
     {
         $qb = $this->createQueryBuilder('l');
         $qb
             ->innerJoin('BankrotSiteBundle:LotStatus', 'ls', 'WITH', 'ls = l.lotStatus')
             ->where($qb->expr()->andX(
                 $qb->expr()->eq('l.owner', ':owner'),
-                $qb->expr()->eq('ls.isTrash', 1)
+                $qb->expr()->eq('ls.isTrash', 1),
+                $qb->expr()->eq('ls.id', $status)
             ))
             ->orderBy('l.createdAt', 'desc')
             ->setParameters([

@@ -128,19 +128,25 @@ class Lot
     protected $attachments;
 
     /**
-     * @ORM\OneToMany(targetEntity="DropRule", mappedBy="lot", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="DropRule", mappedBy="lot", cascade={"all"})
      */
     protected $dropRules;
+
+    /**
+     * @ORM\OneToMany(targetEntity="LotWatch", mappedBy="lot", cascade={"all"})
+     */
+    private $watches;
 
     public function __construct()
     {
         $this->attachments = new ArrayCollection();
         $this->dropRules = new ArrayCollection();
+        $this->watches = new ArrayCollection();
     }
 
     public function getId() { return $this->id; }
 
-    public function setOwner(User $owner) { $this->owner = $owner; }
+    public function setOwner($owner) { $this->owner = $owner; }
 
     public function getOwner() { return $this->owner; }
 
@@ -232,5 +238,23 @@ class Lot
         }
         return true;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getWatches()
+    {
+        return $this->watches;
+    }
+
+    /**
+     * @param mixed $watches
+     */
+    public function setWatches($watches)
+    {
+        $this->watches = $watches;
+    }
+
+
 }
 

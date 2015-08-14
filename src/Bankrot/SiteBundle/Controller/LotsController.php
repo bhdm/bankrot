@@ -62,18 +62,24 @@ class LotsController extends Controller
     }
 
     /**
-     * @Route("/lots/archive", name="lots_list_archive")
+     * @Route("/lots/archive/{status}", name="lots_list_archive", defaults={"status" = 0})
      * @Template()
      */
-    public function archiveAction()
+    public function archiveAction($status)
     {
+        if ($status == 0){
+            $status = 9;
+        }else{
+            $status = 10;
+        }
         $lots = $this->getDoctrine()
             ->getManager()
             ->getRepository('BankrotSiteBundle:Lot')
-            ->findArchiveLots($this->getUser());
+            ->findArchiveLots($this->getUser(),$status);
 
         return [
             'lots' => $lots,
+            'status' => $status,
         ];
     }
 
@@ -243,9 +249,11 @@ class LotsController extends Controller
             }
         }
 
+        $lw = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findByLot($lot);
         return [
             'lot' => $lot,
             'form' => $form->createView(),
+            'lw' => $lw
         ];
     }
 
@@ -530,6 +538,23 @@ class LotsController extends Controller
         }
     }
 
+    /**
+     * @Route("/lots/remove-lot/{id}", name="remove_lot")
+     */
+    public function removeLotItemAction(Request $request, $id){
+        $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($id);
+        if ($lot->getOwner() == $this->getUser()){
+            $em = $this->getDoctrine()->getManager();
+//            $lot->setOwner(null);
+//            $em->flush($lot);
+            $em->refresh($lot);
+            $em->remove($lot);
+            $em->flush($lot);
+        }
+
+        return $this->redirect($this->generateUrl('lots_list'));
+
+    }
 
     /**
      * @Route("/lots/removeShow/{id}", name="remove_lot_show")
