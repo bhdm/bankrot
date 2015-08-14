@@ -114,11 +114,11 @@
                 {% set curDate = 'now'|date('Y-m-d') ~'00:00:00' %}
                 {% set lastDate = '+5 day'|date('Y-m-d') ~'00:00:00' %}
 
-                {% if date|date == curDate | date %}
+                {% if date|date("U") == curDate | date("U") %}
                     {% set marker_class = "ready" %}
-                {% elseif date|date  <  lastDate|date %}
+                {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
                     {% set marker_class = "soon" %}
-                {% elseif date|date >= date|date %}
+                {% elseif curDate|date("U") > date|date("U") %}
                     {% set marker_class = "late" %}
                 {% else %}
                     {% set marker_class = "" %}
