@@ -35,6 +35,12 @@ class LotWatch
     /**
      * @ORM\Column(type="decimal", precision=14, scale=2, nullable=true)
      */
+    private $deposity;
+
+
+    /**
+     * @ORM\Column(type="decimal", precision=14, scale=2, nullable=true)
+     */
     private $cutOffPrice;
 
     /**
@@ -82,4 +88,21 @@ class LotWatch
     public function setDay($day) { $this->day = $day; }
 
     public function getDay() { return $this->day; }
+
+    /**
+     * @return mixed
+     */
+    public function getDeposity()
+    {
+        return $this->deposity;
+    }
+
+    /**
+     * @param mixed $deposity
+     */
+    public function setDeposity($deposity)
+    {
+        $this->deposity = $deposity;
+    }
+
 }

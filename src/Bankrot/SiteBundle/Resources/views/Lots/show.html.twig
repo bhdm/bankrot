@@ -22,7 +22,11 @@
             {{ form_row(form.address) }}
             {{ form_row(form.description) }}
             <div class="row">
-                <div class="col-sm-6">{{ form_row(form.livePeriod) }}</div>
+                <div class="col-sm-6">
+                    {#{{ form_row(form.livePeriod) }}#}
+                    <input class="form-control" value="{{ (lot.beginDate|date('d.m.Y'))~' - '~(lot.endDate|date('d.m.Y')) }}" disabled/>
+                </div>
+
             </div>
         </div>
         <div class="col-sm-6">
@@ -139,7 +143,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
+
+    <script>
         function resizeIframe(iframe) {
             iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
         }

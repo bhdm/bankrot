@@ -22,10 +22,11 @@
 
             $('#boxOk').click(function(){
                 var date = $('#box-date').val();
-                var price = $('#box-price2').val();
+                var price = $('#box-price').val();
+                var deposite = $('#box-deposit').val();
                 $.ajax({
                     url: Routing.generate('add_lot_show', {'lotId': {{ lot.id }}}),
-                    data: 'date='+date+'&price='+price,
+                    data: 'date='+date+'&price='+price+'&dep='+deposite,
                     type: 'POST',
                     success: function(html){
                         if (html == 'add'){
@@ -313,15 +314,11 @@
             </div>
             <div class="form-group">
                 <label>Цена</label>
-                <input id="box-price" class="form-control" value="" disabled="disabled">
+                <input id="box-price" class="form-control" value="" >
             </div>
             <div class="form-group">
                 <label>Задаток</label>
-                <input id="box-deposit" class="form-control" value="" disabled="disabled">
-            </div>
-            <div class="form-group">
-                <label>Цена своя</label>
-                <input id="box-price2" class="form-control" value="">
+                <input id="box-deposit" class="form-control" value="" >
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit" id="boxOk">Сохранить</button>

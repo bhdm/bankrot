@@ -505,6 +505,7 @@ class LotsController extends Controller
         if ($request->getMethod() == 'POST'){
             $date = new \DateTime($request->request->get('date'));
             $price = $request->request->get('price');
+            $dep = $request->request->get('dep');
             $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($lotId);
             if ($lot){
                 $show = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findOneBy(array('lot' => $lot, 'day' => $date));
@@ -514,6 +515,7 @@ class LotsController extends Controller
                     $show->setDay($date);
                     $show->setLot($lot);
                     $show->setPrice($price);
+                    $show->setDeposity($dep);
                     $this->getDoctrine()->getManager()->persist($show);
                     $this->getDoctrine()->getManager()->flush($show);
                     return new JsonResponse('add');

@@ -111,14 +111,15 @@
             <tbody>
             {% for lw in lots %}
                 {% set date = lw.getDay|date('Y-m-d') ~'00:00:00' %}
-                {% set curDate = 'now'|date('Y-m-d') ~'00:00:00' %}
+                {% set curDate = 'now'|date('Y-m-d') ~'23:59:59' %}
                 {% set lastDate = '+5 day'|date('Y-m-d') ~'00:00:00' %}
+                {% set dateLot = lw.lot.endDate|date('Y-m-d') ~'00:00:00' %}
 
-                {% if date|date("U") == curDate | date("U") %}
+                {% if date|date("U") <= curDate | date("U") and  curDate|date("U") <= dateLot|date("U") %}
                     {% set marker_class = "ready" %}
                 {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
                     {% set marker_class = "soon" %}
-                {% elseif curDate|date("U") > date|date("U") %}
+                {% elseif curDate|date("U") > dateLot|date("U") %}
                     {% set marker_class = "late" %}
                 {% else %}
                     {% set marker_class = "" %}
