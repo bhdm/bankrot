@@ -47,26 +47,28 @@
 
                 {% for lw in lots %}
                     {% set date = lw.getDay|date('Y-m-d') ~'00:00:00' %}
-                    {% set curDate = 'now'|date('Y-m-d') ~'00:00:00' %}
+                    {% set curDate = 'now'|date('Y-m-d') ~'23:59:59' %}
                     {% set lastDate = '+5 day'|date('Y-m-d') ~'00:00:00' %}
+                    {% set dateLot = lw.lot.endDate|date('Y-m-d') ~'00:00:00' %}
 
-                    {% if date|date == curDate | date %}
+                    {% if date|date("U") <= curDate | date("U") and  curDate|date("U") <= dateLot|date("U") %}
                         {% set targetPeriodLots = targetPeriodLots+1 %}
-                    {% elseif date|date  <  lastDate|date %}
+                    {% elseif (date|date("U") < lastDate|date("U")) and (curDate|date("U") < date|date("U")) %}
                         {% set controlPeriodLots = controlPeriodLots+1 %}
-                    {% elseif date|date >= date|date %}
+                    {% elseif curDate|date("U") > dateLot|date("U") %}
                         {% set reportingPeriodList = reportingPeriodList+1 %}
                     {% else %}
                         {% set marker_class = "" %}
                     {% endif %}
+
                 {% endfor %}
                 <p class="clearfix">
                     <strong class="pull-left">Целевой период</strong>
-                    <span class="pull-right">{{ targetPeriodLots }} лотов</span>
+                    <span class="pull-right">{{ controlPeriodLots  }} лотов</span>
                 </p>
                 <p class="clearfix">
                     <strong class="pull-left">Контрольный период</strong>
-                    <span class="pull-right">{{ controlPeriodLots }} лотов</span>
+                    <span class="pull-right">{{ targetPeriodLots}} лотов</span>
                 </p>
                 <p class="clearfix">
                     <strong class="pull-left">Истекший период</strong>
@@ -76,20 +78,23 @@
         </div>
 
         <div id="calendar"></div>
+        <br />
         <div class="search-form">
-            <form action="{{ path('lots_list') }}" class="form-inline">
-                <div class="form-group">
-                    <input name="search"
-                           type="text"
-                           class="form-control col-sm-10"
-                           id="search-field"
-                           placeholder="поиск"
-                           value="{{ app.request.get('search') }}"
-                    >
+            <form action="{{ path('lots_list') }}" class="row">
+                <div class="col-sm-10">
+                        <input name="search"
+                               type="text"
+                               class="form-control col-sm-10"
+                               id="search-field"
+                               placeholder="Поиск"
+                               value="{{ app.request.get('search') }}">
                 </div>
-                <button type="submit" class="btn btn-default">найти</button>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-default-custom">Найти</button>
+                </div>
             </form>
         </div>
+        <br />
         <div class="table-filter text-right">
             <ul class="list-inline list-unstyled">
                 <li><a href="#">Все</a></li>
@@ -135,4 +140,34 @@
             </tbody>
         </table>
     </div>
+
+    <style>
+        input[type=text]{
+            -webkit-box-shadow: inset 0px 3px 6px -4px #51626f;
+            font-size: 18px;
+        }
+        .btn-default-custom{
+            background: #32c4ff;
+            background: linear-gradient(0deg, #1e94ff 0%, #32c4ff 100%);
+            background: -moz-linear-gradient(90deg, #1e94ff 0%, #32c4ff 100%);
+            background: -ms-linear-gradient(90deg, #1e94ff 0%, #32c4ff 100%);
+            background: -o-linear-gradient(90deg, #1e94ff 0%, #32c4ff 100%);
+            background: -webkit-linear-gradient(90deg, #1e94ff 0%, #32c4ff 100%);
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            display: inline-block;
+            border: 0;
+            border-bottom: 1px solid #005e8d;
+            border-right: 1px solid #005e8d;
+            color: #f9f9f9;
+            font-family: 'Fedra Sans Pro', sans-serif;
+            font-size: 18px;
+            height: 33px;
+            padding: 0 35px;
+            text-align: center;
+            text-shadow: 1px 1px 0 #00539b;
+            vertical-align: top;
+        }
+    </style>
 {% endblock %}
