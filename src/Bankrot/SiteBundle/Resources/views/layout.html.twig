@@ -18,10 +18,36 @@
         'vendor/Bootflat/css/bootstrap.min.css'
         'vendor/Bootflat/css/site.min.css'
         'vendor/fontawesome/css/font-awesome.min.css'
-        'bundles/bankrotsite/css/layout.css' %}
+        'bundles/bankrotsite/css/layout.css'%}
         <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
-
+        {#'bundles/bankrotsite/css/theme.css'#}
+        <style>
+            .navbar-default{
+                background: url('/bundles/bankrotsite/images/header.png') repeat-x !important;
+            }
+            .footer{
+                background: url('/bundles/bankrotsite/images/footer.png') repeat-x !important;
+            }
+            .navbar-default .navbar-nav>li>a, .navbar-default .navbar-text{
+                color: #FFFFFF !important;
+            }
+            .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+                background: none ;
+            }
+            .navbar-nav>li.last{
+                background: #FFFFFF !important;
+                border-radius: 5px !important;
+                margin-top: 10px !important;
+                height: 30px !important;
+                color: #054040 !important;
+            }
+            .navbar-nav>li.last a, .navbar-nav>li.last a:hover{
+                color: #054040 !important;
+                padding: 05px 10px !important;
+                font-weight: bold !important;
+            }
+        </style>
     {% endblock %}
 </head>
 <body>

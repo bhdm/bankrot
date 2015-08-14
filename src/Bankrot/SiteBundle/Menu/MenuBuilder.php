@@ -69,9 +69,9 @@ class MenuBuilder
             ->addChild('Контакты', ['route' => 'page','routeParameters'=>['url' => 'contacts']])
             ->getParent()
             ->addChild($user->getLastName().' '.$user->getFirstName(), ['route' => 'fos_user_profile_show'])
-            ->getParent()
-            ->addChild('Выйти', ['route' => 'fos_user_security_logout'])
             ->getParent();
+//            ->addChild('Выйти', ['route' => 'fos_user_security_logout'])
+//            ->getParent();
 
         return $menu;
     }

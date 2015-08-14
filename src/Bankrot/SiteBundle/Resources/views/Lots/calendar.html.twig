@@ -60,12 +60,13 @@
         padding: 5px;
         width:   14%;
         height:  65px;
+        border: 3px solid #A9A9A9;
     }
     .calendar_cell_full {
-        background-color: #D5FFFF;
+        /*background-color: #D5FFFF;*/
     }
     .calendar_cell_full:hover {
-        background-color: #0093A1;
+        /*background-color: #0093A1;*/
     }
     .calendar_cell_full:hover a {
         color: #D5FFFF;
@@ -171,7 +172,8 @@
         background-color: #d9eef1;
     }
     .calendar{
-        background: #bee4e7 !important;
+        background: rgb(241, 242, 246) !important;
+        /*background: #bee4e7 !important;*/
         color: #044F67;
     }
     .calendar .red{
@@ -180,8 +182,15 @@
     .calendar .showLot{
         background: #0782C1 !important;
     }
+    .calendar th{
+        text-align: center;
+    }
     .calendar td{
         cursor: pointer;
+        font-size: 34px;
+        text-align: right;
+        vertical-align: top;
+        height: 105px;
     }
     .box{
         width: 300px;
@@ -201,28 +210,41 @@
         padding-bottom: 5px;
         padding-top: 5px;
         border-bottom: 1px solid #CCC;
-        width: 300px;
+        width: 400px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-    <h2 class="page-header">Календарь</h2>
-
+    {#<h2 class="page-header">Календарь</h2>#}
+    <legend style="border-bottom: none">Отслеживаемые даты</legend>
     <div>
-        {% for i in events %}
-        <div class="row showlist">
-            <div class="col-xs-6">{{ i.day | date('d.m.Y') }}</div>
-            <div class="col-xs-3">{{ i.price }}</div>
-            <div class="col-xs-3">
-                <a href="{{ path('remove_lot_show',{'id' : i.id}) }}">
-                    <button type="button" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                </a>
-            </div>
-        </div>
-        {% endfor %}
+        <table class="table">
+            <tr>
+                <th>Дата</th>
+                <th>Сумма покупки</th>
+                <th>Сумма задатка</th>
+                <th></th>
+            </tr>
+            {% for i in events %}
+                <tr>
+                    <td>{{ i.day | date('d.m.Y') }}</td>
+                    <td>{{ i.price }}</td>
+                    <td>
+                        {{ i.deposity }}
+                    </td>
+                    <td style="text-align: right">
+                        <a href="{{ path('remove_lot_show',{'id' : i.id}) }}">
+                            <span type="button" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+        </table>
     </div>
     <div style="position: relative">
         <table style="width: 100%">
@@ -232,7 +254,7 @@
                        href="{{ path('calendar', { 'lotId': lot.id, 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
                         Предыдущий месяц</a>
                 </td>
-                <td style="font-size: 20px">{{ monthName | lower }} {{ year }}</td>
+                <td style="font-size: 37px; font-weight: bold; text-transform: capitalize; text-align: center"><span>{{ monthName | lower }} {{ year }}</span></td>
                 <td>
                     <a style="float: right" class="no-underline"
                        href="{{ path('calendar', { 'lotId': lot.id, 'year': nextMonthYear, 'month': nextMonth}) }}">Следующий
@@ -278,8 +300,8 @@
 							{% endif %}
 							-->
                         <td class="{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}"
-                            data-price="{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}{% endif %}"
-                            data-deposit="{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] }}{% else %}{% endif %}">
+                            data-price="{% if day is defined and day['price'] is defined  %}{{ day['price']|number_format(0,'.','') }}{% else %}{% endif %}"
+                            data-deposit="{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice']|number_format(0,'','') }}{% else %}{% endif %}">
                             {% if day['events'] %}
                                 *
                             {% endif %}
@@ -290,8 +312,8 @@
                             {##}
                             {#{% endif %}#}
                             <br />
-                            <div style="font-size: 10px">{% if day is defined and day['price'] is defined  %}{{ day['price'] }}{% else %}{% endif %}</div>
-                            <div style="font-size: 10px">{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] }}{% else %}{% endif %}</div>
+                            <div style="font-size: 16px">{% if day is defined and day['price'] is defined  %}{{ day['price'] |number_format(0) }}{% else %}{% endif %}</div>
+                            <div style="font-size: 16px">{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] |number_format(0) }}{% else %}{% endif %}</div>
                         {% else %}
                             <td class="{{ loop.index > 5 ? ' red' }}">
                         {% endif %}
