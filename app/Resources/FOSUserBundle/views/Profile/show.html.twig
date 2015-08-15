@@ -31,16 +31,14 @@
             </div>
             <br />
             <div class="row">
-                <div class="col-xs-3">
-                    <div class="col-xs-3">
-                        <a href="{{ path('fos_user_security_logout') }}">
-                            <button class="btn btn-danger">Выйти</button>
-                        </a>
-                    </div>
+                <div class="col-xs-4">
+                    <a href="{{ path('fos_user_profile_edit') }}">
+                        <button class="btn btn-primary" >Редактировать</button>
+                    </a>
                 </div>
                 <div class="col-xs-3">
-                    <a href="{{ path('fos_user_profile_edit') }}">
-                        <button class="btn btn-primary">Изменить</button>
+                    <a href="{{ path('fos_user_security_logout') }}">
+                        <button class="btn btn-danger">Выйти</button>
                     </a>
                 </div>
             </div>

@@ -16,17 +16,17 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="page-header">Реестр</h2>
+    <h2 class="page-header">Реестры</h2>
     <div class="form-group row">
         <form method="GET">
             <div class="col-xs-1">
                 <label style="font-size: 16px;padding-top: 6px;">Поиск</label>
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-9">
                 <input type="text" class="form-control" name="search" placeholder="Введите текст для поиска" value="{{ search ? search : '' }}">
             </div>
-            <div class="col-xs-2">
-                <input class="btn btn-primary" type="submit"  value="Найти">
+            <div class="col-xs-2" style="text-align: right">
+                <input class="btn btn-primary" type="submit"  value="Найти" style="width: 122px">
             </div>
         </form>
     </div>
