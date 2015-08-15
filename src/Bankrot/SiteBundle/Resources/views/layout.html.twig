@@ -41,6 +41,7 @@
                 margin-top: 10px !important;
                 height: 30px !important;
                 color: #054040 !important;
+                margin-left: 10px;
             }
             .navbar-nav>li.last a, .navbar-nav>li.last a:hover{
                 color: #054040 !important;
@@ -58,7 +59,7 @@
                 <img src="{{ asset('bundles/bankrotsite/images/Lot-logo.png') }}" style="width: 150px;margin-top: -7px;">
             </a>
         </div>
-        <div class="navbar-left">
+        <div class="navbar-right">
             {% if is_granted('ROLE_USER') %}
                 {{ knp_menu_render('auth', { currentClass: 'active' }) }}
             {% else %}
