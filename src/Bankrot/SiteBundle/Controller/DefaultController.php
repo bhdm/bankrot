@@ -15,7 +15,8 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("/", name="home_2")
+     * @Route("/")
+     * @Route("", name="home_2")
      * @Template()
      */
     public function firstAction(Request $request)
