@@ -13,9 +13,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
+
     /**
-     * @Route("/", name="home", defaults={"page": 0})
-     * @Route("/page{page}", name="home_paged", requirements={"page": "\d+"})
+     * @Route("/", name="home_2")
+     * @Template()
+     */
+    public function firstAction(Request $request)
+    {
+        return $this->redirect($this->generateUrl('home'));
+    }
+
+    /**
+     * @Route("/main", name="home")
      * @Template()
      */
     public function indexAction(Request $request)
