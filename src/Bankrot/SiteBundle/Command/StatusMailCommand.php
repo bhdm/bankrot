@@ -113,7 +113,7 @@ class StatusMailCommand extends ContainerAwareCommand
             ->setSubject($subject)
             ->setContentType('text/html')
             ->setCharset('utf-8')
-            ->setFrom('info@lotbankrot.org', 'Портал «lotbankrot.org»')
+            ->setFrom('info@lotbankrot.org', 'lotbankrot.org')
             ->setBody($body)
             ->setTo($email);
         $headers = $msg->getHeaders();

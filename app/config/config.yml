@@ -92,7 +92,7 @@ fos_user:
 #                template:   BankrotSiteBundle:Mail:confirm.html.twig
             from_email:
                 address: isbankrot@gmail.com
-                sender_name: Bankrot.ru
+                sender_name: lotbankrot.org
     profile:
         form:
             type: bankrot_site_user_profile_edit
