@@ -14,7 +14,7 @@ class LotType extends AbstractType
         $builder
             ->add('name', null, ['label' => 'Наименование', 'attr' => ['placeholder' => 'Введите наименование']])
             ->add('category', 'entity', ['label' => 'Категория',  'class'=>'Bankrot\SiteBundle\Entity\Category',  'property'=>'name'])
-            ->add('url', 'url', ['label' => 'Ссылка на лот', 'attr' => ['placeholder' => 'Введите ссылку на лот'],'required' => false,])
+            ->add('url', 'text', ['label' => 'Ссылка на лот', 'attr' => ['placeholder' => 'Введите ссылку на лот'],'required' => false,])
             ->add('phone', null, ['label' => 'Телефон', 'attr' => ['placeholder' => 'Введите телефон'],'required' => false,])
             ->add('price', null, ['label' => 'Рыночная стоимость', 'attr' => ['placeholder' => 'Введите рыночную стоимость'],'required' => false,])
             ->add('address', null, ['label' => 'Адрес', 'attr' => ['placeholder' => 'Введите адрес'],'required' => false,])

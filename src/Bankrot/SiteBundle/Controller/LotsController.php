@@ -432,7 +432,7 @@ class LotsController extends Controller
                         $price -= ($lot->getInitialPrice()/100*$dr->getOrder());
                     }elseif ($dr->getOrderCurrent()){
                         # в процентах от текущего периода
-                        $price -= $price - ($priceBeginPeriod/100*$dr->getOrderCurrent());
+                        $price -= ($lastPrice/100*$dr->getOrderCurrent());
                     }
                 }
 
