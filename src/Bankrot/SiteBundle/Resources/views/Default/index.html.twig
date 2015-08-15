@@ -40,8 +40,8 @@
             {% for lot in lots %}
                 <tr data-href="{{ path('lot', { id: lot.id }) }}" data-tradelink="{{ lot.area.link }}">
                     <td>{{ lot.number }}</td>
-                    <td>{{ lot.createdAt| date('d.m.Y')  }}</td>
                     <td>{{ lot.bidAt| date('d.m.Y') }}</td>
+                    <td>{{ lot.createdAt| date('d.m.Y')  }}</td>
                     <td>{{ lot.area.name }}</td>
                     <td>{{ lot.debtor ? lot.debtor.name : '' }}</td>
                     <td>{{ lot.type.name }}</td>
