@@ -46,7 +46,7 @@ class LotRepository extends EntityRepository
 //            ))
             ->where('lw.id is NULL')
             ->andWhere('l.owner = :owner ')
-            ->andWhere('ls.id = 0')
+            ->andWhere('ls.id != 9 AND ls.id != 10')
             ->groupBy('l.id')
             ->orderBy('l.createdAt', 'desc')
             ->setParameters([
