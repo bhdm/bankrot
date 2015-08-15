@@ -466,7 +466,7 @@ class LotsController extends Controller
             }else{
                 if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
                     $item['price'] = '';
-                    $item['depositPrice'] = '';
+                    $item['depositPrice'] = $depositPrice;
                 }
             }
 
