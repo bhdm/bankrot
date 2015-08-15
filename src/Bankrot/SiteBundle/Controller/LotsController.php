@@ -378,7 +378,6 @@ class LotsController extends Controller
 //
 //                    }
 //                }
-
             }
         }
 
