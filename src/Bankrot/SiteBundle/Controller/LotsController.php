@@ -458,9 +458,16 @@ class LotsController extends Controller
 
 
             # Записываем информацию о цене
-            if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
-                $item['price'] = $price;
-                $item['depositPrice'] = $depositPrice;
+            if ($dr){
+                if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
+                    $item['price'] = $price;
+                    $item['depositPrice'] = $depositPrice;
+                }
+            }else{
+                if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
+                    $item['price'] = '';
+                    $item['depositPrice'] = '';
+                }
             }
 
 
