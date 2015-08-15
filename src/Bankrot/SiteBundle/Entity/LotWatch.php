@@ -23,7 +23,7 @@ class LotWatch
     private $owner;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Lot", inversedBy="watches")
+     * @ORM\ManyToOne(targetEntity="Lot")
      */
     private $lot;
 
