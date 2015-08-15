@@ -446,11 +446,11 @@ class LotsController extends Controller
 
 
             # Теперь просчитываем стоимость задатка
-            if ($lot->getDepositPrice()){
+            if ($lot->getDepositPrice() > 0){
                 $depositPrice = $lot->getDepositPrice();
-            }elseif($lot->getDepositPricePercent()){
+            }elseif($lot->getDepositPricePercent() > 0){
                 $depositPrice = $lot->getInitialPrice()/100*$lot->getDepositPricePercent();
-            }elseif($lot->getDepositPricePercentCurrent()){
+            }elseif($lot->getDepositPricePercentCurrent() > 0){
                 $depositPrice = $priceBeginPeriod/100*$lot->getDepositPricePercentCurrent();
             }else{
                 $depositPrice = 0;
@@ -459,15 +459,16 @@ class LotsController extends Controller
 
             # Записываем информацию о цене
 
-            if ($dr){
-                if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
-                    $item['price'] = $price;
-                    $item['depositPrice'] = $depositPrice;
-                }
-            }else{
-                if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
-                    $item['price'] = '';
-                    $item['depositPrice'] = $depositPrice;
+            if ($calendar->getMonth() == $currentDate->format('m')){
+                if ($dr){
+                    if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
+                        $item['price'] = $price;
+                        $item['depositPrice'] = $depositPrice;
+                    }
+                }else{
+                    if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
+                        $item['depositPrice'] = $depositPrice;
+                    }
                 }
             }
 
