@@ -53,8 +53,8 @@ class LotRepository extends EntityRepository
                 'owner' => $owner,
             ]);
 
-        echo $qb->getQuery()->getSQL();
-        exit;
+//        echo $qb->getQuery()->getSQL();
+//        exit;
         return $qb->getQuery()
             ->getResult();
     }
