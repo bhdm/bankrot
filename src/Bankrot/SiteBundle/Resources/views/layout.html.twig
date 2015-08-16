@@ -35,10 +35,12 @@
             .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
                 background-color: #FFF !important;
                 color: #013D3D !important;
+
             }
             .navbar.navbar-default.navbar-fixed-top .container .navbar-nav>li.last{
                 font-size: 16px;
                 font-weight: bold;
+                max-width: 215px;
             }
             .navbar-nav>li.last a, .navbar-nav>li.last a:hover{
                 padding-right: 2px;
@@ -85,7 +87,7 @@
 {% endblock %}
 <div class="footer">
     <footer class="container">
-        <p class="footer-copyright text-center">&copy; ООО Инвестконсалт, 2015. Все права защищены, <a style="color: #FFFFFF" href="{{ path('page',{'url' : 'privacy-policy'}) }}">Политика конфиденциальности</a></p>
+        <p class="footer-copyright text-center" style="margin-top: -15px">&copy; ООО Инвестконсалт, 2015. Все права защищены, <br /><a style="color: #FFFFFF" href="{{ path('page',{'url' : 'privacy-policy'}) }}">Политика конфиденциальности</a></p>
     </footer>
 </div>
 
