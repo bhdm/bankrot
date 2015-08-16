@@ -89,7 +89,7 @@ fos_user:
             type: bankrot_site_user_registration
         confirmation:
             enabled:    true
-#                template:   BankrotSiteBundle:Mail:confirm.html.twig
+#            template:   BankrotSiteBundle:Mail:confirm.html.twig
             from_email:
                 address: isbankrot@gmail.com
                 sender_name: lotbankrot.org

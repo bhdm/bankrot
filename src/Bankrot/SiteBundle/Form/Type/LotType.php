@@ -29,9 +29,9 @@ class LotType extends AbstractType
 //            ->add('', null, ['label' => 'Статус лота', 'empty_value' => '-'])
             ->add('lotStatus', 'entity', ['label' => 'Статус лота',  'class'=>'Bankrot\SiteBundle\Entity\LotStatus',  'property'=>'name'])
 
-            ->add('livePeriod', 'text', ['mapped' => false, 'label' => 'Период жизни лота', 'attr' => [
+            ->add('livePeriod', 'text', ['mapped' => false, 'label' => 'ачало приема заявок – окончание приема заявок', 'attr' => [
                 'data-inputmask' => '99.99.9999 - 99.99.9999', 
-                'placeholder' => 'Введите период жизни лота',
+                'placeholder' => 'Введите ачало приема заявок – окончание приема заявок',
             ],'required' => false,])
             ->add('newDropRulePeriod', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите период'], 'constraints' => [
                 new Assert\Range(['min' => 0]),

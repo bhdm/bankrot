@@ -295,11 +295,15 @@ class LotsController extends Controller
     public function calendarAction($lotId, $year, $month)
     {
         $calendar = new Calendar();
-        $calendar->setMonth($month);
-        $calendar->setYear($year);
         $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($lotId);
         $events = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findByLot($lot);
         $dropRule = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->findBy(array('lot' => $lot),['beginDate' => 'ASC']);
+        if ($dropRule && !$month){
+            $calendar->setMonth($dropRule[0]->getBeginDate()->format('m'));
+        }else{
+            $calendar->setMonth($month);
+        }
+        $calendar->setYear($year);
 
         $monthTable     = $calendar->getMonthTable();
         $numberOfEvents = count($events);
