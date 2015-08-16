@@ -29,7 +29,7 @@ class LotType extends AbstractType
 //            ->add('', null, ['label' => 'Статус лота', 'empty_value' => '-'])
             ->add('lotStatus', 'entity', ['label' => 'Статус лота',  'class'=>'Bankrot\SiteBundle\Entity\LotStatus',  'property'=>'name'])
 
-            ->add('livePeriod', 'text', ['mapped' => false, 'label' => 'ачало приема заявок – окончание приема заявок', 'attr' => [
+            ->add('livePeriod', 'text', ['mapped' => false, 'label' => 'Начало приема заявок–окончание приема заявок', 'attr' => [
                 'data-inputmask' => '99.99.9999 - 99.99.9999', 
                 'placeholder' => 'Введите ачало приема заявок – окончание приема заявок',
             ],'required' => false,])
