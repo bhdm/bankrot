@@ -5,11 +5,13 @@ namespace Bankrot\SiteBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Iphp\FileStoreBundle\Mapping\Annotation as FileStore;
 
 /**
  *
  * @ORM\Table()
  * @ORM\Entity()
+ * @FileStore\Uploadable
  */
 class Registry extends BaseEntity
 {
@@ -45,6 +47,14 @@ class Registry extends BaseEntity
     public function __construct(){
         $this->enabled = false;
     }
+
+    /**
+     * @Assert\File( maxSize="3M")
+     * @FileStore\UploadableField(mapping="arbitrationFiles")
+     * @ORM\Column(type="array", nullable=true)
+     */
+    protected $file;
+
     /**
      * @return mixed
      */
@@ -128,5 +138,22 @@ class Registry extends BaseEntity
     public function setEnabled($enabled = false){
         $this->enabled = $enabled;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param mixed $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
 
 }

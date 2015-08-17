@@ -15,8 +15,8 @@
         <table class="table">
             <tr>
                 <th>№</th>
-                <th>Название</th>
-                <th>Ссылка</th>
+                <th>ФИО</th>
+                <th>CPO</th>
                 <th>Пользователь</th>
                 <th></th>
                 <th></th>
@@ -25,8 +25,8 @@
             {% for item in pagination %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{{ item.lotTitle }}</td>
-                    <td>{{ item.lotLink }}</td>
+                    <td>{{ item.fio }}</td>
+                    <td>{{ item.cpo }}</td>
                     <td>{{ item.user.username }}</td>
                     <td>{{ item.enabled == true ? 'Активен' : 'Заблокирован' }}</td>
                     <td></td>

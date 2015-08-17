@@ -18,6 +18,7 @@ class RegistryType extends AbstractType
             ->add('lotTitle', null, array('label' => 'Название лота'))
             ->add('lotLink', null, array('label' => 'Ссылка'))
             ->add('body', null, array('label' => 'Описание'))
+            ->add('file', null, array('label' => ' '))
             ->add('submit', 'submit', array('label' => 'Отправить', 'attr' => array('class' => 'btn btn-primary')));
         ;
     }
