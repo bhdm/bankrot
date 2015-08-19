@@ -18,6 +18,7 @@ class ReestrType extends AbstractType
 
             ->add('category', 'choice', array(
                 'label' => 'Категория',
+                'attr' => array('class' => 'category'),
                 'choices'  => array(
                     0 => 'Должники',
                     1 => 'CPO',
@@ -28,6 +29,8 @@ class ReestrType extends AbstractType
                 ),
                 'required' => true,
             ))
+            ->add('link' , 'text' , array('label' => 'Ссылка', 'attr' => array('class' => 'link')))
+
             ->add('aShotTitle' , null , array('label' => 'Краткое наименование', 'attr' => array('class' => 'a')))
             ->add('aFullTitle' , null , array('label' => 'Полное наименование', 'attr' => array('class' => 'a')))
             ->add('aAdrs'       , null , array('label' => 'Адрес', 'attr' => array('class' => 'a')))

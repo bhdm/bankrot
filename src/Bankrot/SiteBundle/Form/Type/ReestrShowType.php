@@ -28,6 +28,7 @@ class ReestrShowType extends AbstractType
                 ),
                 'required' => true,
             ))
+            ->add('link' , 'hidden' , array('label' => 'Ссылка', 'attr' => array('class' => 'link')))
             ->add('aShotTitle' , null , array('label' => 'Краткое наименование', 'attr' => array('class' => 'a')))
             ->add('aFullTitle' , null , array('label' => 'Полное наименование', 'attr' => array('class' => 'a')))
             ->add('aAdrs' , null , array('label' => 'Адрес', 'attr' => array('class' => 'a')))

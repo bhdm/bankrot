@@ -6,6 +6,9 @@
         $(document).ready(function(){
             var type = '{{ type == 0 ? 'a' : type == 1 ? 'b' : type == 2 ? 'c' : type == 3 ? 'd' : type == 4 ? 'e' : 'f' }}';
             $('.form-group').css('display', 'none');
+
+            $('.link').css('display', 'block');
+            $('.category').parent().css('display', 'block');
             $('.'+type).parent().css('display', 'block');
         })
     </script>
@@ -13,7 +16,10 @@
 
 {% block content %}
     <h2 class="page-header">Реестры / Подробная информация</h2>
-
+    <div class="form-group link" style="display: block;" >
+        <label class="control-label required" for="bankrot_sitebundle_reestr_link">Ссылка:</label>
+        <a href="{{ form.vars.value.link }}" target="_blank">перейти</a>
+    </div>
     {{ form_widget(form) }}
 
 {% endblock %}
