@@ -719,7 +719,7 @@ class ReestrParser
     public function syncG($output){
         $link = 'http://www.probankrot.ru/trade-wins?page=';
         $countPage = 216;
-        for ($i = 0 ; $i <= $countPage ; $i ++){
+        for ($i = 116 ; $i <= $countPage ; $i ++){
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $link.$i);
