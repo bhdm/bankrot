@@ -715,4 +715,51 @@ class ReestrParser
             }
         }
     }
+
+    public function syncG($output){
+        $link = 'http://www.probankrot.ru/trade-wins?page=';
+        $countPage = 216;
+        for ($i = 0 ; $i <= $countPage ; $i ++){
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $link.$i);
+            curl_setopt($ch, CURLOPT_USERAGENT, UserAgentGenerator::get());
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $r = curl_exec($ch);
+            curl_close($ch);
+            $output->writeLn('');
+            $output->writeLn('Парситься страница '.$link.$i);
+            $html = new Crawler($r);
+
+            $html = $html->filter('.views-table tr td');
+            $html = $html->extract(array('_text'));
+
+            $numTd = 1;
+            $reestr = null;
+            $output->writeLn('Парситься запись:  ');
+            foreach ($html as $key => $td){
+                $output->write(' '.$key);
+                $td = trim(strip_tags($td));
+                if ($numTd == 1){
+                    $reestr = new Reestr();
+                    $reestr->setCategory(7);
+                    $reestr->setGWinner($td);
+                }elseif($numTd == 2 && $reestr){
+                    $reestr->setGCountWins($td);
+                }elseif($numTd == 3 && $reestr){
+                    $reestr->setGAmountBuy($td);
+                }elseif($numTd == 4 && $reestr){
+                    $reestr->setGFirstPrice($td);
+                    $reestr->setPars(1);
+                    $this->em->persist($reestr);
+                    $this->em->flush($reestr);
+                    $numTd = 0;
+                }
+                $numTd ++;
+            }
+
+
+        }
+
+    }
 }

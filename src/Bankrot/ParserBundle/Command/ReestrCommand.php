@@ -14,7 +14,7 @@ class ReestrCommand extends ContainerAwareCommand
         $this
             ->setName('bankrot:reestr')
             ->setDescription('Синхронизация реестра fedresurs.ru.')
-            ->addOption('type',null,InputOption::VALUE_REQUIRED,'Тип парсера 0-5ы');
+            ->addOption('type',null,InputOption::VALUE_REQUIRED,'Тип парсера 0-7');
 
     }
 
@@ -35,7 +35,7 @@ class ReestrCommand extends ContainerAwareCommand
         }
         if ($type == 2){
             $output->writeln('<info>Синхронизация началась</info>');
-//            $parser->syncB($output);
+            $parser->syncB($output);
             $output->writeln('<info>Синхронизация завершена</info>');
 
             $output->writeln('<info>Получение полной информации</info>');
@@ -65,6 +65,12 @@ class ReestrCommand extends ContainerAwareCommand
             $output->writeln('<info>Получение полной информации</info>');
             $parser->getFullInfoE($output);
             $output->writeln('<info>Получение полной информации завершено</info>');
+        }
+
+        if ($type == 7){
+            $output->writeln('<info>Синхронизация началась</info>');
+            $parser->syncG($output);
+            $output->writeln('<info>Синхронизация завершена</info>');
         }
     }
 }

@@ -15,7 +15,7 @@ class Reestr extends BaseEntity
 {
 
     /**
-     * Должники | CPO | Арбитражные управдяющие | Организаторы торгов | Торговые площадки | Дискалифицированные лица
+     * Должники | CPO | Арбитражные управдяющие | Организаторы торгов | Торговые площадки | Дискалифицированные лица | Победители торгов
      * @ORM\Column(type="string")
      */
     protected $category;
@@ -390,6 +390,28 @@ class Reestr extends BaseEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $fNumber;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $gWinner;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $gCountWins;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $gAmountBuy;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $gFirstPrice;
+
 
     /**
      * @return mixed
@@ -1509,6 +1531,70 @@ class Reestr extends BaseEntity
     public function setCRegion($cRegion)
     {
         $this->cRegion = $cRegion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGWinner()
+    {
+        return $this->gWinner;
+    }
+
+    /**
+     * @param mixed $gWinner
+     */
+    public function setGWinner($gWinner)
+    {
+        $this->gWinner = $gWinner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGCountWins()
+    {
+        return $this->gCountWins;
+    }
+
+    /**
+     * @param mixed $gCountWins
+     */
+    public function setGCountWins($gCountWins)
+    {
+        $this->gCountWins = $gCountWins;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGAmountBuy()
+    {
+        return $this->gAmountBuy;
+    }
+
+    /**
+     * @param mixed $gAmountBuy
+     */
+    public function setGAmountBuy($gAmountBuy)
+    {
+        $this->gAmountBuy = $gAmountBuy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGFirstPrice()
+    {
+        return $this->gFirstPrice;
+    }
+
+    /**
+     * @param mixed $gFirstPrice
+     */
+    public function setGFirstPrice($gFirstPrice)
+    {
+        $this->gFirstPrice = $gFirstPrice;
     }
 
 
