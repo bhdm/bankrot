@@ -36,6 +36,7 @@
         <li class="{{ type == 2 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 2}) }}{{ search ? '?search='~search : '' }}">Арбитр. управ.</a></li>
         <li class="{{ type == 3 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 3}) }}{{ search ? '?search='~search : '' }}">Орг. торгов</a></li>
         <li class="{{ type == 4 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 4}) }}{{ search ? '?search='~search : '' }}">Торг. площадки</a></li>
+        <li class="{{ type == 7 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 7}) }}{{ search ? '?search='~search : '' }}">Победители торгов</a></li>
         {#<li class="{{ type == 5 ? 'active' : '' }}"><a href="{{ path('reestr_list',{'type' : 5}) }}{{ search ? '?search='~search : '' }}">Диск. лица</a></li>#}
     </ul>
     <br />
@@ -210,6 +211,25 @@
                     <td>{{ item.fPost  }}</td>
                     <td>{{ item.fDateStart | date('d.m.Y')  }}</td>
                     <td>{{ item.fDateEnd  | date('d.m.Y') }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if type == 5 %}
+        <table class="table" style="width: 100%">
+            <tr>
+                <th>Победитель</th>
+                <th>Выйгранных лотов</th>
+                <th>Куплено на сумму</th>
+                <th>Начальная цена <br />всех лотов</th>
+            </tr>
+            {% for item in pagination %}
+                <tr>
+                    <td>{{ item.gWinner }}</td>
+                    <td>{{ item.gCountWins  }}</td>
+                    <td>{{ item.gAmountBuy }}</td>
+                    <td>{{ item.gFirstPrice   }}</td>
                 </tr>
             {% endfor %}
         </table>

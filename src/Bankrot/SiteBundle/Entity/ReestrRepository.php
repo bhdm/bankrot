@@ -68,6 +68,14 @@ class ReestrRepository extends EntityRepository
             ";
         }
 
+
+        if ($type == 7){
+            $str = "(
+                r.gWinner          LIKE '%$search%'
+                )
+            ";
+        }
+
         $result= $this
             ->createQueryBuilder('r')
 //            ->from('BankrotSiteBundle:Reestr','r')
