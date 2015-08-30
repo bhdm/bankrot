@@ -39,6 +39,7 @@
                     <tr>
                         <td class="forum-theme-title"><a href="{{ path('forum_answers',{ 'themeId' : theme.id, 'questionId' : q.id  }) }}" class="title">{{ q.title |raw }}</a></td>
                         <td rowspan="2" class="forum-theme-setting">
+                            <b>Автор:</b> {{ q.author }} <br />
                             <b>{{ q.answers | length }}</b> Ответов <br />
                             {% if q.answers | length > 0 %}
                                 {% set lastItem = q.answers | last %}

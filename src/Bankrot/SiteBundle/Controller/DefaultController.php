@@ -149,4 +149,10 @@ class DefaultController extends Controller
         $msg = $this->getDoctrine()->getRepository('BankrotSiteBundle:Notify')->findOneByEnabled(true);
         return new Response(($msg->getBody() ? $msg->getBody() : 'Нету сообщений'));
     }
+
+    public function linksAction(){
+        $msg = $this->getDoctrine()->getRepository('BankrotSiteBundle:Page')->findOneByUrl('links');
+        return new Response(($msg->getBody() ? $msg->getBody() : ''));
+    }
+
 }

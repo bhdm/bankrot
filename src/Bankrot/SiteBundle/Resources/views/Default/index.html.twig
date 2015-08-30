@@ -8,6 +8,11 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+        .tr td{
+            cursor: pointer;
+        }
+    </style>
     <h2 class="page-header">Мониторинг</h2>
     <div class="form-group row">
         <form method="GET">
@@ -38,7 +43,12 @@
             </thead>
             <tbody>
             {% for lot in lots %}
-                <tr data-href="{{ path('lot', { id: lot.id }) }}" data-tradelink="{{ lot.area.link }}">
+                <tr class="tr" data-href="{{ path('lot', { id: lot.id }) }}" data-tradelink="{{ lot.area.link }}" title="
+                {#{{ dump(lot.contents) }}#}
+                {% for attr in lot.contents %}
+                    {{ attr.val|nl2br }}
+                {% endfor %}
+                ">
                     <td>{{ lot.number }}</td>
                     <td>{{ lot.bidAt| date('d.m.Y') }}</td>
                     <td>{{ lot.createdAt| date('d.m.Y')  }}</td>
