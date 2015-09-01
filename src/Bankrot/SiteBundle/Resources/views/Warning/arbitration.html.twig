@@ -58,7 +58,7 @@
             </tr>
             {% for item in pagination %}
                 <tr class="" data-id="{{ item.id }}">
-                    <td><b><a href="{{ path('warning_arbitration_show',{'id' : item.id}) }}">{{ item.fio }}</a></b></td>
+                    <td><b><a href="{{ is_granted('ROLE_SUBSCRIPTION') ? path('warning_arbitration_show',{'id' : item.id}) : path('subscription_index') }}">{{ item.fio }}</a></b></td>
                     <td><b>{{ item.cpo }}</b></td>
                 </tr>
                 {% if is_granted('ROLE_SUBSCRIPTION') %}
