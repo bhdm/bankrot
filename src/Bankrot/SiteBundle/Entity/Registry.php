@@ -36,6 +36,11 @@ class Registry extends BaseEntity
     protected $body;
 
     /**
+     * @ORM\OneToMany(targetEntity="WarningComment", mappedBy="registry")
+     */
+    protected $comments;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $comment;
@@ -46,6 +51,7 @@ class Registry extends BaseEntity
 
     public function __construct(){
         $this->enabled = false;
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -153,6 +159,22 @@ class Registry extends BaseEntity
     public function setFile($file)
     {
         $this->file = $file;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
     }
 
 

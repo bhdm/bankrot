@@ -46,7 +46,7 @@
                 <tr class="tr" data-href="{{ path('lot', { id: lot.id }) }}" data-tradelink="{{ lot.area.link }}" title="
                 {#{{ dump(lot.contents) }}#}
                 {% for attr in lot.contents %}
-                    {{ attr.val|nl2br }}
+                    {{ attr.val|nl2br| striptags|slice(0, 255) }}
                 {% endfor %}
                 ">
                     <td>{{ lot.number }}</td>

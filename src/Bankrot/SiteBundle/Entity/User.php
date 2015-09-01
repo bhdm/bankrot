@@ -80,6 +80,12 @@ class User extends BaseUser
      */
     protected $forumAnswers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WarningComment", mappedBy="user")
+     */
+    protected $comments;
+
+
     public function __construct(){
         parent::__construct();
         $this->forumQuestions = new ArrayCollection();
@@ -88,6 +94,7 @@ class User extends BaseUser
         $this->registries = new ArrayCollection();
         $this->lots = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->addRole('ROLE_SUBSCRIPTION');
     }
 
@@ -273,6 +280,22 @@ class User extends BaseUser
     public function setPhone($phone)
     {
         $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
     }
 
 

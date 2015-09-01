@@ -58,9 +58,9 @@
                 <th>Ссылка</th>
             </tr>
             {% for item in pagination %}
-                <tr class="warning-open" data-id="{{ item.id }}">
+                <tr data-id="{{ item.id }}">
                     <td>{{ item.created | date('d.m.Y') }}</td>
-                    <td>{{ item.lotTitle }}</td>
+                    <td><a href="{{ path('warning_registry_show',{'id' : item.id}) }}">{{ item.lotTitle }}</a></td>
                     <td>{{ item.lotLink }}</td>
                 </tr>
                 {% if is_granted('ROLE_SUBSCRIPTION') %}

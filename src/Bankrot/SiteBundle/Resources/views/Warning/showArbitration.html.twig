@@ -1,0 +1,47 @@
+{% extends 'BankrotSiteBundle::layout.html.twig' %}
+
+{% block content %}
+    <h2 class="page-header"><a href="{{ path('warning_arbitration_list') }}">Арбитражные управляющие</a></h2>
+    <div class="well">
+        <h3>{{ warning.fio }}</h3>
+        <h4>{{ warning.cpo }}</h4>
+        {#<a href="{{ warning.lotLink }}" target="_blank">Ссылка на источник</a>#}
+        {% if warning.file.path is defined %}
+            <br />
+            <a href="{{ warning.file.path }}" target="_blank">Файл</a>
+        {% endif %}
+        <h3>Описание</h3>
+        {{ warning.body }}
+        {% if warning.comment %}
+            <br />
+            {{ warning.comment }}
+        {% endif %}
+    </div>
+
+    {#{% if warning.comments | length > 0 %}#}
+        <div class="well">
+            <h2 class="">Комментарии</h2>
+            {% for c in warning.comments  %}
+                <div class="row">
+                    <div class="col-xs-3">
+                        {{ c.user }}<br />
+                        <i>{{ c.created | date('d.m.Y H:i:s') }}</i>
+                    </div>
+                    <div class="col-xs-9">
+                        {{ c.body }}
+                    </div>
+                </div>
+            {% else %}
+            <div class="row">
+                <div class="col-xs-12">
+                    Комментариев пока что нету
+                </div>
+            </div>
+            {% endfor %}
+            <hr />
+            <form method="POST">
+                {{ form_widget(form) }}
+            </form>
+        </div>
+    {#{% endif %}#}
+{% endblock %}

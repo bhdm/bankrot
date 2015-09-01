@@ -47,12 +47,18 @@ class Arbitration extends BaseEntity
      */
     protected $file;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WarningComment", mappedBy="registry")
+     */
+    protected $comments;
+
     public function __toString(){
         return $this->fio;
     }
 
     public function __construct(){
         $this->enabled = false;
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -154,5 +160,22 @@ class Arbitration extends BaseEntity
     public function setEnabled($enabled = false){
         $this->enabled = $enabled;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+
 
 }

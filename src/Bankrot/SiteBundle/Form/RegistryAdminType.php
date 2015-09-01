@@ -18,6 +18,7 @@ class RegistryAdminType extends AbstractType
             ->add('lotTitle', null, array('label' => 'Название лота'))
             ->add('lotLink', null, array('label' => 'Ссылка'))
             ->add('body', null, array('label' => 'Описание'))
+            ->add('file', null, array('label' => ' '))
             ->add('enabled','choice',  array(
                 'empty_value' => false,
                 'choices' => array(
