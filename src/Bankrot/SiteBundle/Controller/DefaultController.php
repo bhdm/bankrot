@@ -31,7 +31,14 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $search = $request->query->get('search');
-        $items = $this->getDoctrine()->getRepository('BankrotParserBundle:Lot')->search($search);
+        $filter = array(
+            'createdAt' => $request->query->get('createdAt'),
+            'bidAt' => $request->query->get('bidAt'),
+            'view' => $request->query->get('view'),
+            'forma' => $request->query->get('forma'),
+            'status' => $request->query->get('status'),
+        );
+        $items = $this->getDoctrine()->getRepository('BankrotParserBundle:Lot')->search($search, $filter);
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $items,
@@ -41,7 +48,8 @@ class DefaultController extends Controller
 
         return [
             'lots' => $pagination,
-            'search' => $search
+            'search' => $search,
+            'filter' => $filter,
         ];
     }
 

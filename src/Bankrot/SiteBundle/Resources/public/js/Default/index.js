@@ -30,14 +30,14 @@ jQuery(function ($) {
         }
     }
 
-        $('.infinite-scroll').jscroll({
-            contentSelector: 'table',
-            callback: function (a) {
-                var $jscrolladded =$('.jscroll-added');
-                var $newelements =  $jscrolladded.find('tbody tr').clone();
-                $jscrolladded.remove();
-                $newelements.find('td').on('click', function (e) {handler(this)});
-                $('.infinite-scroll').find('tbody').eq(0).append($newelements);
-            }
-        });
+        //$('.infinite-scroll').jscroll({
+        //    contentSelector: 'table',
+        //    callback: function (a) {
+        //        var $jscrolladded =$('.jscroll-added');
+        //        var $newelements =  $jscrolladded.find('tbody tr').clone();
+        //        $jscrolladded.remove();
+        //        $newelements.find('td').on('click', function (e) {handler(this)});
+        //        $('.infinite-scroll').find('tbody').eq(0).append($newelements);
+        //    }
+        //});
 });

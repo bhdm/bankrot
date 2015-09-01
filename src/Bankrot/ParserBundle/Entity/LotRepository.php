@@ -6,28 +6,49 @@ use Doctrine\ORM\EntityRepository;
 
 class LotRepository extends EntityRepository
 {
-    public function search($search = null){
+    public function search($search = null , $filter = array()){
 
-        $str = " r.number LIKE '%$search%' OR
+        $str = " ( r.number LIKE '%$search%' OR
                 d.name LIKE '%$search%' OR
-                a.val LIKE '%$search%'
+                a.val LIKE '%$search%' )
    ";
 
-//        OR
-//        r.aFullTitle          LIKE '%$search%' OR
-//        r.aAdrs               LIKE '%$search%' OR
-//        r.aRegion             LIKE '%$search%' OR
-//        r.aSubCategory        LIKE '%$search%' OR
-//        r.aInn                LIKE '%$search%' OR
-//        r.aOgrn               LIKE '%$search%' OR
-//        r.aForma              LIKE '%$search%'
-
-        $result= $this
+        $dq = $this
             ->createQueryBuilder('r')
             ->leftJoin('r.debtor','d')
             ->leftJoin('r.attrs','a')
-            ->where($str)
-            ->orderBy('r.createdAt', 'DESC')
+            ->leftJoin('r.status','st')
+            ->leftJoin('r.type','t')
+            ->leftJoin('r.priceType','pt')
+
+
+            ->where($str);
+
+            if ($filter['createdAt']){
+                $filter['createdAt'] = new \DateTime($filter['createdAt']);
+                $date1 = $filter['createdAt']->format('Y-m-d').' 00:00:00';
+                $date2 = $filter['createdAt']->format('Y-m-d').' 23:59:59';
+                $dq->andWhere("r.createdAt > '$date1'");
+                $dq->andWhere("r.createdAt < '$date2'");
+            }
+            if ($filter['bidAt']){
+                $filter['bidAt'] = new \DateTime($filter['bidAt']);
+                $date1 = $filter['bidAt']->format('Y-m-d').' 00:00:00';
+                $date2 = $filter['bidAt']->format('Y-m-d').' 23:59:59';
+                $dq->andWhere("r.bidAt > '$date1'");
+                $dq->andWhere("r.bidAt < '$date2'");
+            }
+            if ($filter['status']){
+                $dq->andWhere("st.id = '$filter[status]'");
+            }
+            if ($filter['view']){
+                $dq->andWhere("t.id = '$filter[view]'");
+            }
+            if ($filter['forma']){
+                $dq->andWhere("pt.id = '$filter[forma]'");
+            }
+
+            $result = $dq->orderBy('r.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
         return $result;
