@@ -5,6 +5,7 @@
     <div class="well">
         <h3>{{ warning.fio }}</h3>
         <h4>{{ warning.cpo }}</h4>
+        <h4>Пользователь, оставивший заявку: {{ warning.user }}</h4>
         {#<a href="{{ warning.lotLink }}" target="_blank">Ссылка на источник</a>#}
         {% if warning.file.path is defined %}
             <br />

@@ -55,13 +55,13 @@
             <tr>
                 <th>Дата</th>
                 <th>Название лота</th>
-                <th>Ссылка</th>
+                <th>Пользователь</th>
             </tr>
             {% for item in pagination %}
                 <tr data-id="{{ item.id }}">
                     <td>{{ item.created | date('d.m.Y') }}</td>
                     <td><a href="{{ is_granted('ROLE_SUBSCRIPTION') ? path('warning_registry_show',{'id' : item.id}) : path('subscription_index') }}">{{ item.lotTitle }}</a></td>
-                    <td>{{ item.lotLink }}</td>
+                    <td>{{ item.user }}</td>
                 </tr>
                 {% if is_granted('ROLE_SUBSCRIPTION') %}
                     <tr class="warning-hide" id="warning-hide-{{ item.id }}">

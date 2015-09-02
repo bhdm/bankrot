@@ -4,6 +4,7 @@
     <h2 class="page-header"><a href="{{ path('warning_registry_list') }}">Подозрительные торги</a></h2>
     <div class="well">
         <h3>{{ warning.lotTitle }}</h3>
+        <h4>Пользователь, оставивший заявку: {{ warning.user }}</h4>
         <a href="{{ warning.lotLink }}" target="_blank">Ссылка на источник</a>
         {% if warning.file.path is defined %}
             <br />

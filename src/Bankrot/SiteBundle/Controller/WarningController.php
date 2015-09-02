@@ -113,7 +113,7 @@ class WarningController extends Controller
         $comment = new WarningComment();
         $form = $this->createFormBuilder($comment)
             ->add('body', 'textarea', ['label' => 'Сообщение'])
-            ->add('submit', 'submit', ['label' => 'Сохранить сообщение', 'attr' => ['class' => 'btn-primary']])->getForm();
+            ->add('submit', 'submit', ['label' => 'Отправить', 'attr' => ['class' => 'btn-primary']])->getForm();
         $formData = $form->handleRequest($request);
         if ($formData->isValid()) {
             $comment = $formData->getData();
@@ -136,7 +136,7 @@ class WarningController extends Controller
         $comment = new WarningComment();
         $form = $this->createFormBuilder($comment)
             ->add('body', 'textarea', ['label' => 'Сообщение'])
-            ->add('submit', 'submit', ['label' => 'Сохранить сообщение', 'attr' => ['class' => 'btn-primary']])->getForm();
+            ->add('submit', 'submit', ['label' => 'Отправить', 'attr' => ['class' => 'btn-primary']])->getForm();
         $formData = $form->handleRequest($request);
         if ($formData->isValid()) {
             $comment = $formData->getData();

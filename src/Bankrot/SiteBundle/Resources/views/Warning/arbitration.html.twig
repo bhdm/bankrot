@@ -55,11 +55,13 @@
             <tr>
                 <th>ФИО</th>
                 <th>CPO</th>
+                <th>Пользователь</th>
             </tr>
             {% for item in pagination %}
                 <tr class="" data-id="{{ item.id }}">
                     <td><b><a href="{{ is_granted('ROLE_SUBSCRIPTION') ? path('warning_arbitration_show',{'id' : item.id}) : path('subscription_index') }}">{{ item.fio }}</a></b></td>
                     <td><b>{{ item.cpo }}</b></td>
+                    <td>{{ item.user }}</td>
                 </tr>
                 {% if is_granted('ROLE_SUBSCRIPTION') %}
                     <tr class="warning-hide" id="warning-hide-{{ item.id }}">
