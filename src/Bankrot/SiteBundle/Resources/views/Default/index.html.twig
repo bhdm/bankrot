@@ -119,7 +119,7 @@
                 {#{{ dump(lot.contents) }}#}
 
                     {{ lot.contents[0] is defined ? lot.contents[0].attr.val|nl2br| striptags|slice(0, 255) : '' }}
-                {% endfor %}
+                {#{% endfor %}#}
                 ">
                     <td>{{ lot.number }}</td>
                     <td>{{ lot.bidAt| date('d.m.Y') }}</td>
