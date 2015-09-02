@@ -54,6 +54,7 @@ class WarningController extends Controller
             if ($formData->isValid()) {
                 $item = $formData->getData();
                 $item->setEnabled(false);
+                $item->setUser($this->getUser());
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);
@@ -94,6 +95,7 @@ class WarningController extends Controller
             if ($formData->isValid()) {
                 $item = $formData->getData();
                 $item->setEnabled(false);
+                $item->setUser($this->getUser());
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);
