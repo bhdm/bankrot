@@ -71,7 +71,10 @@ doctrine:
                 alias: Gedmo
                 prefix: Gedmo\Translatable\Entity
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
-
+        dql:
+            string_functions:
+                MONTH: Bankrot\SiteBundle\DoctrineExtensions\Query\Mysql\Month
+                YEAR: Bankrot\SiteBundle\DoctrineExtensions\Query\Mysql\Year
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

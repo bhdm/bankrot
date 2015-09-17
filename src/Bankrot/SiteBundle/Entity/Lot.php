@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Lot
 {
     /**
+     * @ORM\OneToMany(targetEntity="Bankrot\SiteBundle\Entity\Task", mappedBy="lot")
+     */
+    protected $tasks;
+
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -142,6 +147,7 @@ class Lot
         $this->attachments = new ArrayCollection();
         $this->dropRules = new ArrayCollection();
         $this->watches = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId() { return $this->id; }
@@ -255,6 +261,20 @@ class Lot
         $this->watches = $watches;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
+    }
 
+    /**
+     * @param mixed $tasks
+     */
+    public function setTasks($tasks)
+    {
+        $this->tasks = $tasks;
+    }
 }
 

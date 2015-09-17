@@ -81,7 +81,7 @@
             {#</div>#}
         {#</div>#}
 
-        <div id="calendar"></div>
+        {% include('@BankrotSite/Lots/calendar_widget.html.twig') %}
         <br />
         <div class="search-form">
             <form action="{{ path('lots_list') }}" class="row">

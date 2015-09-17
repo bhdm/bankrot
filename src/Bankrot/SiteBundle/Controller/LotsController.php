@@ -25,10 +25,10 @@ use Symfony\Component\HttpFoundation\Request;
 class LotsController extends Controller
 {
     /**
-     * @Route("/lots", name="lots_list")
+     * @Route("/lots/{year}/{month}", name="lots_list", defaults={"year" = null, "month" = null})
      * @Template()
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $year, $month)
     {
         /**
          * @var $repository LotRepository
@@ -42,7 +42,59 @@ class LotsController extends Controller
         }
         $lots = $repository->findActiveLots($user, $search);
 
-        return compact('lots');
+        # Теперь генерируем календарь
+        $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate($year, $month, $this->getUser()->getId());
+
+        $calendar = new Calendar();
+        $calendar->setMonth($month);
+        $calendar->setYear($year);
+        $monthTable     = $calendar->getMonthTable();
+        $numberOfEvents = count($tasks);
+
+
+
+
+        $monthTable     = $calendar->getMonthTable();
+        $numberOfEvents = count($tasks);
+
+        foreach ($monthTable as $rowKey => $row) {
+            foreach ($monthTable[$rowKey] as $colKey => $element) {
+                if ($element) {
+                    $monthTable[$rowKey][$colKey]['events'] = array();
+                }
+                if ($element['number'] < 10) {
+                    $tmp_element = '0' . $element['number'];
+                }
+                else {
+                    $tmp_element = $element['number'];
+                }
+                for ($i = 0; $i < $numberOfEvents; $i++) {
+                    #Здесь к каждому дню приписываем следим или нет в этом лоте
+                    if ($tasks[$i]->getDate()->format('Ymd') == $calendar->getYear() . $calendar->getMonthD() . $tmp_element ) {
+                        $monthTable[$rowKey][$colKey]['events'][] = $tasks[$i]->getLot()->getName();
+                    }
+                }
+            }
+        }
+
+        $nowYear  = date('Y', time()) + 1; //Добавляем год что бы посмотреть события и на следующий год
+        $fullYear = $month === '0';
+
+        $params = array(
+            'calendar'        => $monthTable,
+            'monthName'       => $calendar->getMonthName(),
+            'year'            => $calendar->getYear(),
+            'month'           => $calendar->getMonth(),
+            'fullYear'        => $fullYear,
+            'nextMonth'       => $calendar->getNextMonth(),
+            'prevMonth'       => $calendar->getPrevMonth(),
+            'nextMonthYear'   => $calendar->getNextMonthYear(),
+            'prevMonthYear'   => $calendar->getPrevMonthYear(),
+            'typeCalendar'    => 'all',
+            'lots'            => $lots,
+        );
+
+        return $params;
     }
 
     /**

@@ -85,6 +85,11 @@ class User extends BaseUser
      */
     protected $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bankrot\SiteBundle\Entity\Task", mappedBy="user")
+     */
+    protected $tasks;
+
 
     public function __construct(){
         parent::__construct();
@@ -95,6 +100,7 @@ class User extends BaseUser
         $this->lots = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
         $this->addRole('ROLE_SUBSCRIPTION');
     }
 
@@ -296,6 +302,22 @@ class User extends BaseUser
     public function setComments($comments)
     {
         $this->comments = $comments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
+    }
+
+    /**
+     * @param mixed $tasks
+     */
+    public function setTasks($tasks)
+    {
+        $this->tasks = $tasks;
     }
 
 
