@@ -215,11 +215,13 @@
     </div>
 
     {{ form_end(form) }}
-    <script>
-        function resizeIframe(iframe) {
-            iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
-        }
-    </script>
+    {#<script>#}
+        {#function resizeIframe(iframe) {#}
+            {#iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";#}
+        {#}#}
+    {#</script>#}
+    {#<iframe id="iframe-calendar" onload="resizeIframe(this)" src="{{ path('calendar_widget', {'year': , 'month': null, 'lotId' : lot.id }) }}" width="100%" height="320" style="border: 0; overflow: hidden" scrolling="no"></iframe>#}
+    <br />
     {% if lot.dropRules | length > 0 %}
         <iframe id="iframe-calendar" onload="resizeIframe(this)" src="{{ path('calendar',{'lotId' : lot.id }) }}" width="100%" height="800" style="border: 0; overflow: hidden" scrolling="no"></iframe>
     {% endif %}

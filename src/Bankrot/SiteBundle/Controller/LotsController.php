@@ -55,7 +55,11 @@ class LotsController extends Controller
      * @Route("/calendar-widget/{year}/{month}", name="calendar_widget", defaults={"year" = null, "month" = null}, requirements={"year"="\d+", "month"="\d+"})
      * @Template()
      */
+//* @Route("/calendar-widget/{year}/{month}/{lotId}", name="calendar_widget", defaults={"year" = null, "month" = null}, requirements={"lotId"="\d+", "year"="\d+", "month"="\d+"})
     public function calendarWidgetAction(Request $request, $year, $month){
+//        if (!isset($lotId)){
+//            $lotId = null;
+//        }
         $dateNow = new \DateTime();
         if ($year == null){
             $year = $dateNow->format('Y');
@@ -111,6 +115,7 @@ class LotsController extends Controller
             'tasks'           => $tasks,
             'dateNow'         => $dateNow,
             'cal'             => $calendar,
+//            'lotId'           => $lotId
         );
         return $params;
     }
