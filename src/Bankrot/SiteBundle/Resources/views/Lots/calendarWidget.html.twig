@@ -1,0 +1,347 @@
+{% extends 'BankrotSiteBundle::layout_mini.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+
+            $('.calendar td').click(function(){
+                var date = $(this).attr('data-date');
+                $('.calendar tr td').removeClass('nowDate');
+                $(this).addClass('nowDate');
+                $.ajax({
+                    url: Routing.generate('task_get',{'date' : date}),
+
+                }).done(function(json){
+                    var text = '';
+                    for (i = 0; i<json.events.length ; i++){
+                        text += '<div class="form-group" style="border-bottom: 1px solid #CCC">';
+                        text += '<input type="checkbox" class="" value="'+json.events[0].id+'">&nbsp;'+json.events[0].title;
+                        text += '</div>';
+                    }
+                    $('.tasks').html(text);
+                });
+            });
+
+            $('body').on('click','.tasks .form-group input', function(){
+                $(this).parent().fadeOut();
+                $.ajax({
+                    url: Routing.generate('task_remove',{'id' : $(this).val() }),
+                    cache: false,
+                    statusCode: {
+                        403: function(){
+                            alert('Ошибка связи с серверов. Попробуйте позже');
+                        }
+                    }
+                });
+
+            });
+
+            {#$('#boxOk').click(function(){#}
+            {#var date = $('#box-date').val();#}
+            {#var price = $('#box-price').val();#}
+            {#var deposite = $('#box-deposit').val();#}
+            {#$.ajax({#}
+            {#url: Routing.generate('add_lot_show', {'lotId': {{ lot.id }}}),#}
+            {#data: 'date='+date+'&price='+price+'&dep='+deposite,#}
+            {#type: 'POST',#}
+            {#success: function(html){#}
+            {#if (html == 'add'){#}
+            {#window.location.reload();#}
+            {#}#}
+            {#//                        else{#}
+            {#//                            item.removeClass('showLot');#}
+            {#//                        }#}
+            {#}#}
+            {#});#}
+            {#})#}
+        })
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .showLot{
+            background: #0782C1;
+        }
+        .calendar {
+            border-collapse: collapse;
+            width:           100%;
+            margin:          0 auto;
+        }
+        .calendar, .calendar td, .calendar th {
+            border: 1px solid #A9A9A9;
+        }
+        .calendar td, .calendar th {
+            padding: 5px;
+            width:   14%;
+            height:  26px;
+            border: 3px solid #A9A9A9;
+        }
+        .calendar_cell_full {
+            /*background-color: #D5FFFF;*/
+        }
+        .calendar_cell_full:hover {
+            /*background-color: #0093A1;*/
+        }
+        .calendar_cell_full:hover a {
+            color: #D5FFFF;
+        }
+        .calendar_day_link {
+            text-decoration: none;
+            display:         block;
+            height:          100%;
+        }
+
+        #specialty, #specialization {
+            width: 240px;
+        }
+        #yearlist {
+            width: 60px;
+        }
+        #monthlist {
+            width: 100px;
+        }
+        #goCalendar {
+            vertical-align: bottom;
+            display:        inline-block;
+            margin-top:     8px;
+        }
+        .filters {
+            margin-top: 10px;
+        }
+        .filters td {
+            padding-left: 23px;
+        }
+        .filters .header td, .filter-title {
+            font-weight: bold;
+            color:       #476173;
+        }
+        .events-ul {
+            list-style-type: none;
+            padding-left:    0px;
+            margin:          0;
+        }
+        .events-title {
+            margin: 15px 0 5px;
+            font-weight: bold;
+        }
+        .lineForEvenets {
+            width:100%;
+            height:20px;
+            border:1px solid black;
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,0093a1+100 */
+            background: #ffffff; /* Old browsers */
+            background: -moz-linear-gradient(left,  #ffffff 0%, #0093a1 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ffffff), color-stop(100%,#0093a1)); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(left,  #ffffff 0%,#0093a1 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(left,  #ffffff 0%,#0093a1 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(left,  #ffffff 0%,#0093a1 100%); /* IE10+ */
+            background: linear-gradient(to right,  #ffffff 0%,#0093a1 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#0093a1',GradientType=1 ); /* IE6-9 */
+        }
+        .titleLine {
+            font-weight: bold;
+            color: #476173;
+        }
+        .indicatorHelper0 {
+            position: absolute;
+            bottom:-15px;
+            left:1%;
+        }
+        .indicatorHelper2 {
+            position: absolute;
+            bottom:-15px;
+            left:23%;
+        }
+        .indicatorHelper5 {
+            position: absolute;
+            bottom:-15px;
+            left:47%;
+        }
+        .indicatorHelper7 {
+            position: absolute;
+            bottom:-15px;
+            left:73%;
+        }
+        .indicatorHelper10 {
+            position: absolute;
+            bottom:-15px;
+            left:93%;
+        }
+        .fiveEvent {
+            background-color: #0997a5;
+        }
+
+        .fourEvent {
+            background-color: #3dadb8;
+        }
+
+        .threeEvent {
+            background-color: #80c9d0;
+        }
+
+        .twoEvent {
+            background-color: #bee4e7;
+        }
+
+        .oneEvent {
+            background-color: #d9eef1;
+        }
+        .calendar{
+            background: rgb(241, 242, 246) !important;
+            /*background: #bee4e7 !important;*/
+            color: #044F67;
+        }
+        .calendar .red{
+            background: #e8d5d5 !important;
+        }
+        .calendar .nowDate.red{
+            background: #003A3A !important;
+            color: #FFF;
+        }
+
+        .calendar .nowDate{
+            background: #003A3A !important;
+            color: #FFF;
+        }
+
+        .calendar .showLot{
+            background: #0782C1 !important;
+        }
+        .calendar th{
+            text-align: center;
+        }
+        .calendar td{
+            cursor: pointer;
+            font-size: 16px;
+            text-align: right;
+            vertical-align: top;
+            height: 26px;
+        }
+        .box{
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #CCC;
+            border-radius: 10px;
+            position: fixed;
+            left: 50%;
+            top: 460px;
+            z-index: 999;
+            background-color: #D4D4D4;
+            margin-left: -150px;
+            display: none;
+        }
+        .showlist{
+            padding-left: 25px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            border-bottom: 1px solid #CCC;
+            width: 400px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-6">
+            <div style="position: relative; width: 400px">
+                <table style="width: 100%">
+                    <tr>
+                        <td>
+                            <a style="float: left" class="no-underline"
+                               href="{{ path('lots_list', { 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
+                                Пред.&nbsp;месяц</a>
+                        </td>
+                        <td style="font-size: 18px; font-weight: bold; text-transform: capitalize; text-align: center"><span>{{ monthName | lower }} {{ year }}</span></td>
+                        <td>
+                            <a style="float: right" class="no-underline"
+                               href="{{ path('lots_list', {'year': nextMonthYear, 'month': nextMonth}) }}">
+                                След.&nbsp;месяц &rarr;</a>
+                        </td>
+                    </tr>
+                </table>
+                <table class="calendar">
+                    <tr>
+                        <th>Пн</th>
+                        <th>Вт</th>
+                        <th>Ср</th>
+                        <th>Чт</th>
+                        <th>Пт</th>
+                        <th class="red">Сб</th>
+                        <th class="red">Вс</th>
+                    </tr>
+
+                    {% set break = false %}
+
+                    {% for row in calendar if not break %}
+                        <tr>
+                            {% for day in row %}
+                                {% if day %}
+                                    <!--
+							{% if day['events'] | length == 0 %}
+							<td class="{{ loop.index > 5 ? ' red' }}">
+							{% elseif day['events'] | length >= 10 %}
+							<td class="{{ day ? (day['events'] ? 'calendar_cell_full fiveEvent') }}{{ loop.index > 5 ? ' red' }}">
+							{% elseif day['events'] | length >= 7 %}
+							<td class="{{ day ? (day['events'] ? 'calendar_cell_full fourEvent') }}{{ loop.index > 5 ? ' red' }}">
+							{% elseif day['events'] | length >= 5 %}
+							<td class="{{ day ? (day['events'] ? 'calendar_cell_full threeEvent') }}{{ loop.index > 5 ? ' red' }}">
+							{% elseif day['events'] | length >= 2 %}
+							<td class="{{ day ? (day['events'] ? 'calendar_cell_full twoEvent') }}{{ loop.index > 5 ? ' red' }}">
+							{% elseif day['events'] | length >= 1 %}
+							<td class="{{ day ? (day['events'] ? 'calendar_cell_full oneEvent') }}{{ loop.index > 5 ? ' red' }}">
+							{% endif %}
+							-->
+                                <td class="{{ cal.year~'-'~cal.month~'-'~day['number'] == dateNow | date('Y-m-d') ? 'nowDate' : ''}}{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}">
+                                    {% if day['events'] %}
+                                        *
+                                    {% endif %}
+
+                                    {{ day['number'] }}
+
+                                    {#{{ cal.year~'-'~cal.month~'-'~day['number'] }}#}
+
+                                    <br />
+                                    <div style="font-size: 16px">{% if day is defined and day['price'] is defined  %}{{ day['price'] |number_format(0) }}{% else %}{% endif %}</div>
+                                    <div style="font-size: 16px">{% if day is defined and day['depositPrice'] is defined  %}{{ day['depositPrice'] |number_format(0) }}{% else %}{% endif %}</div>
+                                {% else %}
+                                    <td class="{{ loop.index > 5 ? ' red' }}">
+                                {% endif %}
+                                </td>
+                                {% if day is null %}
+                                    {% set break = true %}
+                                {% else %}
+                                    {% set break = false %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <form method="POST" action="{{ path('task_add') }}">
+                <div class="form-group">
+                    <label>Задача:&nbsp;</label>
+                    <input type="text" class="form-control" name="title" id="task" required>
+                </div>
+                <div class="form-inline">
+                    <label>Дата:&nbsp;</label>
+                    <input type="date" class="form-control" name="date" id="date" required value="{{ 'now' | date('Y-m-d') }}">
+                    <button class="btn btn-primary" style="float: right">Создать</button>
+                </div>
+            </form>
+            <br />
+            <div class="tasks">
+                {% for t in tasks %}
+                    <div class="form-group" style="border-bottom: 1px solid #CCC">
+                        <input type="checkbox" class="" value="{{ t.id }}">&nbsp;{{ t.title }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

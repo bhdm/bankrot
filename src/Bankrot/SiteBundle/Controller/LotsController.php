@@ -6,6 +6,7 @@ use Bankrot\SiteBundle\Entity\DropRule;
 use Bankrot\SiteBundle\Entity\Lot;
 use Bankrot\SiteBundle\Entity\LotRepository;
 use Bankrot\SiteBundle\Entity\LotWatch;
+use Bankrot\SiteBundle\Entity\Task;
 use Bankrot\SiteBundle\Service\Calendar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 class LotsController extends Controller
 {
     /**
-     * @Route("/lots/{year}/{month}", name="lots_list", defaults={"year" = null, "month" = null})
+     * @Route("/lots/{year}/{month}", name="lots_list", defaults={"year" = null, "month" = null}, requirements={"year"="\d+", "month"="\d+"})
      * @Template()
      */
     public function indexAction(Request $request, $year, $month)
@@ -42,17 +43,33 @@ class LotsController extends Controller
         }
         $lots = $repository->findActiveLots($user, $search);
 
-        # Теперь генерируем календарь
-        $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate($year, $month, $this->getUser()->getId());
+
+
+
+
+        return ['lots' => $lots];
+    }
+
+
+    /**
+     * @Route("/calendar-widget/{year}/{month}", name="calendar_widget", defaults={"year" = null, "month" = null}, requirements={"year"="\d+", "month"="\d+"})
+     * @Template()
+     */
+    public function calendarWidgetAction(Request $request, $year, $month){
+        $dateNow = new \DateTime();
+        if ($year == null){
+            $year = $dateNow->format('Y');
+        }
+        if ($month == null){
+            $month = $dateNow->format('m');
+        }
+        $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate($year, $month, $dateNow->format('d'), $this->getUser()->getId());
 
         $calendar = new Calendar();
         $calendar->setMonth($month);
         $calendar->setYear($year);
         $monthTable     = $calendar->getMonthTable();
         $numberOfEvents = count($tasks);
-
-
-
 
         $monthTable     = $calendar->getMonthTable();
         $numberOfEvents = count($tasks);
@@ -91,10 +108,68 @@ class LotsController extends Controller
             'nextMonthYear'   => $calendar->getNextMonthYear(),
             'prevMonthYear'   => $calendar->getPrevMonthYear(),
             'typeCalendar'    => 'all',
-            'lots'            => $lots,
+            'tasks'           => $tasks,
+            'dateNow'         => $dateNow,
+            'cal'             => $calendar,
+        );
+        return $params;
+    }
+
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     *
+     * @Route("/task/remove/{id}", name="task_remove", options={"expose" = true})
+     */
+    public function removeTaskAction($id){
+        $task = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findOneById($id);
+        if ($task && $task->getUser() == $this->getUser()){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($task);
+            $em->flush();
+            return new JsonResponse(['result' => 'true']);
+        }else{
+            return new JsonResponse(['result' => 'false'],403);
+        }
+    }
+
+    /**
+     * @Route("/task/add", name="task_add")
+     */
+    public function addTaskAction(Request $request){
+        if ($request->getMethod() == 'POST'){
+            $task = new Task();
+            $task->setUser($this->getUser());
+            $task->setTitle($request->request->get('title'));
+            $date = new \DateTime($request->request->get('date'));
+            $task->setDate($date);
+            $this->getDoctrine()->getManager()->persist($task);
+            $this->getDoctrine()->getManager()->flush($task);
+        }
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/task/get/{date}", name="task_get", options = {"expose" = true})
+     */
+    public function getTaskAction($date){
+        $date = new \DateTime($date);
+        $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate(
+            $date->format('Y'),
+            $date->format('m'),
+            $date->format('d'),
+            $this->getUser()->getId()
         );
 
-        return $params;
+        $events = [];
+        foreach ($tasks as $task){
+            $events[] = [
+                'id' => $task->getId(),
+                'title' => $task->getTitle(),
+                ];
+        }
+        return new JsonResponse(['events' => $events]);
     }
 
     /**

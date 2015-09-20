@@ -10,6 +10,7 @@
     'bundles/app/js/Lots/index.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
     <script>
         $('.table-filter').eq(0).on('click', 'a', function(){
             var cssClass = $(this).data('filter'),
@@ -81,7 +82,13 @@
             {#</div>#}
         {#</div>#}
 
-        {% include('@BankrotSite/Lots/calendar_widget.html.twig') %}
+        {#{% include('@BankrotSite/Lots/calendar_widget.html.twig') %}#}
+        <script>
+            function resizeIframe(iframe) {
+                iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
+            }
+        </script>
+        <iframe id="iframe-calendar" onload="resizeIframe(this)" src="{{ path('calendar_widget') }}" width="100%" height="320" style="border: 0; overflow: hidden" scrolling="no"></iframe>
         <br />
         <div class="search-form">
             <form action="{{ path('lots_list') }}" class="row">
