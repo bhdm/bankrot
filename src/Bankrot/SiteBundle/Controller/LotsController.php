@@ -26,10 +26,10 @@ use Symfony\Component\HttpFoundation\Request;
 class LotsController extends Controller
 {
     /**
-     * @Route("/lots/{year}/{month}", name="lots_list", defaults={"year" = null, "month" = null}, requirements={"year"="\d+", "month"="\d+"})
+     * @Route("/lots", name="lots_list")
      * @Template()
      */
-    public function indexAction(Request $request, $year, $month)
+    public function indexAction(Request $request)
     {
         /**
          * @var $repository LotRepository
