@@ -7,6 +7,14 @@
     <script>
         $(document).ready(function(){
             formula();
+            var fileInputNumber = 2;
+            $('#addfileinput').click(function(){
+                var txt = '<input type="file" id="file'+fileInputNumber+'" name="file['+fileInputNumber+']" /><br />';
+                $('.fileinputs').append(txt);
+                fileInputNumber ++;
+                $('input[type="file"]').styler();
+
+            })
         });
         $('#lot_costPurchase').keyup(function(){formula()});
         $('#lot_costAcquisition').keyup(function(){formula()});
@@ -30,11 +38,12 @@
             }else{
                 $('#formula').html('<span class="text-danger">Данные для формулы не корректны</span>');            }
         }
+
     </script>
 {% endblock %}
 
 {% block content %}
-    {{ form_start(form) }}
+    {{ form_start(form,{'attr' : {'enctype' : 'multipart/form-data'}}) }}
     <h1 class="lead">
         <a href="{{ path('lots', { id: lot.id }) }}" class="fa fa-chevron-circle-left"></a>
         {{ lot.name }} (редактирование)
@@ -42,33 +51,49 @@
     </h1>
 
     <fieldset>
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_row(form.name) }}
-                <div class="row">
-                    <div class="col-sm-8">
-                        {{ form_row(form.category) }}
-                        {{ form_row(form.url) }}
-                        {{ form_row(form.phone) }}
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.name) }}
+                    <div class="row">
+                        <div class="col-sm-8">
+                            {{ form_row(form.category) }}
+                            {{ form_row(form.url) }}
+                            {{ form_row(form.phone) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">{{ form_row(form.price) }}</div>
+                    </div>
+                    {{ form_row(form.address) }}
+                    {{ form_row(form.description) }}
+                    <div class="row">
+                        <div class="col-sm-6">{{ form_row(form.livePeriod) }}</div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">{{ form_row(form.price) }}</div>
-                </div>
-                {{ form_row(form.address) }}
-                {{ form_row(form.description) }}
-                <div class="row">
-                    <div class="col-sm-6">{{ form_row(form.livePeriod) }}</div>
+                <div class="col-sm-12">
+                    {% if lw | length > 0 %}
+                        <div class="row">
+                            <div class="col-sm-8">
+                                {{ form_row(form.lotStatus) }}
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-sm-6">
-                {% if lw | length > 0 %}
-                <div class="row">
-                    <div class="col-sm-8">
-                        {{ form_row(form.lotStatus) }}
-                    </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="galery">
+                <legend>Галерея</legend>
+                <br />
+                {% for p in lot.photos %}
+                    <img src="/{{ p.photo.path }}" class="lot-photo"/>
+                {% endfor %}
+                <br />
+                <div class="fileinputs">
+                    <input type="file" name="file[1]"><br />
                 </div>
-                {% endif %}
+                 <button class="btn btn-primary" id="addfileinput" type="button"><span class="glyphicon glyphicon-plus"></span></button>
             </div>
         </div>
     </fieldset>

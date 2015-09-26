@@ -19,6 +19,11 @@ class Lot
     protected $tasks;
 
     /**
+     * @ORM\OneToMany(targetEntity="LotPhoto", mappedBy="lot")
+     */
+    protected $photos;
+
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -182,6 +187,7 @@ class Lot
         $this->dropRules = new ArrayCollection();
         $this->watches = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId() { return $this->id; }
@@ -406,6 +412,23 @@ class Lot
     {
         $this->maxCostCapitalization = $maxCostCapitalization;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
+     * @param mixed $photos
+     */
+    public function setPhotos($photos)
+    {
+        $this->photos = $photos;
+    }
+
 
 
 }
