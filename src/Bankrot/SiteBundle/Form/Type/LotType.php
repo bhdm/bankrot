@@ -49,6 +49,13 @@ class LotType extends AbstractType
                 'data-inputmask' => '99.99.9999 - 99.99.9999', 
                 'placeholder' => 'Введите период действия',
             ],'required' => false,])
+
+            ->add('costPurchase', null, ['label' => 'Стоимость покупки','required' => false])
+            ->add('costAcquisition', null, ['label' => 'Расходы на приобретение','required' => false])
+            ->add('periodPayback', null, ['label' => 'Срок окупаемости','required' => false, 'format' => 'dd.MM.yyyy', 'widget' => 'single_text'])
+            ->add('ViewCapitalization', null, ['label' => 'Вид капитализации','required' => false])
+            ->add('minCostCapitalization', null, ['label' => 'Мин. стоимость капитализации','required' => false])
+            ->add('maxCostCapitalization', null, ['label' => 'Макс. стоимость капитализации','required' => false])
             ;
     }
 

@@ -142,6 +142,40 @@ class Lot
      */
     private $watches;
 
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $costPurchase;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $costAcquisition;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     * @Assert\Date()
+     */
+    protected $periodPayback;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $ViewCapitalization;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $minCostCapitalization;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $maxCostCapitalization;
+
+
+
     public function __construct()
     {
         $this->attachments = new ArrayCollection();
@@ -276,5 +310,103 @@ class Lot
     {
         $this->tasks = $tasks;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCostPurchase()
+    {
+        return $this->costPurchase;
+    }
+
+    /**
+     * @param mixed $costPurchase
+     */
+    public function setCostPurchase($costPurchase)
+    {
+        $this->costPurchase = $costPurchase;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCostAcquisition()
+    {
+        return $this->costAcquisition;
+    }
+
+    /**
+     * @param mixed $costAcquisition
+     */
+    public function setCostAcquisition($costAcquisition)
+    {
+        $this->costAcquisition = $costAcquisition;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPeriodPayback()
+    {
+        return $this->periodPayback;
+    }
+
+    /**
+     * @param mixed $periodPayback
+     */
+    public function setPeriodPayback($periodPayback)
+    {
+        $this->periodPayback = $periodPayback;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getViewCapitalization()
+    {
+        return $this->ViewCapitalization;
+    }
+
+    /**
+     * @param mixed $ViewCapitalization
+     */
+    public function setViewCapitalization($ViewCapitalization)
+    {
+        $this->ViewCapitalization = $ViewCapitalization;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinCostCapitalization()
+    {
+        return $this->minCostCapitalization;
+    }
+
+    /**
+     * @param mixed $minCostCapitalization
+     */
+    public function setMinCostCapitalization($minCostCapitalization)
+    {
+        $this->minCostCapitalization = $minCostCapitalization;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMaxCostCapitalization()
+    {
+        return $this->maxCostCapitalization;
+    }
+
+    /**
+     * @param mixed $maxCostCapitalization
+     */
+    public function setMaxCostCapitalization($maxCostCapitalization)
+    {
+        $this->maxCostCapitalization = $maxCostCapitalization;
+    }
+
+
 }
 
