@@ -128,6 +128,38 @@
         </div>
     {% endfor %}
 </fieldset>
+    <br />
+    <br />
+    <fieldset>
+        <legend>Расчет рентабельности</legend>
+        <div class="row">
+            <div class="col-sm-9">
+                {{ form_row(form.ViewCapitalization) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                {{ form_row(form.costPurchase) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_row(form.costAcquisition) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_row(form.periodPayback) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                {{ form_row(form.minCostCapitalization) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_row(form.maxCostCapitalization) }}
+            </div>
+            <div class="col-sm-3">
+                <div id="formula" style="height: 80px;display: table-cell;vertical-align: middle;"></div>
+            </div>
+        </div>
+    </fieldset>
 
 <div class="hidden">
     {{ form_rest(form) }}
@@ -147,6 +179,33 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            formula();
+        });
+        $('#lot_costPurchase').keyup(function(){formula()});
+        $('#lot_costAcquisition').keyup(function(){formula()});
+        $('#lot_minCostCapitalization').keyup(function(){formula()});
+        $('#lot_maxCostCapitalization').keyup(function(){formula()});
 
+        function formula(){
+            var error = false ;
+            var f1 = '';
+            var f2 = '';
+            if ($('#lot_costPurchase').val() == '' ){ error = true }
+            if ($('#lot_costAcquisition').val() == '' ){ error = true }
+            if ($('#lot_minCostCapitalization').val() == '' ){ error = true }
+            if ($('#lot_maxCostCapitalization').val() == '' ){ error = true }
+            if (error == false){
+                f1 = (parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))/parseInt($('#lot_minCostCapitalization').val())*100;
+                f1 = parseInt(f1);
+                f2 = (parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))/parseInt($('#lot_maxCostCapitalization').val())*100;
+                f2 = parseInt(f2);
+                $('#formula').html('<span class="text-primary" style="font-size: 18px">Мин. = '+f1+'%<br />Макс. = '+f2+'%</span>');
+            }else{
+                $('#formula').html('<span class="text-danger">Данные для формулы не корректны</span>');            }
+        }
+    </script>
 {% endblock %}
 
