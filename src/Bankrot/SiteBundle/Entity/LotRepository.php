@@ -18,7 +18,7 @@ class LotRepository extends EntityRepository
                 $qb->expr()->eq('lw.owner', ':owner'),
                 $qb->expr()->isNotNull('l.initialPrice'),
 //                $qb->expr()->isNull('ls.isTrash')
-                $qb->expr()->neq('ls.isTrash', 1)
+                $qb->expr()->andX('ls.isTrash != 1 OR ls.isTrash is NULL')
             ))
             ->setParameter('owner', $owner);
         if (!empty($search)) {

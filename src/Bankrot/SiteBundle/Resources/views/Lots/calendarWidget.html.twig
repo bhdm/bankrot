@@ -251,13 +251,13 @@
                     <tr>
                         <td>
                             <a style="float: left" class="no-underline"
-                               href="{{ path('lots_list', { 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
+                               href="{{ path('calendar_widget', { 'year': prevMonthYear, 'month': prevMonth}) }}">&larr;
                                 Пред.&nbsp;месяц</a>
                         </td>
                         <td style="font-size: 18px; font-weight: bold; text-transform: capitalize; text-align: center"><span>{{ monthName | lower }} {{ year }}</span></td>
                         <td>
                             <a style="float: right" class="no-underline"
-                               href="{{ path('lots_list', {'year': nextMonthYear, 'month': nextMonth}) }}">
+                               href="{{ path('calendar_widget', {'year': nextMonthYear, 'month': nextMonth}) }}">
                                 След.&nbsp;месяц &rarr;</a>
                         </td>
                     </tr>
