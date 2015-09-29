@@ -122,6 +122,18 @@ class LotsController extends Controller
 
 
     /**
+     * @Route("/task/list", name="task_lists")
+     * @Template("")
+     */
+    public function tasksListAction(){
+        $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findBy(array(
+            'user' => $this->getUser() ,
+            'lot' => null
+        ),['isSuccess' => 'ASC','date' => 'DESC']);
+        return ['tasks' => $tasks];
+    }
+
+    /**
      * @param $id
      * @return JsonResponse
      *
@@ -131,7 +143,8 @@ class LotsController extends Controller
         $task = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findOneById($id);
         if ($task && $task->getUser() == $this->getUser()){
             $em = $this->getDoctrine()->getManager();
-            $em->remove($task);
+            $task->setIsSuccess(true);
+//            $em->remove($task);
             $em->flush();
             return new JsonResponse(['result' => 'true']);
         }else{
@@ -147,6 +160,12 @@ class LotsController extends Controller
             $task = new Task();
             $task->setUser($this->getUser());
             $task->setTitle($request->request->get('title'));
+            if ($request->request->get('lot')){
+                $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($request->request->get('lot'));
+                if ($lot && $lot->getOwner() == $this->getUser()){
+                    $task->setLot($lot);
+                }
+            }
             $date = new \DateTime($request->request->get('date'));
             $task->setDate($date);
             $this->getDoctrine()->getManager()->persist($task);
@@ -399,10 +418,15 @@ class LotsController extends Controller
         $form = $this->createForm('lot', $lot, [
             'disabled' => true,
         ]);
+        $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findBy(array(
+            'user' => $this->getUser() ,
+            'lot' => $lot
+        ),['isSuccess' => 'ASC','date' => 'DESC']);
 
         return [
             'lot' => $lot,
             'form' => $form->createView(),
+            'tasks' => $tasks
         ];
     }
 

@@ -322,18 +322,19 @@
             </div>
         </div>
         <div class="col-xs-6">
-            <form method="POST" action="{{ path('task_add') }}">
-                <div class="form-group">
-                    <label>Задача:&nbsp;</label>
-                    <input type="text" class="form-control" name="title" id="task" required>
-                </div>
-                <div class="form-inline">
-                    <label>Дата:&nbsp;</label>
-                    <input type="date" class="form-control" name="date" id="date" required value="{{ 'now' | date('Y-m-d') }}">
-                    <button class="btn btn-primary" style="float: right">Создать</button>
-                </div>
-            </form>
-            <br />
+            <h3>Задачи </h3>
+            {#<form method="POST" action="{{ path('task_add') }}">#}
+                {#<div class="form-group">#}
+                    {#<label>Задача:&nbsp;</label>#}
+                    {#<input type="text" class="form-control" name="title" id="task" required>#}
+                {#</div>#}
+                {#<div class="form-inline">#}
+                    {#<label>Дата:&nbsp;</label>#}
+                    {#<input type="date" class="form-control" name="date" id="date" required value="{{ 'now' | date('Y-m-d') }}">#}
+                    {#<button class="btn btn-primary" style="float: right">Создать</button>#}
+                {#</div>#}
+            {#</form>#}
+            {#<br />#}
             <div class="tasks">
                 {% for t in tasks %}
                     <div class="form-group" style="border-bottom: 1px solid #CCC">
