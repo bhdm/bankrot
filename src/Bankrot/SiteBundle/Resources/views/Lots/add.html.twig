@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col-sm-3">{{ form_row(form.initialPrice) }}</div>
         <div class="col-sm-3">
-            <div class="form-group {{ ((form.cutOffPrice.vars.errors|length) > 0 
+            <div class="form-group {{ ((form.cutOffPrice.vars.errors|length) > 0
                     or (form.cutOffPricePercent.vars.errors|length) > 0) ? 'has-error' : '' }} ">
                 <label class="control-label">Стоимость отсечения</label>
                 {{ form_widget(form.cutOffPrice) }}
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="form-group {{ ((form.depositPrice.vars.errors|length) > 0 
+            <div class="form-group {{ ((form.depositPrice.vars.errors|length) > 0
                     or (form.depositPricePercent.vars.errors|length) > 0
                     or (form.depositPricePercentCurrent.vars.errors|length) > 0) ? 'has-error' : '' }} ">
                 <label class="control-label">Задаток</label>
@@ -97,15 +97,24 @@
 <fieldset>
     <legend>Порядок снижения цены</legend>
     <div class="row">
+        <div  class="col-sm-2"><label>Период действия</label></div>
+        <div class="col-sm-3">
+            <div class="form-group">{{ form_widget(form.newDropRuleLivePeriod) }}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"><label>Период</label></div>
         <div class="col-sm-3">
             <div class="form-group {{ ((form.newDropRulePeriod.vars.errors|length) > 0
                     or (form.newDropRulePeriodWork.vars.errors|length) > 0) ? 'has-error': '' }}">
-                <label>Период</label>
+
                 {{ form_widget(form.newDropRulePeriod) }}
                 {{ form_widget(form.newDropRulePeriodWork) }}
                 {{ form_errors(form.newDropRulePeriod) }}
                 {{ form_errors(form.newDropRulePeriodWork) }}
             </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group">
                 <select class="form-control" data-toggle-control-visible>
                     <option {{ form.newDropRulePeriod.vars.value ? 'selected' : '' }} value="{{ form.newDropRulePeriod.vars.id }}">
@@ -117,15 +126,19 @@
                 </select>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2"><label>Порядок снижения</label></div>
         <div class="col-sm-3">
             <div class="form-group {{ ((form.newDropRuleOrder.vars.errors|length) > 0
                     or (form.newDropRuleOrderCurrent.vars.errors|length) > 0) ? 'has-error': '' }}">
-                <label>Порядок снижения</label>
                 {{ form_widget(form.newDropRuleOrder) }}
                 {{ form_widget(form.newDropRuleOrderCurrent) }}
                 {{ form_errors(form.newDropRuleOrder) }}
                 {{ form_errors(form.newDropRuleOrderCurrent) }}
             </div>
+        </div>
+        <div class="col-sm-4" >
             <div class="form-group">
                 <select class="form-control" data-toggle-control-visible>
                     <option {{ form.newDropRuleOrder.vars.value ? 'selected' : '' }} value="{{ form.newDropRuleOrder.vars.id }}">
@@ -137,8 +150,8 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-3">{{ form_row(form.newDropRuleLivePeriod) }}</div>
     </div>
+
 </fieldset>
 <br />
 <br />
@@ -210,11 +223,11 @@
             if ($('#lot_minCostCapitalization').val() == '' ){ error = true }
             if ($('#lot_maxCostCapitalization').val() == '' ){ error = true }
             if (error == false){
-                f1 = (parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))/parseInt($('#lot_minCostCapitalization').val())*100;
-                f1 = parseInt(f1);
-                f2 = (parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))/parseInt($('#lot_maxCostCapitalization').val())*100;
-                f2 = parseInt(f2);
-                $('#formula').html('<span class="text-primary" style="font-size: 18px">Мин. = '+f1+'%<br />Макс. = '+f2+'%</span>');
+                f1 = parseInt($('#lot_minCostCapitalization').val())/(parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))*100-100;
+                f1 = parseFloat(f1);
+                f2 = parseInt($('#lot_maxCostCapitalization').val())/(parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))*100-100;
+                f2 = parseFloat(f2);
+                $('#formula').html('<span class="text-primary" style="font-size: 18px">Минимальная = '+f1+'%<br />Максимальная = '+f2+'%</span>');
             }else{
                 $('#formula').html('<span class="text-danger">Данные для формулы не корректны</span>');            }
         }
