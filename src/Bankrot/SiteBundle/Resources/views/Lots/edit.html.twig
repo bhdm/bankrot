@@ -161,47 +161,41 @@
 
         {% for dropRule in lot.dropRules %}
             <div class="row" data-root>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Период</label>
-                        <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
+                <div class="row">
+                    <div class="col-xs-2"><label>Период</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <select class="form-control" disabled>
-                            <option>{{ dropRule.period ? 'значение указано в календарных днях' : 'значение указано в рабочих днях' }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Порядок снижения</label>
-                        <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" disabled>
-                            <option>{{ dropRule.order ? 'значение указано в процентах от начальной стоимости' : 'значение указано в процентах от стоимости текущего периода' }}</option>
-                        </select>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <select class="form-control" disabled>
+                                <option>{{ dropRule.period ? 'значение указано в календарных днях' : 'значение указано в рабочих днях' }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Период действия</label>
-                        <input class="form-control"
-                               value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}"
-                               disabled/>
+                <div class="row">
+                    <div class="col-xs-2"><label>Порядок снижения</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <select class="form-control" disabled>
+                                <option>{{ dropRule.order ? 'значение указано в процентах от начальной стоимости' : 'значение указано в процентах от стоимости текущего периода' }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-
-                        <div>
-                            <button
-                                    data-drop-rule-remove
-                                    data-lot-id="{{ lot.id }}"
-                                    data-drop-rule-id="{{ dropRule.id }}" class="btn btn-danger"><i
-                                        class="fa fa-trash"></i> Удалить
-                            </button>
+                <div class="row">
+                    <div class="col-xs-2"><label>Период действия</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
                         </div>
                     </div>
                 </div>
@@ -209,51 +203,59 @@
         {% endfor %}
 
         <div class="row">
+            <div  class="col-sm-2"><label>Период действия</label></div>
+            <div class="col-sm-3">
+                <div class="form-group">{{ form_widget(form.newDropRuleLivePeriod) }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2"><label>Период</label></div>
             <div class="col-sm-3">
                 <div class="form-group {{ ((form.newDropRulePeriod.vars.errors|length) > 0
                 or (form.newDropRulePeriodWork.vars.errors|length) > 0) ? 'has-error': '' }}">
-                    <label>Период</label>
+
                     {{ form_widget(form.newDropRulePeriod) }}
                     {{ form_widget(form.newDropRulePeriodWork) }}
                     {{ form_errors(form.newDropRulePeriod) }}
                     {{ form_errors(form.newDropRulePeriodWork) }}
                 </div>
+            </div>
+            <div class="col-sm-4">
                 <div class="form-group">
                     <select class="form-control" data-toggle-control-visible>
-                        <option {{ form.newDropRulePeriod.vars.value ? 'selected' : '' }}
-                                value="{{ form.newDropRulePeriod.vars.id }}">
+                        <option {{ form.newDropRulePeriod.vars.value ? 'selected' : '' }} value="{{ form.newDropRulePeriod.vars.id }}">
                             значение указано в календарных днях
                         </option>
-                        <option {{ form.newDropRulePeriodWork.vars.value ? 'selected' : '' }}
-                                value="{{ form.newDropRulePeriodWork.vars.id }}">
+                        <option {{ form.newDropRulePeriodWork.vars.value ? 'selected' : '' }} value="{{ form.newDropRulePeriodWork.vars.id }}">
                             значение указано в рабочих днях
                         </option>
                     </select>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2"><label>Порядок снижения</label></div>
             <div class="col-sm-3">
                 <div class="form-group {{ ((form.newDropRuleOrder.vars.errors|length) > 0
                 or (form.newDropRuleOrderCurrent.vars.errors|length) > 0) ? 'has-error': '' }}">
-                    <label>Порядок снижения</label>
                     {{ form_widget(form.newDropRuleOrder) }}
                     {{ form_widget(form.newDropRuleOrderCurrent) }}
                     {{ form_errors(form.newDropRuleOrder) }}
                     {{ form_errors(form.newDropRuleOrderCurrent) }}
                 </div>
+            </div>
+            <div class="col-sm-4" >
                 <div class="form-group">
                     <select class="form-control" data-toggle-control-visible>
-                        <option {{ form.newDropRuleOrder.vars.value ? 'selected' : '' }}
-                                value="{{ form.newDropRuleOrder.vars.id }}">
+                        <option {{ form.newDropRuleOrder.vars.value ? 'selected' : '' }} value="{{ form.newDropRuleOrder.vars.id }}">
                             значение указано в процентах от начальной стоимости
                         </option>
-                        <option {{ form.newDropRuleOrderCurrent.vars.value ? 'selected' : '' }}
-                                value="{{ form.newDropRuleOrderCurrent.vars.id }}">
+                        <option {{ form.newDropRuleOrderCurrent.vars.value ? 'selected' : '' }} value="{{ form.newDropRuleOrderCurrent.vars.id }}">
                             значение указано в процентах от стоимости текущего периода
                         </option>
                     </select>
                 </div>
             </div>
-            <div class="col-sm-3">{{ form_row(form.newDropRuleLivePeriod) }}</div>
         </div>
     </fieldset>
     <br />

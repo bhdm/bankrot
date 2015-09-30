@@ -95,35 +95,44 @@
 
     <fieldset>
         <legend>Порядок снижения цены</legend>
-
         {% for dropRule in lot.dropRules %}
             <div class="row" data-root>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Период</label>
-                        <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
+                <div class="row">
+                    <div class="col-xs-2"><label>Период</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <select class="form-control" disabled>
-                            <option>{{ dropRule.period ? 'значение указано в календарных днях' : 'значение указано в рабочих днях' }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Порядок снижения</label>
-                        <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" disabled>
-                            <option>{{ dropRule.order ? 'значение указано в процентах от начальной стоимости' : 'значение указано в процентах от стоимости текущего периода' }}</option>
-                        </select>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <select class="form-control" disabled>
+                                <option>{{ dropRule.period ? 'значение указано в календарных днях' : 'значение указано в рабочих днях' }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Период действия</label>
-                        <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
+                <div class="row">
+                    <div class="col-xs-2"><label>Порядок снижения</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <select class="form-control" disabled>
+                                <option>{{ dropRule.order ? 'значение указано в процентах от начальной стоимости' : 'значение указано в процентах от стоимости текущего периода' }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2"><label>Период действия</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
+                        </div>
                     </div>
                 </div>
             </div>
