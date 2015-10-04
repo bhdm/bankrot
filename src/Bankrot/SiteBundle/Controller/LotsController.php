@@ -55,7 +55,6 @@ class LotsController extends Controller
      * @Route("/calendar-widget/{year}/{month}", name="calendar_widget", defaults={"year" = null, "month" = null}, requirements={"year"="\d+", "month"="\d+"})
      * @Template()
      */
-//* @Route("/calendar-widget/{year}/{month}/{lotId}", name="calendar_widget", defaults={"year" = null, "month" = null}, requirements={"lotId"="\d+", "year"="\d+", "month"="\d+"})
     public function calendarWidgetAction(Request $request, $year, $month){
 //        if (!isset($lotId)){
 //            $lotId = null;
@@ -75,8 +74,6 @@ class LotsController extends Controller
         $monthTable     = $calendar->getMonthTable();
         $numberOfEvents = count($tasks);
 
-        $monthTable     = $calendar->getMonthTable();
-        $numberOfEvents = count($tasks);
 
         foreach ($monthTable as $rowKey => $row) {
             foreach ($monthTable[$rowKey] as $colKey => $element) {
@@ -90,13 +87,26 @@ class LotsController extends Controller
                     $tmp_element = $element['number'];
                 }
                 for ($i = 0; $i < $numberOfEvents; $i++) {
+                    $date = new \DateTime($calendar->getYear() . $calendar->getMonthD() . $tmp_element. '00:00:00');
+                    $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findBy(['user' =>$this->getUser(), 'date' => $date ]);
+                    $active = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findActiveLots($this->getUser());
+                    $control = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findInactiveLots($this->getUser());
+                    $arhive = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findArchiveLots($this->getUser());
+                    $count = count($tasks) + count($active) + count($control) + count($arhive);
+//                    $monthTable[$rowKey][$colKey]['events']['count'] = $count;
+
+
                     #Здесь к каждому дню приписываем следим или нет в этом лоте
-                    if ($tasks[$i]->getDate()->format('Ymd') == $calendar->getYear() . $calendar->getMonthD() . $tmp_element ) {
-                        $monthTable[$rowKey][$colKey]['events'][] = $tasks[$i]->getLot()->getName();
-                    }
+//                    if ($tasks[$i]->getDate()->format('Ymd') == $calendar->getYear() . $calendar->getMonthD() . $tmp_element ) {
+//                        $tasks = $this->getDoctrine()->getRepository()
+//                        = $tasks[$i]->getLot()->getName();
+//                    }
                 }
             }
         }
+
+
+
 
         $nowYear  = date('Y', time()) + 1; //Добавляем год что бы посмотреть события и на следующий год
         $fullYear = $month === '0';
@@ -166,7 +176,11 @@ class LotsController extends Controller
                     $task->setLot($lot);
                 }
             }
-            $date = new \DateTime($request->request->get('date'));
+            if($request->request->get('date')){
+                $date = new \DateTime($request->request->get('date'));
+            }else{
+                $date = null;
+            }
             $task->setDate($date);
             $this->getDoctrine()->getManager()->persist($task);
             $this->getDoctrine()->getManager()->flush($task);

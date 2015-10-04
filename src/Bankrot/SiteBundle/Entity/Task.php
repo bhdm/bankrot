@@ -24,7 +24,7 @@ class Task extends BaseEntity
     protected $title;
 
     /**
-     * @ORM\Column(name="dateAt", type="datetime", nullable=true)
+     * @ORM\Column(name="date", type="datetime", nullable=true)
      */
     protected $date;
 
@@ -38,6 +38,9 @@ class Task extends BaseEntity
      */
     protected $isSuccess = false;
 
+    public function __construct(){
+        $this->date = null;
+    }
     /**
      * @return mixed
      */

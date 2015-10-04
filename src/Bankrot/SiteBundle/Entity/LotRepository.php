@@ -59,17 +59,24 @@ class LotRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findArchiveLots(User $owner, $status)
+    public function findArchiveLots(User $owner, $status = null)
     {
         $qb = $this->createQueryBuilder('l');
         $qb
-            ->innerJoin('BankrotSiteBundle:LotStatus', 'ls', 'WITH', 'ls = l.lotStatus')
-            ->where($qb->expr()->andX(
-                $qb->expr()->eq('l.owner', ':owner'),
-                $qb->expr()->eq('ls.isTrash', 1),
-                $qb->expr()->eq('ls.id', $status)
-            ))
-            ->orderBy('l.createdAt', 'desc')
+            ->innerJoin('BankrotSiteBundle:LotStatus', 'ls', 'WITH', 'ls = l.lotStatus');
+            if ($status != null){
+                $qb->where($qb->expr()->andX(
+                    $qb->expr()->eq('l.owner', ':owner'),
+                    $qb->expr()->eq('ls.isTrash', 1),
+                    $qb->expr()->eq('ls.id', $status)
+                ));
+            }else{
+                $qb->where($qb->expr()->andX(
+                    $qb->expr()->eq('l.owner', ':owner'),
+                    $qb->expr()->eq('ls.isTrash', 1)
+                ));
+            }
+            $qb->orderBy('l.createdAt', 'desc')
             ->setParameters([
                 'owner' => $owner,
             ]);

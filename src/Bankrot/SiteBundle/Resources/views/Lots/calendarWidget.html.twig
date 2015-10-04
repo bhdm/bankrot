@@ -294,7 +294,21 @@
 							<td class="{{ day ? (day['events'] ? 'calendar_cell_full oneEvent') }}{{ loop.index > 5 ? ' red' }}">
 							{% endif %}
 							-->
-                                <td class="{{ cal.year~'-'~cal.month~'-'~day['number'] == dateNow | date('Y-m-d') ? 'nowDate' : ''}}{{ day ? (day['events'] ? 'calendar_cell_full') }}{{ loop.index > 5 ? ' red' }}" data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}">
+                                <td
+                                        {% if cal.year~'-'~cal.month~'-'~day['number'] == dateNow | date('Y-m-d') %}
+                                            {% set class1 = 'nowDate ' %}
+                                        {% else %}
+                                            {% set class1 = ' ' %}
+                                        {% endif %}
+
+                                        {% if day and day['events'] %}
+                                            {% set class2 = 'calendar_cell_full' %}
+                                        {% else %}
+                                            {% set class2 = ' ' %}
+                                        {% endif %}
+
+                                    class="{{ class1~class2 }}{{ loop.index > 5 ? ' red' }}"
+                                    data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}">
                                     {% if day['events'] %}
                                         *
                                     {% endif %}
