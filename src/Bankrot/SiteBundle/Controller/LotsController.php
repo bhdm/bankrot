@@ -207,6 +207,9 @@ class LotsController extends Controller
             $date->format('d'),
             $this->getUser()->getId()
         );
+        $active  =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('active', $this->getUser()->getId());
+        $control =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('control', $this->getUser()->getId());
+        $arhive  =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('arhive', $this->getUser()->getId());
 
 
         $events = [];
@@ -215,6 +218,24 @@ class LotsController extends Controller
                 'id' => $task->getId(),
                 'title' => $task->getTitle(),
                 ];
+        }
+        foreach ($active as $task){
+            $events[] = [
+                'id' => $task->getId(),
+                'title' => $task->getTitle(),
+            ];
+        }
+        foreach ($control as $task){
+            $events[] = [
+                'id' => $task->getId(),
+                'title' => $task->getTitle(),
+            ];
+        }
+        foreach ($arhive as $task){
+            $events[] = [
+                'id' => $task->getId(),
+                'title' => $task->getTitle(),
+            ];
         }
         return new JsonResponse(['events' => $events]);
     }

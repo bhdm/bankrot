@@ -14,9 +14,10 @@
 
                 }).done(function(json){
                     var text = '';
+                    $('#h3-date').html(date)
                     for (i = 0; i<json.events.length ; i++){
                         text += '<div class="form-group" style="border-bottom: 1px solid #CCC">';
-                        text += '<input type="checkbox" class="" value="'+json.events[0].id+'">&nbsp;'+json.events[0].title;
+                        text += json.events[0].title;
                         text += '</div>';
                     }
                     $('.tasks').html(text);
@@ -321,7 +322,7 @@
             </div>
         </div>
         <div class="col-xs-6">
-            <h3>Задачи </h3>
+            <h3>Задачи <span id="h3-date"></span></h3>
             {#<form method="POST" action="{{ path('task_add') }}">#}
                 {#<div class="form-group">#}
                     {#<label>Задача:&nbsp;</label>#}
@@ -337,7 +338,8 @@
             <div class="tasks">
                 {% for t in tasks %}
                     <div class="form-group" style="border-bottom: 1px solid #CCC">
-                        <input type="checkbox" class="" value="{{ t.id }}">&nbsp;{{ t.title }}
+                        {#<input type="checkbox" class="" value="{{ t.id }}">&nbsp;#}
+                        {{ t.title }}
                     </div>
                 {% endfor %}
             </div>
