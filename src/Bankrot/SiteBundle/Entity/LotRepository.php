@@ -84,4 +84,5 @@ class LotRepository extends EntityRepository
         return $qb->getQuery()
             ->getResult();
     }
+
 }

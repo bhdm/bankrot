@@ -279,22 +279,7 @@
                         <tr>
                             {% for day in row %}
                                 {% if day %}
-                                    <!--
-							{% if day['events'] | length == 0 %}
-							<td class="{{ loop.index > 5 ? ' red' }}">
-							{% elseif day['events'] | length >= 10 %}
-							<td class="{{ day ? (day['events'] ? 'calendar_cell_full fiveEvent') }}{{ loop.index > 5 ? ' red' }}">
-							{% elseif day['events'] | length >= 7 %}
-							<td class="{{ day ? (day['events'] ? 'calendar_cell_full fourEvent') }}{{ loop.index > 5 ? ' red' }}">
-							{% elseif day['events'] | length >= 5 %}
-							<td class="{{ day ? (day['events'] ? 'calendar_cell_full threeEvent') }}{{ loop.index > 5 ? ' red' }}">
-							{% elseif day['events'] | length >= 2 %}
-							<td class="{{ day ? (day['events'] ? 'calendar_cell_full twoEvent') }}{{ loop.index > 5 ? ' red' }}">
-							{% elseif day['events'] | length >= 1 %}
-							<td class="{{ day ? (day['events'] ? 'calendar_cell_full oneEvent') }}{{ loop.index > 5 ? ' red' }}">
-							{% endif %}
-							-->
-                                <td
+                                <td style="position: relative"
                                         {% if cal.year~'-'~cal.month~'-'~day['number'] == dateNow | date('Y-m-d') %}
                                             {% set class1 = 'nowDate ' %}
                                         {% else %}
@@ -310,7 +295,7 @@
                                     class="{{ class1~class2 }}{{ loop.index > 5 ? ' red' }}"
                                     data-date="{{ (nextMonthYear)~'-'~(nextMonth-1)~'-'~day['number'] }}">
                                     {% if day['events'] %}
-                                        *
+                                        <div style="position: absolute; top: 1px; left: 1px; font-size: 10px;">{{ day['events']*1 }}</div>
                                     {% endif %}
 
                                     {{ day['number'] }}

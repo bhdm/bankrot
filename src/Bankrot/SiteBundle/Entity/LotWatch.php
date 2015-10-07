@@ -5,7 +5,7 @@ namespace Bankrot\SiteBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Bankrot\SiteBundle\Entity\LotWatchRepository")
  * @ORM\Table(name="lot_watches")
  */
 class LotWatch

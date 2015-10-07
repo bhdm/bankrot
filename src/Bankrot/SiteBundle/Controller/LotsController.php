@@ -66,41 +66,27 @@ class LotsController extends Controller
         if ($month == null){
             $month = $dateNow->format('m');
         }
-        $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate($year, $month, $dateNow->format('d'), $this->getUser()->getId());
+
 
         $calendar = new Calendar();
         $calendar->setMonth($month);
         $calendar->setYear($year);
         $monthTable     = $calendar->getMonthTable();
-        $numberOfEvents = count($tasks);
 
 
         foreach ($monthTable as $rowKey => $row) {
             foreach ($monthTable[$rowKey] as $colKey => $element) {
                 if ($element) {
-                    $monthTable[$rowKey][$colKey]['events'] = array();
-                }
-                if ($element['number'] < 10) {
-                    $tmp_element = '0' . $element['number'];
-                }
-                else {
-                    $tmp_element = $element['number'];
-                }
-                for ($i = 0; $i < $numberOfEvents; $i++) {
-                    $date = new \DateTime($calendar->getYear() . $calendar->getMonthD() . $tmp_element. '00:00:00');
-                    $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findBy(['user' =>$this->getUser(), 'date' => $date ]);
-                    $active = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findActiveLots($this->getUser());
-                    $control = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findInactiveLots($this->getUser());
-                    $arhive = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findArchiveLots($this->getUser());
-                    $count = count($tasks) + count($active) + count($control) + count($arhive);
-//                    $monthTable[$rowKey][$colKey]['events']['count'] = $count;
+                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $element['number']. '00:00:00');
+                    # Находим таски на этот день
+                    $tasks = count($this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate($year, $month, $element['number'], $this->getUser()->getId()));
 
+                    #Теперь событиия по лотам
+                    $active  =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('active', $this->getUser()->getId()));
+                    $control =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('control', $this->getUser()->getId()));
+                    $arhive  =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('arhive', $this->getUser()->getId()));
 
-                    #Здесь к каждому дню приписываем следим или нет в этом лоте
-//                    if ($tasks[$i]->getDate()->format('Ymd') == $calendar->getYear() . $calendar->getMonthD() . $tmp_element ) {
-//                        $tasks = $this->getDoctrine()->getRepository()
-//                        = $tasks[$i]->getLot()->getName();
-//                    }
+                    $monthTable[$rowKey][$colKey]['events'] = $tasks+$active+$arhive+$control;
                 }
             }
         }
@@ -221,6 +207,7 @@ class LotsController extends Controller
             $date->format('d'),
             $this->getUser()->getId()
         );
+
 
         $events = [];
         foreach ($tasks as $task){
