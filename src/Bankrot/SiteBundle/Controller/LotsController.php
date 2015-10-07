@@ -163,11 +163,31 @@ class LotsController extends Controller
     }
 
     /**
+     * @Route("/task/delete/{id}", name="task_delete")
+     */
+    public function deleteTaskAction(Request $request, $id){
+        $task = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findOneById($id);
+        if ($task && $task->getUser() == $this->getUser()){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($task);
+            $em->flush();
+        }
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
      * @Route("/task/add", name="task_add")
      */
     public function addTaskAction(Request $request){
         if ($request->getMethod() == 'POST'){
-            $task = new Task();
+            if ($request->request->get('id') == null || $request->request->get('id') == ''){
+                $task = new Task();
+            }else{
+                $task = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findOneById($request->request->get('id'));
+                if ($task->getUser()->getId() != $this->getUser()->getId()){
+                    throw $this->createAccessDeniedException('Ошибка доступа к задаче');
+                }
+            }
             $task->setUser($this->getUser());
             $task->setTitle($request->request->get('title'));
             if ($request->request->get('lot')){
@@ -182,7 +202,9 @@ class LotsController extends Controller
                 $date = null;
             }
             $task->setDate($date);
-            $this->getDoctrine()->getManager()->persist($task);
+            if ($request->request->get('id') == null || $request->request->get('id') == '') {
+                $this->getDoctrine()->getManager()->persist($task);
+            }
             $this->getDoctrine()->getManager()->flush($task);
         }
         return $this->redirect($request->headers->get('referer'));
