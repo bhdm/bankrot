@@ -30,10 +30,10 @@
             if ($('#lot_minCostCapitalization').val() == '' ){ error = true }
             if ($('#lot_maxCostCapitalization').val() == '' ){ error = true }
             if (error == false){
-                f1 = (parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))/parseInt($('#lot_minCostCapitalization').val())*100;
-                f1 = parseInt(f1);
-                f2 = (parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))/parseInt($('#lot_maxCostCapitalization').val())*100;
-                f2 = parseInt(f2);
+                f1 = parseInt($('#lot_minCostCapitalization').val())/(parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))*100-100;
+                f1 = parseFloat(f1).toFixed(2);
+                f2 = parseInt($('#lot_maxCostCapitalization').val())/(parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))*100-100;
+                f2 = parseFloat(f2).toFixed(2);
                 $('#formula').html('<span class="text-primary" style="font-size: 18px">Мин. = '+f1+'%<br />Макс. = '+f2+'%</span>');
             }else{
                 $('#formula').html('<span class="text-danger">Данные для формулы не корректны</span>');            }
