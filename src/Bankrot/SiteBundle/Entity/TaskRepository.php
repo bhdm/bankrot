@@ -22,7 +22,7 @@ class TaskRepository extends EntityRepository
 //                ->where('l.id = :lotId')
 //                ->setParameter('lotId',$lotId);
 //        }else{
-            $result->where('t.lot is null');
+//            $result->where('t.lot is null');
 //        }
         $result->andWhere('t.date >= :date1')
             ->andWhere('t.date <= :date2')
