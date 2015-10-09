@@ -82,9 +82,9 @@ class LotsController extends Controller
                     $tasks = count($this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate($year, $month, $element['number'], $this->getUser()->getId()));
 
                     #Теперь событиия по лотам
-                    $active  =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('active', $this->getUser()->getId()));
-                    $control =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('control', $this->getUser()->getId()));
-                    $arhive  =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('arhive', $this->getUser()->getId()));
+                    $active  =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'active', $this->getUser()->getId()));
+                    $control =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'control', $this->getUser()->getId()));
+                    $arhive  =  count($this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'arhive', $this->getUser()->getId()));
 
                     $monthTable[$rowKey][$colKey]['events'] = $tasks+$active+$arhive+$control;
                 }
@@ -207,9 +207,9 @@ class LotsController extends Controller
             $date->format('d'),
             $this->getUser()->getId()
         );
-        $active  =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('active', $this->getUser()->getId());
-        $control =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('control', $this->getUser()->getId());
-        $arhive  =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent('arhive', $this->getUser()->getId());
+        $active  =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'active', $this->getUser()->getId());
+        $control =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'control', $this->getUser()->getId());
+        $arhive  =  $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'arhive', $this->getUser()->getId());
 
 
         $events = [];
@@ -220,21 +220,24 @@ class LotsController extends Controller
                 ];
         }
         foreach ($active as $task){
+            $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($task->getLot()->getId());
             $events[] = [
-                'id' => $task->getId(),
-                'title' => $task->getTitle(),
+                'id' => $lot->getId(),
+                'title' => 'Лот "'.$lot.' перешел в статус активные',
             ];
         }
         foreach ($control as $task){
+            $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($task->getLot()->getId());
             $events[] = [
-                'id' => $task->getId(),
-                'title' => $task->getTitle(),
+                'id' => $lot->getId(),
+                'title' => 'Лот "'.$lot.' перешел в статус контрольные',
             ];
         }
         foreach ($arhive as $task){
+            $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($task->getLot()->getId());
             $events[] = [
-                'id' => $task->getId(),
-                'title' => $task->getTitle(),
+                'id' => $lot->getId(),
+                'title' => 'Лот "'.$lot.' перешел в статус истекшие',
             ];
         }
         return new JsonResponse(['events' => $events]);

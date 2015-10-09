@@ -15,9 +15,9 @@
                 }).done(function(json){
                     var text = '';
                     $('#h3-date').html(date)
-                    for (i = 0; i<json.events.length ; i++){
+                    for (var i = 0; i < json.events.length ; i++){
                         text += '<div class="form-group" style="border-bottom: 1px solid #CCC">';
-                        text += json.events[0].title;
+                        text += json.events[i].title;
                         text += '</div>';
                     }
                     $('.tasks').html(text);

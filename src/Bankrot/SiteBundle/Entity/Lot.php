@@ -180,6 +180,9 @@ class Lot
     protected $maxCostCapitalization;
 
 
+    public function __toString(){
+        return $this->name;
+    }
 
     public function __construct()
     {
