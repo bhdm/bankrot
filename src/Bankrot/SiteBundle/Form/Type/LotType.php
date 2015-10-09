@@ -52,7 +52,7 @@ class LotType extends AbstractType
 
             ->add('costPurchase', 'text', ['label' => 'Стоимость покупки','required' => false])
             ->add('costAcquisition', 'text', ['label' => 'Расходы на приобретение','required' => false])
-            ->add('periodPayback', 'date', ['label' => 'Срок окупаемости','required' => false, 'attr' => ['format' => 'dd.MM.yyyy'], 'widget' => 'single_text'])
+            ->add('periodPayback', 'text', ['label' => 'Срок окупаемости','required' => false])
             ->add('ViewCapitalization', null, ['label' => 'Вид капитализации','required' => false])
             ->add('minCostCapitalization', 'text', ['label' => 'Мин. стоимость капитализации','required' => false])
             ->add('maxCostCapitalization', 'text', ['label' => 'Макс. стоимость капитализации','required' => false])

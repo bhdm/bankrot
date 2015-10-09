@@ -159,10 +159,10 @@ class Lot
     protected $costAcquisition;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Assert\Date()
      */
-    protected $periodPayback;
+    protected $periodPayback = 0;
 
     /**
      * @ORM\Column(type="string", nullable=true)
