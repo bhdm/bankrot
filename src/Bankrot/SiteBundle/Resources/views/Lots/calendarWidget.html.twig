@@ -38,24 +38,19 @@
 
             });
 
-            {#$('#boxOk').click(function(){#}
-            {#var date = $('#box-date').val();#}
-            {#var price = $('#box-price').val();#}
-            {#var deposite = $('#box-deposit').val();#}
-            {#$.ajax({#}
-            {#url: Routing.generate('add_lot_show', {'lotId': {{ lot.id }}}),#}
-            {#data: 'date='+date+'&price='+price+'&dep='+deposite,#}
-            {#type: 'POST',#}
-            {#success: function(html){#}
-            {#if (html == 'add'){#}
-            {#window.location.reload();#}
-            {#}#}
-            {#//                        else{#}
-            {#//                            item.removeClass('showLot');#}
-            {#//                        }#}
-            {#}#}
-            {#});#}
-            {#})#}
+
+            $('#h3-date').html('{{ dateNow|date('Y-m-d') }}');
+            $.ajax({
+                url: Routing.generate('task_get',{'date' : '{{ dateNow | date('Y-m-d') }}'}),
+            }).done(function(json){
+                var text = '';
+                for (var i = 0; i < json.events.length ; i++){
+                    text += '<div class="form-group" style="border-bottom: 1px solid #CCC">';
+                    text += json.events[i].title;
+                    text += '</div>';
+                }
+                $('.tasks').html(text);
+            });
         })
     </script>
 {% endblock %}
