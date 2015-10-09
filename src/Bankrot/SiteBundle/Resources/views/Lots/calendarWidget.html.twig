@@ -17,7 +17,7 @@
                     $('#h3-date').html(date)
                     for (var i = 0; i < json.events.length ; i++){
                         text += '<div class="form-group" style="border-bottom: 1px solid #CCC">';
-                        text += json.events[i].title;
+                        text += (i+1)+'. '+json.events[i].title;
                         text += '</div>';
                     }
                     $('.tasks').html(text);
@@ -46,7 +46,7 @@
                 var text = '';
                 for (var i = 0; i < json.events.length ; i++){
                     text += '<div class="form-group" style="border-bottom: 1px solid #CCC">';
-                    text += json.events[i].title;
+                    text += (i+1)+'. '+json.events[i].title;
                     text += '</div>';
                 }
                 $('.tasks').html(text);

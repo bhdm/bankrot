@@ -432,6 +432,22 @@ class Lot
         $this->photos = $photos;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param mixed $images
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+    }
+
 
 
 }
