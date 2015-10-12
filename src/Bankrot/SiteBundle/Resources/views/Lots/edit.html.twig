@@ -5,7 +5,25 @@
     <script src="{{ asset('bundles/bankrotsite/js/Lots/edit.js') }}"></script>
 
     <script>
+        var number = 1;
         $(document).ready(function(){
+
+            $('#add-drop-rule').click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('add_drop_rule') }}",
+                    data: "number="+number,
+                    success: function(msg){
+                        $('#droprules').append(msg);
+//                        $("#lot_newDropRuleLivePeriod_"+number).inputmask("Regex");
+                        $("select").selecter();
+                        number = number + 1;
+
+                    }
+                });
+                return false;
+            });
+
             formula();
             var fileInputNumber = 2;
             $('#addfileinput').click(function(){
@@ -202,61 +220,11 @@
             </div>
         {% endfor %}
 
-        <div class="row">
-            <div  class="col-sm-2"><label>Период действия</label></div>
-            <div class="col-sm-3">
-                <div class="form-group">{{ form_widget(form.newDropRuleLivePeriod) }}</div>
-            </div>
+        <div  id="droprules">
+            {{ render(controller('BankrotSiteBundle:Lots:addDropRule')) }}
         </div>
-        <div class="row">
-            <div class="col-xs-2"><label>Период</label></div>
-            <div class="col-sm-3">
-                <div class="form-group {{ ((form.newDropRulePeriod.vars.errors|length) > 0
-                or (form.newDropRulePeriodWork.vars.errors|length) > 0) ? 'has-error': '' }}">
+        <span id="add-drop-rule" class="btn btn-primary">Добавить новое правило</span>
 
-                    {{ form_widget(form.newDropRulePeriod) }}
-                    {{ form_widget(form.newDropRulePeriodWork) }}
-                    {{ form_errors(form.newDropRulePeriod) }}
-                    {{ form_errors(form.newDropRulePeriodWork) }}
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <select class="form-control" data-toggle-control-visible>
-                        <option {{ form.newDropRulePeriod.vars.value ? 'selected' : '' }} value="{{ form.newDropRulePeriod.vars.id }}">
-                            значение указано в календарных днях
-                        </option>
-                        <option {{ form.newDropRulePeriodWork.vars.value ? 'selected' : '' }} value="{{ form.newDropRulePeriodWork.vars.id }}">
-                            значение указано в рабочих днях
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-2"><label>Порядок снижения</label></div>
-            <div class="col-sm-3">
-                <div class="form-group {{ ((form.newDropRuleOrder.vars.errors|length) > 0
-                or (form.newDropRuleOrderCurrent.vars.errors|length) > 0) ? 'has-error': '' }}">
-                    {{ form_widget(form.newDropRuleOrder) }}
-                    {{ form_widget(form.newDropRuleOrderCurrent) }}
-                    {{ form_errors(form.newDropRuleOrder) }}
-                    {{ form_errors(form.newDropRuleOrderCurrent) }}
-                </div>
-            </div>
-            <div class="col-sm-4" >
-                <div class="form-group">
-                    <select class="form-control" data-toggle-control-visible>
-                        <option {{ form.newDropRuleOrder.vars.value ? 'selected' : '' }} value="{{ form.newDropRuleOrder.vars.id }}">
-                            значение указано в процентах от начальной стоимости
-                        </option>
-                        <option {{ form.newDropRuleOrderCurrent.vars.value ? 'selected' : '' }} value="{{ form.newDropRuleOrderCurrent.vars.id }}">
-                            значение указано в процентах от стоимости текущего периода
-                        </option>
-                    </select>
-                </div>
-            </div>
-        </div>
     </fieldset>
     <br />
     <br />

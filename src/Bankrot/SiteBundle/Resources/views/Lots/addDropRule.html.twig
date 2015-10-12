@@ -1,0 +1,54 @@
+<hr />
+<div class="row">
+    <div class="col-sm-2"><label>Период действия</label></div>
+    <div class="col-sm-3">
+        <div class="form-group"><input type="text" id="lot_newDropRuleLivePeriod_{{ number }}" name="newDropRuleLivePeriod[{{ number }}]" data-inputmask="99.99.9999 - 99.99.9999" placeholder="Введите период действия" class="form-control"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2"><label>Период</label></div>
+    <div class="col-sm-3">
+        <div class="form-group ">
+
+            <input type="text" id="lot_newDropRulePeriod_{{ number }}" name="newDropRulePeriod[{{ number }}]" placeholder="Введите период" class="form-control">
+            <input type="hidden" id="lot_newDropRulePeriodWork_{{ number }}" name="newDropRulePeriodWork[{{ number }}]" placeholder="Введите период" class="form-control" value="0">
+
+
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <select class="form-control" data-toggle-control-visible="" tabindex="-1">
+                <option value="lot_newDropRulePeriod_[{{ number }}]">
+                    значение указано в календарных днях
+                </option>
+                <option value="lot_newDropRulePeriodWork_[{{ number }}]">
+                    значение указано в рабочих днях
+                </option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2"><label>Порядок снижения</label></div>
+    <div class="col-sm-3">
+        <div class="form-group ">
+            <input type="text" id="lot_newDropRuleOrder_{{ number }}" name="newDropRuleOrder[{{ number }}]" placeholder="Введите порядок снижения" class="form-control">
+            <input type="hidden" id="lot_newDropRuleOrderCurrent_{{ number }}" name="newDropRuleOrderCurrent[{{ number }}]" placeholder="Введите порядок снижения" class="form-control" value="0">
+
+
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <select class="form-control" data-toggle-control-visible="" tabindex="-1">
+                <option value="lot_newDropRuleOrder_{{ number }}">
+                    значение указано в процентах от начальной стоимости
+                </option>
+                <option value="lot_newDropRuleOrderCurrent_{{ number }}">
+                    значение указано в процентах от стоимости текущего периода
+                </option>
+            </select>
+        </div>
+    </div>
+</div>

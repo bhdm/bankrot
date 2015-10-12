@@ -19,7 +19,7 @@ class DropRule
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Lot", inversedBy="attachments")
+     * @ORM\ManyToOne(targetEntity="Lot", inversedBy="dropRules", cascade={"persist"})
      */
     private $lot;
 
@@ -86,4 +86,8 @@ class DropRule
     public function setEndDate($endDate) { $this->endDate = $endDate; }
 
     public function getEndDate() { return $this->endDate; }
+
+    public function __toString(){
+        return ''.$this->period;
+    }
 }

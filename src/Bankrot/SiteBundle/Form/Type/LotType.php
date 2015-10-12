@@ -2,10 +2,12 @@
 
 namespace Bankrot\SiteBundle\Form\Type;
 
+use Bankrot\SiteBundle\Entity\DropRule;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Bankrot\SiteBundle\Form\Type\DropRuleType;
 
 class LotType extends AbstractType
 {
@@ -29,26 +31,32 @@ class LotType extends AbstractType
 //            ->add('', null, ['label' => 'Статус лота', 'empty_value' => '-'])
             ->add('lotStatus', 'entity', ['label' => 'Статус лота',  'class'=>'Bankrot\SiteBundle\Entity\LotStatus',  'property'=>'name'])
 
+
             ->add('livePeriod', 'text', ['mapped' => false, 'label' => 'Начало приема заявок–окончание приема заявок', 'attr' => [
                 'data-inputmask' => '99.99.9999 - 99.99.9999', 
                 'placeholder' => 'Введите ачало приема заявок – окончание приема заявок',
             ],'required' => false,])
-            ->add('newDropRulePeriod', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите период'], 'constraints' => [
-                new Assert\Range(['min' => 0]),
-            ],'required' => false,])
-            ->add('newDropRulePeriodWork', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите период'], 'constraints' => [
-                new Assert\Range(['min' => 0]),
-            ],'required' => false,])
-            ->add('newDropRuleOrder', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите порядок снижения'], 'constraints' => [
-                new Assert\Range(['min' => 0]),
-            ],'required' => false,])
-            ->add('newDropRuleOrderCurrent', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите порядок снижения'], 'constraints' => [
-                new Assert\Range(['min' => 0, 'max' => 100]),
-            ],'required' => false,])
-            ->add('newDropRuleLivePeriod', 'text', ['mapped' => false, 'label' => 'Период действия', 'attr' => [
-                'data-inputmask' => '99.99.9999 - 99.99.9999', 
-                'placeholder' => 'Введите период действия',
-            ],'required' => false,])
+
+
+//            ->add('newDropRulePeriod', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите период'], 'constraints' => [
+//                new Assert\Range(['min' => 0]),
+//            ],'required' => false,])
+//            ->add('newDropRulePeriodWork', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите период'], 'constraints' => [
+//                new Assert\Range(['min' => 0]),
+//            ],'required' => false,])
+//            ->add('newDropRuleOrder', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите порядок снижения'], 'constraints' => [
+//                new Assert\Range(['min' => 0]),
+//            ],'required' => false,])
+//            ->add('newDropRuleOrderCurrent', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите порядок снижения'], 'constraints' => [
+//                new Assert\Range(['min' => 0, 'max' => 100]),
+//            ],'required' => false,])
+//            ->add('newDropRuleLivePeriod', 'text', ['mapped' => false, 'label' => 'Период действия', 'attr' => [
+//                'data-inputmask' => '99.99.9999 - 99.99.9999',
+//                'placeholder' => 'Введите период действия',
+//            ],'required' => false,])
+
+
+
 
             ->add('costPurchase', 'text', ['label' => 'Стоимость покупки','required' => false])
             ->add('costAcquisition', 'text', ['label' => 'Расходы на приобретение','required' => false])

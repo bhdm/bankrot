@@ -217,7 +217,7 @@ class LotsController extends Controller
             $events[] = [
                 'id' => $task->getId(),
                 'title' => $task->getTitle(),
-                ];
+            ];
         }
         foreach ($active as $task){
             $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($task->getLot()->getId());
@@ -292,32 +292,67 @@ class LotsController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $lotDate = $form->getData();
-                $lot = new Lot();
-                $lot->setData($lotDate);
-                $livePeriod = $request->request->get('lot')['livePeriod'];
-                $isValid = true;
+//            if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $lotDate = $form->getData();
+            $lot = new Lot();
+            $lot->setData($lotDate);
+            $livePeriod = $request->request->get('lot')['livePeriod'];
+            $isValid = true;
 
-                if (preg_match('/^[\d\.]+ - [\d\.]+$/', $livePeriod, $m)) {
-                    $m[0] = explode('-', $m[0]);
+            if (preg_match('/^[\d\.]+ - [\d\.]+$/', $livePeriod, $m)) {
+                $m[0] = explode('-', $m[0]);
 
-                    try {
-                        $lot->setBeginDate(new \DateTime($m[0][0]));
-                        $lot->setEndDate(new \DateTime($m[0][1]));
-                    } catch (\Exception $e) {
-                        $form->get('livePeriod')->addError(new FormError('Неверный формат записи'));
-                        $isValid = false;
-                    }
+                try {
+                    $lot->setBeginDate(new \DateTime($m[0][0]));
+                    $lot->setEndDate(new \DateTime($m[0][1]));
+                } catch (\Exception $e) {
+                    $form->get('livePeriod')->addError(new FormError('Неверный формат записи'));
+                    $isValid = false;
                 }
+            }
 
-                if ($request->request->get('lot')['newDropRulePeriod']){
-                    $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
-                    $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
-                    $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
-                    $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
-                    $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
+//                if ($request->request->get('lot')['newDropRulePeriod']){
+//                    $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
+//                    $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
+//                    $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
+//                    $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
+//                    $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
+//
+//                    if ($newDropRulePeriod || $newDropRulePeriodWork) {
+//                        $newDropRule = new DropRule();
+//
+//                        if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
+//                        if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
+//
+//                        if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
+//                            if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
+//                            if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
+//
+//                            if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
+//                                $m[0] = explode('-', $m[0]);
+//
+//                                try {
+//                                    $newDropRule->setBeginDate(new \DateTime($m[0][0]));
+//                                    $newDropRule->setEndDate(new \DateTime($m[0][1]));
+//                                } catch (\Exception $e) {
+//                                    $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
+//                                    $isValid = false;
+//                                }
+//                            }
+//
+//
+//                        }
+//                    }
+//                }
+
+            for ($i = 0; $i <= 10 ; $i ++){
+                if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
+                    $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
+                    $newDropRulePeriodWork = $request->request->get('newDropRulePeriodWork')[$i];
+                    $newDropRuleOrder = $request->request->get('newDropRuleOrder')[$i];
+                    $newDropRuleOrderCurrent = $request->request->get('newDropRuleOrderCurrent')[$i];
+                    $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
 
                     if ($newDropRulePeriod || $newDropRulePeriodWork) {
                         $newDropRule = new DropRule();
@@ -341,26 +376,29 @@ class LotsController extends Controller
                                 }
                             }
 
-
+                            $lot->addDropRule($newDropRule);
                         }
                     }
                 }
 
-                if ($isValid) {
-                    if (isset($newDropRule) && $newDropRule){
-                        $em->persist($newDropRule);
-                        $em->flush($newDropRule);
-                        $em->refresh($newDropRule);
-                        $lot->addDropRule($newDropRule);
-                    }
-                    $lot->setOwner($this->getUser());
-//                    $lot->setCategory(null);
-                    $em->persist($lot);
-                    $em->flush();
 
-                    return $this->redirectToRoute('lots_edit', ['id' => $lot->getId()]);
-                }
             }
+
+            if ($isValid) {
+                if (isset($newDropRule) && $newDropRule){
+                    $em->persist($newDropRule);
+                    $em->flush($newDropRule);
+                    $em->refresh($newDropRule);
+                    $lot->addDropRule($newDropRule);
+                }
+                $lot->setOwner($this->getUser());
+//                    $lot->setCategory(null);
+                $em->persist($lot);
+                $em->flush();
+
+                return $this->redirectToRoute('lots_edit', ['id' => $lot->getId()]);
+            }
+//            }
         }
 
         return ['form' => $form->createView()];
@@ -406,36 +444,74 @@ class LotsController extends Controller
                     $lot->setEndDate(null);
                 }
 
-                $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
-                $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
-                $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
-                $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
-                $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
+//                $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
+//                $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
+//                $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
+//                $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
+//                $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
+//
+//                if ($newDropRulePeriod || $newDropRulePeriodWork) {
+//                    $newDropRule = new DropRule();
+//
+//                    if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
+//                    if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
+//
+//                    if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
+//                        if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
+//                        if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
+//
+//                        if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
+//                            $m[0] = explode('-', $m[0]);
+//
+//                            try {
+//                                $newDropRule->setBeginDate(new \DateTime($m[0][0]));
+//                                $newDropRule->setEndDate(new \DateTime($m[0][1]));
+//                            } catch (\Exception $e) {
+//                                $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
+//                                $isValid = false;
+//                            }
+//                        }
+//
+//                        $lot->addDropRule($newDropRule);
+//                    }
+//                }
 
-                if ($newDropRulePeriod || $newDropRulePeriodWork) {
-                    $newDropRule = new DropRule();
+                for ($i = 0; $i <= 10 ; $i ++){
+                    if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
+                        $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
+                        $newDropRulePeriodWork = $request->request->get('newDropRulePeriodWork')[$i];
+                        $newDropRuleOrder = $request->request->get('newDropRuleOrder')[$i];
+                        $newDropRuleOrderCurrent = $request->request->get('newDropRuleOrderCurrent')[$i];
+                        $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
 
-                    if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
-                    if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
+                        if ($newDropRulePeriod || $newDropRulePeriodWork) {
+                            $newDropRule = new DropRule();
 
-                    if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
-                        if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
-                        if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
+                            if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
+                            if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
 
-                        if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
-                            $m[0] = explode('-', $m[0]);
+                            if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
+                                if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
+                                if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
 
-                            try {
-                                $newDropRule->setBeginDate(new \DateTime($m[0][0]));
-                                $newDropRule->setEndDate(new \DateTime($m[0][1]));
-                            } catch (\Exception $e) {
-                                $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
-                                $isValid = false;
+                                if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
+                                    $m[0] = explode('-', $m[0]);
+
+                                    try {
+                                        $newDropRule->setBeginDate(new \DateTime($m[0][0]));
+                                        $newDropRule->setEndDate(new \DateTime($m[0][1]));
+                                    } catch (\Exception $e) {
+                                        $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
+                                        $isValid = false;
+                                    }
+                                }
+
+                                $lot->addDropRule($newDropRule);
                             }
                         }
-
-                        $lot->addDropRule($newDropRule);
                     }
+
+
                 }
 
                 if ($isValid) {
@@ -589,10 +665,10 @@ class LotsController extends Controller
 
 
 
-                    # Если стоимость отсечения меньше
-                    if ($price < $lot->getCutOffPrice()){
-                        $price  = $lot->getCutOffPrice();
-                    }
+                # Если стоимость отсечения меньше
+                if ($price < $lot->getCutOffPrice()){
+                    $price  = $lot->getCutOffPrice();
+                }
                 $lastPrice = $price;
             }
 
@@ -636,15 +712,15 @@ class LotsController extends Controller
             }
 
 
-           $currentDate->modify('+1 day');
-           if ($currentDate > $lot->getEndDate()){
-               break;
-           }
+            $currentDate->modify('+1 day');
+            if ($currentDate > $lot->getEndDate()){
+                break;
+            }
             # Максимальный срок лота 100 дней, потом можно увеличить
-           $si++;
-           if ($si > 100){
-               break;
-           }
+            $si++;
+            if ($si > 100){
+                break;
+            }
         }
 
 
@@ -726,5 +802,17 @@ class LotsController extends Controller
         $this->getDoctrine()->getManager()->flush($show);
         return $this->redirect($request->headers->get('referer'));
 
+    }
+
+    /**
+     * @Route("/lots/add-drop-rule", name="add_drop_rule")
+     * @Template("@BankrotSite/Lots/addDropRule.html.twig")
+     */
+    public function addDropRuleAction(Request $request){
+        $number = $request->request->get('number');
+        if ($number == null){
+            $number = 0;
+        }
+        return ['number' => $number];
     }
 }
