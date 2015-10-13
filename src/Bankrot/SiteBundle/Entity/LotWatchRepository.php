@@ -33,6 +33,7 @@ class LotWatchRepository extends EntityRepository
                 ->andWhere('u.id = '.$userId);
 //                ->setParameter('d',$date->format('Y-m-d').' 00:00:00');
         }
+//        echo $qb->getQuery()->getSq
         $result =  $qb->getQuery()->getResult();
 
         return $result;

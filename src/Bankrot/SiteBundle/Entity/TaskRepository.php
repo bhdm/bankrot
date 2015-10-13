@@ -27,6 +27,7 @@ class TaskRepository extends EntityRepository
         $result->andWhere('t.date >= :date1')
             ->andWhere('t.date <= :date2')
             ->andWhere('u.id = :userId')
+            ->andWhere('t.isSuccess  = false')
             ->setParameters([
                 'date1' => $date.' 00:00:00',
                 'date2' => $date.' 23:59:59',
