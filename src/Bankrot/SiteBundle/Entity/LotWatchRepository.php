@@ -12,6 +12,7 @@ class LotWatchRepository extends EntityRepository
             $date = $date->modify('+1 day');
             $qb = $this->createQueryBuilder('lw')
                 ->leftJoin('lw.owner','u')
+                ->leftJoin('lw.lot','l')
                 ->where("lw.day = '".$date->format('Y-m-d')." 00:00:00'")
                 ->andWhere('u.id = '.$userId);
 //                ->setParameter('d',$date->format('Y-m-d').' 00:00:00');
@@ -33,7 +34,6 @@ class LotWatchRepository extends EntityRepository
                 ->andWhere('u.id = '.$userId);
 //                ->setParameter('d',$date->format('Y-m-d').' 00:00:00');
         }
-//        echo $qb->getQuery()->getSq
         $result =  $qb->getQuery()->getResult();
 
         return $result;
