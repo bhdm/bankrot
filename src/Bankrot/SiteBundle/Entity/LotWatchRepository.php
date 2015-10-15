@@ -9,7 +9,7 @@ class LotWatchRepository extends EntityRepository
     public function findEvent($date, $string, $userId)
     {
         if ($string == 'arhive'){
-            $date = $date->modify('-1 day');
+            //$date = $date->modify('-1 day');
             $qb = $this->createQueryBuilder('lw')
                 ->leftJoin('lw.owner','u')
                 ->leftJoin('lw.lot','l')
