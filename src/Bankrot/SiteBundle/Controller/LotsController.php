@@ -102,7 +102,7 @@ class LotsController extends Controller
 
 
 
-        $nowYear  = date('Y', time()) + 1; //Добавляем год что бы посмотреть события и на следующий год
+//        $nowYear  = date('Y', time()) + 1; //Добавляем год что бы посмотреть события и на следующий год
         $fullYear = $month === '0';
 
         $params = array(
@@ -487,6 +487,9 @@ class LotsController extends Controller
 //                        $lot->addDropRule($newDropRule);
 //                    }
 //                }
+                /**
+                 * @todo Здесь необхоимо сделать загрузку фото
+                 */
 
                 for ($i = 0; $i <= 10 ; $i ++){
                     if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
