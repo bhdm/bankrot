@@ -13,8 +13,10 @@ class LotWatchRepository extends EntityRepository
             $qb = $this->createQueryBuilder('lw')
                 ->leftJoin('lw.owner','u')
                 ->leftJoin('lw.lot','l')
+                ->leftJoin('l.lotStatus', 'ls', 'WITH')
                 ->where("l.endDate = '".$date->format('Y-m-d')." 00:00:00'")
-                ->andWhere('u.id = '.$userId);
+                ->andWhere('u.id = '.$userId)
+                ->andWhere('ls.isTrash != 1 OR ls.isTrash is NULL');
 //                ->setParameter('d',$date->format('Y-m-d').' 00:00:00');
         }
 
@@ -22,16 +24,22 @@ class LotWatchRepository extends EntityRepository
             $date = $date->modify('+5 day');
             $qb = $this->createQueryBuilder('lw')
                 ->leftJoin('lw.owner','u')
+                ->leftJoin('lw.lot','l')
+                ->leftJoin('l.lotStatus', 'ls', 'WITH')
                 ->where("lw.day = '".$date->format('Y-m-d')." 00:00:00'")
-                ->andWhere('u.id = '.$userId);
+                ->andWhere('u.id = '.$userId)
+                ->andWhere('ls.isTrash != 1 OR ls.isTrash is NULL');
 //                ->setParameter('d',$date->format('Y-m-d').' 00:00:00');
         }
 
         if ($string == 'active'){
             $qb = $this->createQueryBuilder('lw')
                 ->leftJoin('lw.owner','u')
+                ->leftJoin('lw.lot','l')
+                ->leftJoin('l.lotStatus', 'ls', 'WITH')
                 ->where("lw.day = '".$date->format('Y-m-d')." 00:00:00'")
-                ->andWhere('u.id = '.$userId);
+                ->andWhere('u.id = '.$userId)
+                ->andWhere('ls.isTrash != 1 OR ls.isTrash is NULL');
 //                ->setParameter('d',$date->format('Y-m-d').' 00:00:00');
         }
         $result =  $qb->getQuery()->getResult();
