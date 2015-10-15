@@ -242,7 +242,7 @@ class LotsController extends Controller
             $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($task->getLot()->getId());
             $events[] = [
                 'id' => $lot->getId(),
-                'title' => 'Лот "<a href="/lots/'.$lot->getId().'" target="_parent">'.$lot.'"</a> перешел в активный период',
+                'title' => 'Лот "<a href="/lots/'.$lot->getId().'" target="_parent">'.$lot.'"</a> перешел в контрольный период',
             ];
         }
         foreach ($arhive as $task){
