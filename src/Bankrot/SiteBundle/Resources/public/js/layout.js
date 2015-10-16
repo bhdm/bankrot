@@ -3,14 +3,14 @@ jQuery(function ($) {
 
     $('select').selecter();
 
-    $('body').on('change','select[data-toggle-control-visible]', function (e) {
+    $('select[data-toggle-control-visible]').on('change', function (e) {
         var $ele = $('#' + $(this).val());
 
         //$ele.siblings('.form-control').hide();
         //$ele.show();
 
         $ele.siblings('.form-control').attr('type','hidden');
-        $ele.siblings('.form-control').val('');
+        $ele.siblings('.form-control').val(0);
         $ele.attr('type','text');
 
         e.preventDefault();

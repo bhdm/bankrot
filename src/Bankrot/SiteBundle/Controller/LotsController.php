@@ -324,40 +324,8 @@ class LotsController extends Controller
                 }
             }
 
-//                if ($request->request->get('lot')['newDropRulePeriod']){
-//                    $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
-//                    $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
-//                    $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
-//                    $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
-//                    $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
-//
-//                    if ($newDropRulePeriod || $newDropRulePeriodWork) {
-//                        $newDropRule = new DropRule();
-//
-//                        if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
-//                        if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
-//
-//                        if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
-//                            if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
-//                            if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
-//
-//                            if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
-//                                $m[0] = explode('-', $m[0]);
-//
-//                                try {
-//                                    $newDropRule->setBeginDate(new \DateTime($m[0][0]));
-//                                    $newDropRule->setEndDate(new \DateTime($m[0][1]));
-//                                } catch (\Exception $e) {
-//                                    $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
-//                                    $isValid = false;
-//                                }
-//                            }
-//
-//
-//                        }
-//                    }
-//                }
 
+            $oldDate = new \DateTime();
             for ($i = 0; $i <= 10 ; $i ++){
                 if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
                     $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
@@ -365,6 +333,7 @@ class LotsController extends Controller
                     $newDropRuleOrder = $request->request->get('newDropRuleOrder')[$i];
                     $newDropRuleOrderCurrent = $request->request->get('newDropRuleOrderCurrent')[$i];
                     $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
+                    $newDropRuleLivePeriodDay = $request->request->get('newDropRuleLivePeriodDay')[$i];
 
                     if ($newDropRulePeriod || $newDropRulePeriodWork) {
                         $newDropRule = new DropRule();
@@ -385,6 +354,22 @@ class LotsController extends Controller
                                 } catch (\Exception $e) {
                                     $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
                                     $isValid = false;
+                                }
+                            }else{
+                                if ($newDropRuleLivePeriodDay != null ){
+                                    if ($i == 0){
+                                        # Если элемент первый, то дата начинается с начала лота
+                                        $oldDate = $lot->getBeginDate();
+                                        $beginDate  = clone $oldDate;
+                                    }else{
+                                        $beginDate = clone $oldDate->modify('+1 day');
+                                    }
+
+                                    $endDate  = clone $beginDate;
+                                    $endDate = $endDate->modify('+ '.$newDropRuleLivePeriodDay.' days');
+                                    $newDropRule->setBeginDate($beginDate);
+                                    $newDropRule->setEndDate($endDate);
+                                    $oldDate = $endDate;
                                 }
                             }
 
@@ -490,7 +475,7 @@ class LotsController extends Controller
                 /**
                  * @todo Здесь необхоимо сделать загрузку фото
                  */
-
+                $oldDate = new \DateTime();
                 for ($i = 0; $i <= 10 ; $i ++){
                     if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
                         $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
@@ -498,6 +483,7 @@ class LotsController extends Controller
                         $newDropRuleOrder = $request->request->get('newDropRuleOrder')[$i];
                         $newDropRuleOrderCurrent = $request->request->get('newDropRuleOrderCurrent')[$i];
                         $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
+                        $newDropRuleLivePeriodDay = $request->request->get('newDropRuleLivePeriodDay')[$i];
 
                         if ($newDropRulePeriod || $newDropRulePeriodWork) {
                             $newDropRule = new DropRule();
@@ -518,6 +504,22 @@ class LotsController extends Controller
                                     } catch (\Exception $e) {
                                         $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
                                         $isValid = false;
+                                    }
+                                }else{
+                                    if ($newDropRuleLivePeriodDay != null ){
+                                        if ($i == 0){
+                                            # Если элемент первый, то дата начинается с начала лота
+                                            $oldDate = $lot->getBeginDate();
+                                            $beginDate  = clone $oldDate;
+                                        }else{
+                                            $beginDate = clone $oldDate->modify('+1 day');
+                                        }
+
+                                        $endDate  = clone $beginDate;
+                                        $endDate = $endDate->modify('+ '.$newDropRuleLivePeriodDay.' days');
+                                        $newDropRule->setBeginDate($beginDate);
+                                        $newDropRule->setEndDate($endDate);
+                                        $oldDate = $endDate;
                                     }
                                 }
 
