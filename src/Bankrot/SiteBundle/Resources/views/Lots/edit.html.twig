@@ -221,7 +221,7 @@
         {% endfor %}
 
         <div  id="droprules">
-            {{ render(controller('BankrotSiteBundle:Lots:addDropRule', 'number' : 1)) }}
+            {{ render(controller('BankrotSiteBundle:Lots:addDropRule', {'number' : 1})) }}
         </div>
         <span id="add-drop-rule" class="btn btn-primary">Добавить новое правило</span>
 
