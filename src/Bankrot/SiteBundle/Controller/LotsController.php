@@ -191,7 +191,8 @@ class LotsController extends Controller
                 }
             }
             if($request->request->get('date')){
-                $date = new \DateTime($request->request->get('date'));
+                $d = $request->request->get('date');
+                $date = new \DateTime($d[2].'-'.$d[1].'-'.$d[0]);
             }else{
                 $date = null;
             }

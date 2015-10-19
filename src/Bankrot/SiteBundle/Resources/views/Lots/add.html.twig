@@ -160,9 +160,18 @@
 
             $('#check-newDropRule').click(function(){
                if ($("#check-newDropRule").prop("checked")){
-                   $('#add-drop-rule').css('display','inline-block');
-               }else{
-                   $('#add-drop-rule').css('display','none');
+                   $.ajax({
+                       type: "POST",
+                       url: "{{ url('add_drop_rule') }}",
+                       data: "number="+number,
+                       success: function(msg){
+                           $('#droprules').append(msg);
+                           $("#lot_newDropRuleLivePeriod_"+number).inputmask("99.99.9999 - 99.99.9999");
+                           $("select").selecter();
+                           number = number + 1;
+
+                       }
+                   });
                }
             });
 
