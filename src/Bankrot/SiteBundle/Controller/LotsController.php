@@ -823,13 +823,15 @@ class LotsController extends Controller
     }
 
     /**
-     * @Route("/lots/add-drop-rule", name="add_drop_rule")
+     * @Route("/lots/add-drop-rule/{number}", name="add_drop_rule", defaults={"number" = null})
      * @Template("@BankrotSite/Lots/addDropRule.html.twig")
      */
-    public function addDropRuleAction(Request $request){
-        $number = $request->request->get('number');
+    public function addDropRuleAction(Request $request, $number = null){
         if ($number == null){
-            $number = 0;
+            $number = $request->request->get('number');
+            if ($number == null){
+                $number = 0;
+            }
         }
         return ['number' => $number];
     }
