@@ -22,6 +22,7 @@ class DropRuleRepository extends EntityRepository
             ->andWhere("dr.endDate >= :curDate")
             ->setParameter('lotId',$lotId)
             ->setParameter('curDate',$currentDate->format('Y-m-d'))
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
         return $result;
