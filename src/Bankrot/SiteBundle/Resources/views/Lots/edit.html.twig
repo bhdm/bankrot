@@ -180,7 +180,15 @@
         {% for dropRule in lot.dropRules %}
             <div class="row" data-root>
                 <div class="row">
-                    <div class="col-xs-2"><label>Период</label></div>
+                    <div class="col-xs-2"><label>Срок действия правила</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2"><label>Период снижения</label></div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
@@ -195,7 +203,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-2"><label>Порядок снижения</label></div>
+                    <div class="col-xs-2"><label>Процент снижения</label></div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
@@ -209,14 +217,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-2"><label>Период действия</label></div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         {% endfor %}
 
