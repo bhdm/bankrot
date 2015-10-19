@@ -139,6 +139,7 @@ class Lot
 
     /**
      * @ORM\OneToMany(targetEntity="DropRule", mappedBy="lot", cascade={"all"})
+     * @ORM\OrderBy({"beginDate" = "ASC"})
      */
     protected $dropRules;
 

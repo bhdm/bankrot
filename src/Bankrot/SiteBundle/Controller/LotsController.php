@@ -228,10 +228,17 @@ class LotsController extends Controller
 
         $events = [];
         foreach ($tasks as $task){
-            $events[] = [
-                'id' => $task->getId(),
-                'title' => $task->getTitle(),
-            ];
+            if ($task->getLot() != null){
+                $events[] = [
+                    'id' => $task->getId(),
+                    'title' => 'Лот "<a href="/lots/'.$task->getLot()->getId().'" target="_parent">'.$task->getLot().'"</a> Задача: '.$task->getTitle(),
+                ];
+            }else{
+                $events[] = [
+                    'id' => $task->getId(),
+                    'title' => 'Задача: <a href="/task/list/" target="_parent">'.$task->getTitle().'</a>',
+                ];
+            }
         }
         foreach ($active as $task){
             $lot = $this->getDoctrine()->getRepository('BankrotSiteBundle:Lot')->findOneById($task->getLot()->getId());

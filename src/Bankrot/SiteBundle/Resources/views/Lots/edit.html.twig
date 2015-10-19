@@ -5,7 +5,7 @@
     <script src="{{ asset('bundles/bankrotsite/js/Lots/edit.js') }}"></script>
 
     <script>
-        var number = 1;
+        var number = 2;
         $(document).ready(function(){
 
             $('#add-drop-rule').click(function(){
@@ -15,7 +15,7 @@
                     data: "number="+number,
                     success: function(msg){
                         $('#droprules').append(msg);
-//                        $("#lot_newDropRuleLivePeriod_"+number).inputmask("Regex");
+                        $("#lot_newDropRuleLivePeriod_"+number).inputmask("99.99.9999 - 99.99.9999");
                         $("select").selecter();
                         number = number + 1;
 
