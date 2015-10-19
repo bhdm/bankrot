@@ -477,7 +477,7 @@ class LotsController extends Controller
                  * @todo Здесь необхоимо сделать загрузку фото
                  */
                 $oldDate = new \DateTime();
-                for ($i = 0; $i <= 10 ; $i ++){
+                for ($i = 1; $i <= 10 ; $i ++){
                     if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
                         $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
                         $newDropRulePeriodWork = $request->request->get('newDropRulePeriodWork')[$i];
