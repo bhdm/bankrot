@@ -3,7 +3,7 @@
 {% block content %}
     {{ form_start(form) }}
     <a href="{{ path('lots_edit', { id: lot.id }) }}" class="btn btn-link pull-right"><i class="fa fa-pencil"></i> Редактировать</a>
-    <h1 class="lead"><a href="#" class="fa fa-chevron-circle-left"></a> {{ lot.name }}</h1>
+    <h1 class="lead"><a href="{{ path('lots_list') }}" class="fa fa-chevron-circle-left"></a> {{ lot.name }}</h1>
 
     <fieldset>
         <div class="row">
