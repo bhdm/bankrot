@@ -10,7 +10,8 @@ class LotRepository extends EntityRepository
 
         $str = " ( r.number LIKE '%$search%' OR
                 d.name LIKE '%$search%' OR
-                a.val LIKE '%$search%' )
+                a.val LIKE '%$search%' OR
+                rc.val LIKE '%$search%' )
    ";
 
         $dq = $this
@@ -20,6 +21,7 @@ class LotRepository extends EntityRepository
             ->leftJoin('r.status','st')
             ->leftJoin('r.type','t')
             ->leftJoin('r.priceType','pt')
+            ->leftJoin('r.contents','rc')
 
 
             ->where($str);
