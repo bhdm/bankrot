@@ -161,7 +161,6 @@ class Lot
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\Date()
      */
     protected $periodPayback = 0;
 

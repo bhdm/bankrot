@@ -450,40 +450,10 @@ class LotsController extends Controller
                     $lot->setEndDate(null);
                 }
 
-//                $newDropRulePeriod = $request->request->get('lot')['newDropRulePeriod'];
-//                $newDropRulePeriodWork = $request->request->get('lot')['newDropRulePeriodWork'];
-//                $newDropRuleOrder = $request->request->get('lot')['newDropRuleOrder'];
-//                $newDropRuleOrderCurrent = $request->request->get('lot')['newDropRuleOrderCurrent'];
-//                $newDropRuleLivePeriod = $request->request->get('lot')['newDropRuleLivePeriod'];
-//
-//                if ($newDropRulePeriod || $newDropRulePeriodWork) {
-//                    $newDropRule = new DropRule();
-//
-//                    if ($newDropRulePeriod) $newDropRule->setPeriod($newDropRulePeriod);
-//                    if ($newDropRulePeriodWork) $newDropRule->setPeriodWork($newDropRulePeriodWork);
-//
-//                    if ($newDropRuleOrder || $newDropRuleOrderCurrent) {
-//                        if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
-//                        if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
-//
-//                        if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
-//                            $m[0] = explode('-', $m[0]);
-//
-//                            try {
-//                                $newDropRule->setBeginDate(new \DateTime($m[0][0]));
-//                                $newDropRule->setEndDate(new \DateTime($m[0][1]));
-//                            } catch (\Exception $e) {
-//                                $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
-//                                $isValid = false;
-//                            }
-//                        }
-//
-//                        $lot->addDropRule($newDropRule);
-//                    }
-//                }
-                /**
-                 * @todo Здесь необхоимо сделать загрузку фото
-                 */
+
+                $files = $request->files->get('file');
+
+
                 $oldDate = new \DateTime();
                 for ($i = 1; $i <= 10 ; $i ++){
                     if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
