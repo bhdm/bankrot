@@ -4,6 +4,7 @@ namespace Bankrot\SiteBundle\Controller;
 
 use Bankrot\SiteBundle\Entity\DropRule;
 use Bankrot\SiteBundle\Entity\Lot;
+use Bankrot\SiteBundle\Entity\LotPhoto;
 use Bankrot\SiteBundle\Entity\LotRepository;
 use Bankrot\SiteBundle\Entity\LotWatch;
 use Bankrot\SiteBundle\Entity\Task;
@@ -147,7 +148,12 @@ class LotsController extends Controller
         $task = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findOneById($id);
         if ($task && $task->getUser() == $this->getUser()){
             $em = $this->getDoctrine()->getManager();
-            $task->setIsSuccess(true);
+            if ($task->getIsSuccess() == false){
+                $task->setIsSuccess(true);
+            }else{
+                $task->setIsSuccess(false);
+            }
+
 //            $em->remove($task);
             $em->flush();
             return new JsonResponse(['result' => 'true']);
@@ -545,6 +551,22 @@ class LotsController extends Controller
                 if ($isValid) {
                     $em->persist($lot);
                     $em->flush();
+
+                    $files = $request->files->get('file');
+                    if (is_array($files)){
+                        $em = $this->getDoctrine()->getManager();
+                        foreach ( $files as $file ){
+                            $f = new LotPhoto();
+                            $f->setLot($lot);
+                            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                            $brochuresDir = $this->container->getParameter('kernel.root_dir').'/../web/uploads';
+                            $file->move($brochuresDir, $fileName);
+                            $f->setPhoto($fileName);
+                            $em->persist($f);
+                            $em->flush($f);
+                        }
+                    }
+
                     $session = $request->getSession();
                     $session->getFlashBag()->add('notice', 'Лот сохранен');
                     return $this->redirectToRoute('lots_edit', ['id' => $lot->getId()]);

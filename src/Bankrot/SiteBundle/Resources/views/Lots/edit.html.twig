@@ -101,11 +101,11 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="galery">
+            <a class="galery">
                 <legend>Галерея</legend>
                 <br />
-                {% for p in lot.photos %}
-                    <img src="/{{ p.photo.path }}" class="lot-photo"/>
+                {% for k,p in lot.photos %}
+                    <a href="/uploads/{{ p.photo }}" class="lot-photo" target="_blank"/>Ссылка на файл {{ k+1 }}</a><br />
                 {% endfor %}
                 <br />
                 <div class="fileinputs">
