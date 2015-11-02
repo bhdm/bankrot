@@ -23,6 +23,7 @@ class ReestrRepository extends EntityRepository
         if ($type == 1){
             $str = "( r.bTitle          LIKE '%$search%' OR
                 r.bNumber          LIKE '%$search%' OR
+                r.bManager          LIKE '%$search%' OR
                 r.bInn               LIKE '%$search%' OR
                 r.bPhone             LIKE '%$search%' OR
                 r.bEmail        LIKE '%$search%'

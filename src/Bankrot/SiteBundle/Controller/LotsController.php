@@ -402,6 +402,8 @@ class LotsController extends Controller
                 $em->persist($lot);
                 $em->flush();
 
+                $session = $request->getSession();
+                $session->getFlashBag()->add('notice', 'Новый лот добавлен, теперь вы можете продолжить работу с ним');
                 return $this->redirectToRoute('lots_edit', ['id' => $lot->getId()]);
             }
 //            }
@@ -543,7 +545,8 @@ class LotsController extends Controller
                 if ($isValid) {
                     $em->persist($lot);
                     $em->flush();
-
+                    $session = $request->getSession();
+                    $session->getFlashBag()->add('notice', 'Лот сохранен');
                     return $this->redirectToRoute('lots_edit', ['id' => $lot->getId()]);
                 }
             }
