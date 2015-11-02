@@ -14,20 +14,18 @@
             <div class="row">
                 <div class="col-sm-8">{{ form_row(form.category) }}</div>
             </div>
-            <div class="row">
-                <div class="col-sm-8">{{ form_row(form.url) }}</div>
-            </div>
+            {{ form_row(form.address) }}
+            {{ form_row(form.description) }}
             <div class="row">
                 <div class="col-sm-8">{{ form_row(form.phone) }}</div>
             </div>
             <div class="row">
-                <div class="col-sm-6">{{ form_row(form.price) }}</div>
-            </div>
-            {{ form_row(form.address) }}
-            {{ form_row(form.description) }}
-            <div class="row">
                 <div class="col-sm-6">{{ form_row(form.livePeriod) }}</div>
             </div>
+            {##}
+            {#<div class="row">#}
+                {#<div class="col-sm-8">{{ form_row(form.url) }}</div>#}
+            {#</div>#}
         </div>
         <div class="col-sm-6">
             <div class="alert alert-warning">
@@ -43,12 +41,17 @@
 
 <fieldset>
     <legend>Ценообразование</legend>
+    {#<div>#}
+        {#<div class="row">#}
+            {#<div class="col-sm-6">{{ form_row(form.price) }}</div>#}
+        {#</div>#}
+    {#</div>#}
     <div class="row">
         <div class="col-sm-3">{{ form_row(form.initialPrice) }}</div>
         <div class="col-sm-3">
             <div class="form-group {{ ((form.cutOffPrice.vars.errors|length) > 0
                     or (form.cutOffPricePercent.vars.errors|length) > 0) ? 'has-error' : '' }} ">
-                <label class="control-label">Стоимость отсечения</label>
+                <label class="control-label">Стоимость отсечения <a href="#" data-toggle="tooltip" title="Минимальная цена, по которой может быть продан лот. Указывается на ЭТП в описании лота">?</a></label>
                 {{ form_widget(form.cutOffPrice) }}
                 {{ form_widget(form.cutOffPricePercent) }}
                 {{ form_errors(form.cutOffPrice) }}
