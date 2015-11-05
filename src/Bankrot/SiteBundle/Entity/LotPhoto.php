@@ -19,7 +19,7 @@ class LotPhoto extends BaseEntity
     protected $lot;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="string")
      */
     protected $photo;
 

@@ -34,7 +34,7 @@ class LotType extends AbstractType
 
             ->add('livePeriod', 'text', ['mapped' => false, 'label' => 'Начало приема заявок–окончание приема заявок', 'attr' => [
                 'data-inputmask' => '99.99.9999 - 99.99.9999', 
-                'placeholder' => 'Введите ачало приема заявок – окончание приема заявок',
+                'placeholder' => 'Введите начало приема заявок – окончание приема заявок',
             ],'required' => false,])
 
 
@@ -59,8 +59,8 @@ class LotType extends AbstractType
 
 
             ->add('costPurchase', 'text', ['label' => 'Стоимость покупки','required' => false])
-            ->add('costAcquisition', 'text', ['label' => 'Расходы на приобретение','required' => false])
-            ->add('periodPayback', 'text', ['label' => 'Срок окупаемости','required' => false])
+            ->add('costAcquisition', 'text', ['label' => 'Дополнительные расходы','required' => false])
+            ->add('periodPayback', 'text', ['label' => 'Срок окупаемости','required' => false,'attr'=>['placeholder' => 'Кол-во месяцев']])
             ->add('ViewCapitalization', null, ['label' => 'Вид капитализации','required' => false])
             ->add('minCostCapitalization', 'text', ['label' => 'Мин. стоимость капитализации','required' => false])
             ->add('maxCostCapitalization', 'text', ['label' => 'Макс. стоимость капитализации','required' => false])

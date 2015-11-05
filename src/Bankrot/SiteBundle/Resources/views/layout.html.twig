@@ -82,9 +82,13 @@
         </div>
     </div>
 </nav>
-
 {% block content_wrapper %}
     <main class="container" style="padding-bottom: 50px;">
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
         {% block content '' %}
         <br />
         <br />
@@ -118,6 +122,11 @@
         $(document).ready(function(){
             $("select").selecter();
             $('input[type="file"]').styler()
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 {% endblock %}
