@@ -1,20 +1,41 @@
 <hr />
 <div class="itemDropRule" data-id="{{ number }}">
+    {#<div class="row">#}
+        {#<div class="col-sm-3"><label>Продолжительность периода</label></div>#}
+        {#<div class="col-sm-3">#}
+            {#<div class="form-group">#}
+                {#<input type="text" id="lot_newDropRuleLivePeriod_{{ number }}" name="newDropRuleLivePeriod[{{ number }}]" data-inputmask="99.99.9999 - 99.99.9999" placeholder="Введите период действия" class="form-control">#}
+                {#<input type="hidden" id="lot_newDropRuleLivePeriodDay_{{ number }}" name="newDropRuleLivePeriodDay[{{ number }}]" placeholder="Введите количество дней" class="form-control" value=""></div>#}
+        {#</div>#}
+        {#<div class="col-sm-3">#}
+            {#<div class="form-group">#}
+                {#<select class="form-control" data-toggle-control-visible="" tabindex="-1">#}
+                    {#<option value="lot_newDropRuleLivePeriod_{{ number }}">#}
+                        {#значение указано периодом#}
+                    {#</option>#}
+                    {#<option value="lot_newDropRuleLivePeriodDay_{{ number }}">#}
+                        {#значение указано в днях#}
+                    {#</option>#}
+                {#</select>#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
     <div class="row">
-        <div class="col-sm-3"><label>Продолжительность периода</label></div>
+        <div class="col-xs-3"><label>Продолжительность периода</label></div>
         <div class="col-sm-2">
-            <div class="form-group">
-                <input type="text" id="lot_newDropRuleLivePeriod_{{ number }}" name="newDropRuleLivePeriod[{{ number }}]" data-inputmask="99.99.9999 - 99.99.9999" placeholder="Введите период действия" class="form-control">
-                <input type="hidden" id="lot_newDropRuleLivePeriodDay_{{ number }}" name="newDropRuleLivePeriodDay[{{ number }}]" placeholder="Введите количество дней" class="form-control" value=""></div>
+            <div class="form-group ">
+                <input type="text" id="lot_newDropRulePeriod_{{ number }}" name="newDropRulePeriod[{{ number }}]" placeholder="Введите период" class="form-control">
+                <input type="hidden" id="lot_newDropRulePeriodWork_{{ number }}" name="newDropRulePeriodWork[{{ number }}]" placeholder="Введите период" class="form-control" value="0">
+            </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <select class="form-control" data-toggle-control-visible="" tabindex="-1">
-                    <option value="lot_newDropRuleLivePeriod_{{ number }}">
-                        значение указано периодом
+                    <option value="lot_newDropRulePeriod_{{ number }}">
+                        значение указано в календарных днях
                     </option>
-                    <option value="lot_newDropRuleLivePeriodDay_{{ number }}">
-                        значение указано в днях
+                    <option value="lot_newDropRulePeriodWork_{{ number }}">
+                        значение указано в рабочих днях
                     </option>
                 </select>
             </div>
@@ -41,27 +62,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-3"><label>Период снижения</label></div>
-        <div class="col-sm-2">
-            <div class="form-group ">
-                <input type="text" id="lot_newDropRulePeriod_{{ number }}" name="newDropRulePeriod[{{ number }}]" placeholder="Введите период" class="form-control">
-                <input type="hidden" id="lot_newDropRulePeriodWork_{{ number }}" name="newDropRulePeriodWork[{{ number }}]" placeholder="Введите период" class="form-control" value="0">
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-                <select class="form-control" data-toggle-control-visible="" tabindex="-1">
-                    <option value="lot_newDropRulePeriod_{{ number }}">
-                        значение указано в календарных днях
-                    </option>
-                    <option value="lot_newDropRulePeriodWork_{{ number }}">
-                        значение указано в рабочих днях
-                    </option>
-                </select>
-            </div>
-        </div>
-    </div>
+
 
     {#{% if number == 0 %}#}
     {#<input type="checkbox" name="newDropRule" id="check-newDropRule">&nbsp;&nbsp;&nbsp;Неравномерное снижение#}
