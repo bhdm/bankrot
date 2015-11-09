@@ -555,7 +555,7 @@ class LotsController extends Controller
         $events = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findByLot($lot);
         $dropRule = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->findBy(array('lot' => $lot),['beginDate' => 'ASC']);
         if ($dropRule && !$month){
-            $calendar->setMonth($dropRule[0]->getBeginDate()->format('m'));
+            $calendar->setMonth($lot->getBeginDate()->format('m'));
         }else{
             $calendar->setMonth($month);
         }
@@ -594,6 +594,7 @@ class LotsController extends Controller
         $price = $lot->getInitialPrice();
         $depositPrice = $lot->getInitialPrice();
 //        $priceBeginPeriod = $lot->getInitialPrice();
+        $lastDropRule = null;
         while (true){
 
             # Находим день недели этого дня
@@ -611,13 +612,19 @@ class LotsController extends Controller
 
             $item = &$monthTable[$week][$dayOfWeek];
 
+
+
             # получаем DropRule
-            if ( $dr == null || $dr->getEndDate() < $currentDate || $dr->getBeginDate() > $currentDate ){
-                $dr = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->search($lotId,$currentDate);
-                if ($dr){
-                    # Если новый DR обнуляем период и начальная стоимость в этом периоде
-                    $priceBeginPeriod = $price;
-                    $currentPeriod = -1;
+            if ( $dr == null ){
+                if ($lot->getDayOfFirstPeriod() > 0){
+                    $lot->setDayOfFirstPeriod(($lot->getDayOfFirstPeriod()-1));
+                }else{
+                    $dr = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->search($lotId,$lastDropRule);
+                    if ($dr){
+                        # Если новый DR обнуляем период и начальная стоимость в этом периоде
+                        $priceBeginPeriod = $price;
+                        $currentPeriod = -1;
+                    }
                 }
             }
 
@@ -670,6 +677,9 @@ class LotsController extends Controller
                         $item['price'] = $price;
                         $item['depositPrice'] = $depositPrice;
                     }
+                }elseif($lot->getDayOfFirstPeriod() > 0){
+                    $item['price'] = $lot->getInitialPrice();
+                    $item['depositPrice'] = $depositPrice;
                 }else{
                     if (isset($item['number']) && $item['number'] == (int) $currentDate->format('d')){
                         $item['depositPrice'] = $depositPrice;
