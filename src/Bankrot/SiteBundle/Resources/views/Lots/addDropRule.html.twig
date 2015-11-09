@@ -1,25 +1,5 @@
 <hr />
 <div class="itemDropRule" data-id="{{ number }}">
-    {#<div class="row">#}
-        {#<div class="col-sm-3"><label>Продолжительность периода</label></div>#}
-        {#<div class="col-sm-3">#}
-            {#<div class="form-group">#}
-                {#<input type="text" id="lot_newDropRuleLivePeriod_{{ number }}" name="newDropRuleLivePeriod[{{ number }}]" data-inputmask="99.99.9999 - 99.99.9999" placeholder="Введите период действия" class="form-control">#}
-                {#<input type="hidden" id="lot_newDropRuleLivePeriodDay_{{ number }}" name="newDropRuleLivePeriodDay[{{ number }}]" placeholder="Введите количество дней" class="form-control" value=""></div>#}
-        {#</div>#}
-        {#<div class="col-sm-3">#}
-            {#<div class="form-group">#}
-                {#<select class="form-control" data-toggle-control-visible="" tabindex="-1">#}
-                    {#<option value="lot_newDropRuleLivePeriod_{{ number }}">#}
-                        {#значение указано периодом#}
-                    {#</option>#}
-                    {#<option value="lot_newDropRuleLivePeriodDay_{{ number }}">#}
-                        {#значение указано в днях#}
-                    {#</option>#}
-                {#</select>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
     <div class="row">
         <div class="col-xs-3"><label>Продолжительность периода</label></div>
         <div class="col-sm-2">
@@ -62,26 +42,19 @@
             </div>
         </div>
     </div>
-
-
-    {#{% if number == 0 %}#}
-    {#<input type="checkbox" name="newDropRule" id="check-newDropRule">&nbsp;&nbsp;&nbsp;Неравномерное снижение#}
     Данный порядок действует до
     <div class="row">
-        <div class="col-xs-1"><input type="radio" name="typeEnd" value="0" style=" width: 18px;height: 18px;"  class="typeEnd"></div>
+        <div class="col-xs-1"><input type="radio" name="typeEnd[{{ number }}]" value="0" style=" width: 18px;height: 18px;"  class="typeEnd"></div>
         <div class="col-xs-5">окончания торгов </div>
     </div>
     <div class="row">
-        <div class="col-xs-1"><input type="radio" name="typeEnd" value="1" style=" width: 18px;height: 18px;" class="typeEnd"></div>
+        <div class="col-xs-1"><input type="radio" name="typeEnd[{{ number }}]" value="1" style=" width: 18px;height: 18px;" class="typeEnd"></div>
         <div class="col-xs-2">снижения цены на  </div>
-        <div class="col-xs-1"><input type="text" class="form-control"></div>
+        <div class="col-xs-1"><input type="text" class="form-control" name="newDropRulePercentPeriod[{{ number }}]"></div>
         <div class="col-xs-4">% от начальной стоимости</div>
 
     </div>
+    <br />
+    <br />
 
-    <br />
-    <br />
-    {#{% elseif number == 1 %}#}
-    {#<script>$('#add-drop-rule').fadeIn();</script>#}
-    {#{% endif %}#}
 </div>

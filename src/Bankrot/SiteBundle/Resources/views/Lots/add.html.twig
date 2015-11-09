@@ -95,15 +95,15 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-4">Начальная цена действует </div>
-                <div class="col-xs-1"><input type="text" class="form-control"/></div>
-
-            </div>
         </fieldset>
 
         <fieldset>
             <legend>Порядок снижения цены</legend>
+            <div class="row">
+                <div class="col-xs-3">Начальная цена действует </div>
+                <div class="col-xs-1"><input type="text" class="form-control" name="lot[dayOfFirstPeriod]"/></div>
+                <div class="col-xs-1">дней</div>
+            </div>
             <div  id="droprules">
                 {{ render(controller('BankrotSiteBundle:Lots:addDropRule')) }}
             </div>
@@ -166,7 +166,7 @@
         $(document).ready(function(){
             formula();
             $('body').on("click", ".typeEnd", function(){
-                if ($(".typeEnd:checked").val() == 1){
+                if ($(this).val() == 1){
                     $.ajax({
                         type: "POST",
                         url: "{{ url('add_drop_rule') }}",
@@ -180,7 +180,7 @@
                         }
                     });
                 }
-                if ($(".typeEnd:checked").val() == 0){
+                if ($(this).val() == 0){
                     console.log($(this).parent().parent().parent().attr('data-id'));
                     console.log($('.itemDropRule').last().attr('data-id'));
                     if ($('.itemDropRule').last().attr('data-id') != $(this).parent().parent().parent().attr('data-id')){

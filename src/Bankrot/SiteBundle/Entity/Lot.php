@@ -179,6 +179,10 @@ class Lot
      */
     protected $maxCostCapitalization;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $dayOfFirstPeriod;
 
     public function __toString(){
         return $this->name;
@@ -446,6 +450,22 @@ class Lot
     public function setImages($images)
     {
         $this->images = $images;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDayOfFirstPeriod()
+    {
+        return $this->dayOfFirstPeriod;
+    }
+
+    /**
+     * @param mixed $dayOfFirstPeriod
+     */
+    public function setDayOfFirstPeriod($dayOfFirstPeriod)
+    {
+        $this->dayOfFirstPeriod = $dayOfFirstPeriod;
     }
 
 

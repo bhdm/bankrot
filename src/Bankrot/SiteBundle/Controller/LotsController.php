@@ -340,15 +340,17 @@ class LotsController extends Controller
             }
 
 
-            $oldDate = new \DateTime();
-            for ($i = 0; $i <= 10 ; $i ++){
+//            $oldDate = new \DateTime();
+            for ($i = 10; $i >= 0 ; $i --){
                 if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
                     $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
                     $newDropRulePeriodWork = $request->request->get('newDropRulePeriodWork')[$i];
                     $newDropRuleOrder = $request->request->get('newDropRuleOrder')[$i];
                     $newDropRuleOrderCurrent = $request->request->get('newDropRuleOrderCurrent')[$i];
-                    $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
-                    $newDropRuleLivePeriodDay = $request->request->get('newDropRuleLivePeriodDay')[$i];
+//                    $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
+//                    $newDropRuleLivePeriodDay = $request->request->get('newDropRuleLivePeriodDay')[$i];
+                    $newDropRulePercentPeriod = $request->request->get('newDropRulePercentPeriod')[$i];
+                    $newDropRuleIsEnd = ($request->request->get('typeEnd')[$i] == '0' ? true : false);
 
                     if ($newDropRulePeriod || $newDropRulePeriodWork) {
                         $newDropRule = new DropRule();
@@ -360,33 +362,8 @@ class LotsController extends Controller
                             if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
                             if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
 
-                            if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
-                                $m[0] = explode('-', $m[0]);
-
-                                try {
-                                    $newDropRule->setBeginDate(new \DateTime($m[0][0]));
-                                    $newDropRule->setEndDate(new \DateTime($m[0][1]));
-                                } catch (\Exception $e) {
-                                    $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
-                                    $isValid = false;
-                                }
-                            }else{
-                                if ($newDropRuleLivePeriodDay != null ){
-                                    if ($i == 0){
-                                        # Если элемент первый, то дата начинается с начала лота
-                                        $oldDate = $lot->getBeginDate();
-                                        $beginDate  = clone $oldDate;
-                                    }else{
-                                        $beginDate = clone $oldDate->modify('+1 day');
-                                    }
-
-                                    $endDate  = clone $beginDate;
-                                    $endDate = $endDate->modify('+ '.$newDropRuleLivePeriodDay.' days');
-                                    $newDropRule->setBeginDate($beginDate);
-                                    $newDropRule->setEndDate($endDate);
-                                    $oldDate = $endDate;
-                                }
-                            }
+                            $newDropRule->setPercentPeriod($newDropRulePercentPeriod);
+                            $newDropRule->setIsEnd($newDropRuleIsEnd);
 
                             $lot->addDropRule($newDropRule);
                         }
@@ -463,14 +440,16 @@ class LotsController extends Controller
 
 
                 $oldDate = new \DateTime();
-                for ($i = 1; $i <= 10 ; $i ++){
+                for ($i = 10; $i >= 0 ; $i --){
                     if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
                         $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
                         $newDropRulePeriodWork = $request->request->get('newDropRulePeriodWork')[$i];
                         $newDropRuleOrder = $request->request->get('newDropRuleOrder')[$i];
                         $newDropRuleOrderCurrent = $request->request->get('newDropRuleOrderCurrent')[$i];
-                        $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
-                        $newDropRuleLivePeriodDay = $request->request->get('newDropRuleLivePeriodDay')[$i];
+//                        $newDropRuleLivePeriod = $request->request->get('newDropRuleLivePeriod')[$i];
+//                        $newDropRuleLivePeriodDay = $request->request->get('newDropRuleLivePeriodDay')[$i];
+                        $newDropRulePercentPeriod = $request->request->get('newDropRulePercentPeriod')[$i];
+                        $newDropRuleIsEnd = ($request->request->get('typeEnd')[$i] == '0' ? true : false);
 
                         if ($newDropRulePeriod || $newDropRulePeriodWork) {
                             $newDropRule = new DropRule();
@@ -482,33 +461,8 @@ class LotsController extends Controller
                                 if ($newDropRuleOrder) $newDropRule->setOrder($newDropRuleOrder);
                                 if ($newDropRuleOrderCurrent) $newDropRule->setOrderCurrent($newDropRuleOrderCurrent);
 
-                                if (preg_match('/^[\d\.]+ - [\d\.]+$/', $newDropRuleLivePeriod, $m)) {
-                                    $m[0] = explode('-', $m[0]);
-
-                                    try {
-                                        $newDropRule->setBeginDate(new \DateTime($m[0][0]));
-                                        $newDropRule->setEndDate(new \DateTime($m[0][1]));
-                                    } catch (\Exception $e) {
-                                        $form->get('newDropRuleLivePeriod')->addError(new FormError('Неверный формат записи'));
-                                        $isValid = false;
-                                    }
-                                }else{
-                                    if ($newDropRuleLivePeriodDay != null ){
-                                        if ($i == 0){
-                                            # Если элемент первый, то дата начинается с начала лота
-                                            $oldDate = $lot->getBeginDate();
-                                            $beginDate  = clone $oldDate;
-                                        }else{
-                                            $beginDate = clone $oldDate->modify('+1 day');
-                                        }
-
-                                        $endDate  = clone $beginDate;
-                                        $endDate = $endDate->modify('+ '.$newDropRuleLivePeriodDay.' days');
-                                        $newDropRule->setBeginDate($beginDate);
-                                        $newDropRule->setEndDate($endDate);
-                                        $oldDate = $endDate;
-                                    }
-                                }
+                                $newDropRule->setPercentPeriod($newDropRulePercentPeriod);
+                                $newDropRule->setIsEnd($newDropRuleIsEnd);
 
                                 $lot->addDropRule($newDropRule);
                             }
@@ -526,14 +480,16 @@ class LotsController extends Controller
                     if (is_array($files)){
                         $em = $this->getDoctrine()->getManager();
                         foreach ( $files as $file ){
-                            $f = new LotPhoto();
-                            $f->setLot($lot);
-                            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                            $brochuresDir = $this->container->getParameter('kernel.root_dir').'/../web/uploads';
-                            $file->move($brochuresDir, $fileName);
-                            $f->setPhoto($fileName);
-                            $em->persist($f);
-                            $em->flush($f);
+                            if ($file){
+                                $f = new LotPhoto();
+                                $f->setLot($lot);
+                                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                                $brochuresDir = $this->container->getParameter('kernel.root_dir').'/../web/uploads';
+                                $file->move($brochuresDir, $fileName);
+                                $f->setPhoto($fileName);
+                                $em->persist($f);
+                                $em->flush($f);
+                            }
                         }
                     }
 

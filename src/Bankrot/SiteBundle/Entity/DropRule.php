@@ -44,18 +44,29 @@ class DropRule
     private $orderCurrent;
 
     /**
-     * @ORM\Column(type="date", name="begin_date")
-     * @Assert\NotBlank()
-     * @Assert\Date()
+     * @ORM\Column(type="date", name="begin_date", nullable=true)
      */
     private $beginDate;
 
     /**
-     * @ORM\Column(type="date", name="end_date")
-     * @Assert\NotBlank()
-     * @Assert\Date()
+     * @ORM\Column(type="date", name="end_date", nullable=true)
      */
     private $endDate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $percentPeriod;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isEnd = false;
+
+    public function __construct()
+    {
+        $this->isEnd = false;
+    }
 
     public function getId() { return $this->id; }
 
@@ -90,4 +101,38 @@ class DropRule
     public function __toString(){
         return ''.$this->period;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPercentPeriod()
+    {
+        return $this->percentPeriod;
+    }
+
+    /**
+     * @param mixed $percentPeriod
+     */
+    public function setPercentPeriod($percentPeriod)
+    {
+        $this->percentPeriod = $percentPeriod;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsEnd()
+    {
+        return $this->isEnd;
+    }
+
+    /**
+     * @param mixed $isEnd
+     */
+    public function setIsEnd($isEnd)
+    {
+        $this->isEnd = $isEnd;
+    }
+
+
 }

@@ -97,19 +97,19 @@
 
     <fieldset>
         <legend>Порядок снижения цены</legend>
-        {% for dropRule in lot.dropRules %}
+        <div class="row" data-root>
+            <div class="row">
+                <div class="col-xs-3">Начальная цена действует </div>
+                <div class="col-xs-1"><input type="text" class="form-control" name="lot[dayOfFirstPeriod]" value="{{ form.dayOfFirstPeriod.vars.value }}"/></div>
+                <div class="col-xs-1">дней</div>
+            </div>
+        </div>
+        <br />
+        {% for dropRule in lot.dropRules   %}
             <div class="row" data-root>
                 <div class="row">
-                    <div class="col-xs-2"><label>Срок действия правила</label></div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-2"><label>Период снижения</label></div>
-                    <div class="col-sm-3">
+                    <div class="col-xs-3"><label>Продолжительность периода</label></div>
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
                         </div>
@@ -123,8 +123,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-2"><label>Процент снижения</label></div>
-                    <div class="col-sm-3">
+                    <div class="col-xs-3"><label>Ведичина снижения - на </label></div>
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
                         </div>
@@ -137,6 +137,20 @@
                         </div>
                     </div>
                 </div>
+                Данный порядок действует до
+                <div class="row">
+                    <div class="col-xs-1"><input type="radio"  value="0" style=" width: 18px;height: 18px;"  class="typeEnd" {{ dropRule.isEnd == true ? 'checked="checked"' : '' }} disabled></div>
+                    <div class="col-xs-5">окончания торгов </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1"><input type="radio"  value="1" style=" width: 18px;height: 18px;" class="typeEnd" {{ dropRule.isEnd == false ? 'checked="checked"' : '' }} disabled></div>
+                    <div class="col-xs-2">снижения цены на  </div>
+                    <div class="col-xs-1"><input type="text" class="form-control" value="{{ dropRule.percentPeriod }}" disabled></div>
+                    <div class="col-xs-4">% от начальной стоимости</div>
+
+                </div>
+                <br />
+                <br />
 
             </div>
         {% endfor %}
