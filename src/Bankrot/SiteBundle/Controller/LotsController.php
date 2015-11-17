@@ -615,18 +615,11 @@ class LotsController extends Controller
 
 
             # получаем DropRule
-<<<<<<< HEAD
             if ( $dr == null || (( $price <= $lot->getInitialPrice() /100 * $dr->getPercentPeriod() ) && $dr->getIsEnd() == false ) ){
                 if ($lot->getDayOfFirstPeriod() > 0){
                     $lot->setDayOfFirstPeriod(($lot->getDayOfFirstPeriod()-1));
                 }else{
                     $lastDropRule = ( $dr!= null ? $dr->getId() : 0);
-=======
-            if ( $dr == null ){
-                if ($lot->getDayOfFirstPeriod() > 0){
-                    $lot->setDayOfFirstPeriod(($lot->getDayOfFirstPeriod()-1));
-                }else{
->>>>>>> cca6c80930fef5d85d9b1e25cbf11579f26d4bef
                     $dr = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->search($lotId,$lastDropRule);
                     if ($dr){
                         # Если новый DR обнуляем период и начальная стоимость в этом периоде
