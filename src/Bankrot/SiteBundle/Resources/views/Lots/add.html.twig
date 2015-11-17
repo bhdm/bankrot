@@ -5,6 +5,7 @@
         <h1 class="lead">Добавление нового лота</h1>
 
         <fieldset>
+<<<<<<< HEAD
             <div class="row">
                 {{ form_errors(form) }}
             </div>
@@ -40,6 +41,40 @@
                     </div>
                 </div>
             </div>
+=======
+            <div class="row">
+                {{ form_errors(form) }}
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_row(form.name) }}
+                    <div class="row">
+                        <div class="col-sm-8">{{ form_row(form.category) }}</div>
+                    </div>
+                    {{ form_row(form.address) }}
+                    {{ form_row(form.description) }}
+                    <div class="row">
+                        <div class="col-sm-8">{{ form_row(form.phone) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">{{ form_row(form.livePeriod) }}</div>
+                    </div>
+                    {##}
+                    {#<div class="row">#}
+                    {#<div class="col-sm-8">{{ form_row(form.url) }}</div>#}
+                    {#</div>#}
+                </div>
+                <div class="col-sm-6">
+                    <div class="alert alert-warning">
+                        <p> После того, как вы заполните поля и сохраните информацию, лот автоматически перейдет в графу «неактивные». Для того чтобы начать отслеживать лот, необходимо ввести рассчетные данные, и выбрать дату покупки в раскрывшемся календаре.
+                            <br />
+                            <br />
+                            Найти отслеживаемый лот вы сможете во вкладке «активные»
+                        </p>
+                    </div>
+                </div>
+            </div>
+>>>>>>> cca6c80930fef5d85d9b1e25cbf11579f26d4bef
         </fieldset>
 
         <fieldset>
@@ -97,6 +132,7 @@
                         </select>
                     </div>
                 </div>
+<<<<<<< HEAD
 
             </div>
             <div class="row">
@@ -108,6 +144,13 @@
 
         <fieldset>
             <legend>Порядок понижения цены</legend>
+=======
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Порядок снижения цены</legend>
+>>>>>>> cca6c80930fef5d85d9b1e25cbf11579f26d4bef
             <div class="row">
                 <div class="col-xs-3">Начальная цена действует </div>
                 <div class="col-xs-1"><input type="text" class="form-control" name="lot[dayOfFirstPeriod]"/></div>

@@ -473,6 +473,7 @@ class Lot
         $this->dayOfFirstPeriod = $dayOfFirstPeriod;
     }
 
+<<<<<<< HEAD
     /**
      * @return mixed
      */
@@ -489,6 +490,8 @@ class Lot
         $this->email = $email;
     }
 
+=======
+>>>>>>> cca6c80930fef5d85d9b1e25cbf11579f26d4bef
 
 
 }
