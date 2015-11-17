@@ -1,0 +1,10 @@
+services:
+    bankrot_parser.parser:
+        class: Bankrot\ParserBundle\Parser\Parser
+        arguments:
+            - @doctrine.orm.default_entity_manager
+
+    bankrot_parser.reestrparser:
+        class: Bankrot\ParserBundle\Parser\ReestrParser
+        arguments:
+            - @doctrine.orm.default_entity_manager

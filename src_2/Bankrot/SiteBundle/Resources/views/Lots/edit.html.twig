@@ -1,0 +1,286 @@
+{% extends 'BankrotSiteBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/bankrotsite/js/Lots/edit.js') }}"></script>
+
+    <script>
+        var number = 2;
+        $(document).ready(function(){
+
+            $('#add-drop-rule').click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('add_drop_rule') }}",
+                    data: "number="+number,
+                    success: function(msg){
+                        $('#droprules').append(msg);
+                        $("#lot_newDropRuleLivePeriod_"+number).inputmask("99.99.9999 - 99.99.9999");
+                        $("select").selecter();
+                        number = number + 1;
+
+                    }
+                });
+                return false;
+            });
+
+            formula();
+            var fileInputNumber = 2;
+            $('#addfileinput').click(function(){
+                var txt = '<input type="file" id="file'+fileInputNumber+'" name="file['+fileInputNumber+']" /><br />';
+                $('.fileinputs').append(txt);
+                fileInputNumber ++;
+                $('input[type="file"]').styler();
+
+            })
+        });
+        $('#lot_costPurchase').keyup(function(){formula()});
+        $('#lot_costAcquisition').keyup(function(){formula()});
+        $('#lot_minCostCapitalization').keyup(function(){formula()});
+        $('#lot_maxCostCapitalization').keyup(function(){formula()});
+
+        function formula(){
+            var error = false ;
+            var f1 = '';
+            var f2 = '';
+            if ($('#lot_costPurchase').val() == '' ){ error = true }
+            if ($('#lot_costAcquisition').val() == '' ){ error = true }
+            if ($('#lot_minCostCapitalization').val() == '' ){ error = true }
+            if ($('#lot_maxCostCapitalization').val() == '' ){ error = true }
+            if (error == false){
+                f1 = parseInt($('#lot_minCostCapitalization').val())/(parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))*100-100;
+                f1 = parseFloat(f1).toFixed(2);
+                f2 = parseInt($('#lot_maxCostCapitalization').val())/(parseInt($('#lot_costPurchase').val())+parseInt($('#lot_costAcquisition').val()))*100-100;
+                f2 = parseFloat(f2).toFixed(2);
+                $('#formula').html('<span class="text-primary" style="font-size: 18px">Мин. = '+f1+'%<br />Макс. = '+f2+'%</span>');
+            }else{
+                $('#formula').html('<span class="text-danger">Данные для формулы не корректны</span>');            }
+        }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form,{'attr' : {'enctype' : 'multipart/form-data'}}) }}
+    <h1 class="lead">
+        <a href="{{ path('lots', { id: lot.id }) }}" class="fa fa-chevron-circle-left"></a>
+        {{ lot.name }} (редактирование)
+        <a href="{{ path('remove_lot',{'id' : lot.id}) }}"><span class="btn btn-danger">Удаление</span></a>
+    </h1>
+
+    <fieldset>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.name) }}
+                    <div class="row">
+                        <div class="col-sm-8">{{ form_row(form.category) }}</div>
+                    </div>
+                    {{ form_row(form.address) }}
+                    {{ form_row(form.description) }}
+                    <div class="row">
+                        <div class="col-sm-8">{{ form_row(form.phone) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">{{ form_row(form.livePeriod) }}</div>
+                    </div>
+                    {##}
+                    {#<div class="row">#}
+                    {#<div class="col-sm-8">{{ form_row(form.url) }}</div>#}
+                    {#</div>#}
+                </div>
+                <div class="col-sm-12">
+                    {% if lw | length > 0 %}
+                        <div class="row">
+                            <div class="col-sm-8">
+                                {{ form_row(form.lotStatus) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <a class="galery">
+                <legend>Галерея</legend>
+                <br />
+                {% for k,p in lot.photos %}
+                    <a href="/uploads/{{ p.photo }}" class="lot-photo" target="_blank"/>Ссылка на файл {{ k+1 }}</a><br />
+                {% endfor %}
+                <br />
+                <div class="fileinputs">
+                    <input type="file" name="file[1]"><br />
+                </div>
+                 <button class="btn btn-primary" id="addfileinput" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Ценообразование</legend>
+        <div class="row">
+            <div class="col-sm-3">{{ form_row(form.initialPrice) }}</div>
+            <div class="col-sm-3">
+                <div class="form-group {{ ((form.cutOffPrice.vars.errors|length) > 0
+                or (form.cutOffPricePercent.vars.errors|length) > 0) ? 'has-error' : '' }} ">
+                    <label class="control-label">Стоимость отсечения <a href="#" data-toggle="tooltip" title="Минимальная цена, по которой может быть продан лот. Указывается на ЭТП в описании лота">?</a></label>
+                    {{ form_widget(form.cutOffPrice) }}
+                    {{ form_widget(form.cutOffPricePercent) }}
+                    {{ form_errors(form.cutOffPrice) }}
+                    {{ form_errors(form.cutOffPricePercent) }}
+                </div>
+                <div class="form-group">
+                    <select class="form-control" data-toggle-control-visible>
+                        <option {{ form.cutOffPrice.vars.value ? 'selected' : '' }}
+                                value="{{ form.cutOffPrice.vars.id }}">
+                            значение указано в рублях
+                        </option>
+                        <option {{ form.cutOffPricePercent.vars.value ? 'selected' : '' }}
+                                value="{{ form.cutOffPricePercent.vars.id }}">
+                            значение указано в процентах от начальной стоимости
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group {{ ((form.depositPrice.vars.errors|length) > 0
+                or (form.depositPricePercent.vars.errors|length) > 0
+                or (form.depositPricePercentCurrent.vars.errors|length) > 0) ? 'has-error' : '' }} ">
+                    <label class="control-label">Задаток</label>
+                    {{ form_widget(form.depositPrice) }}
+                    {{ form_widget(form.depositPricePercent) }}
+                    {{ form_widget(form.depositPricePercentCurrent) }}
+                    {{ form_errors(form.depositPrice) }}
+                    {{ form_errors(form.depositPricePercent) }}
+                    {{ form_errors(form.depositPricePercentCurrent) }}
+                </div>
+                <div class="form-group">
+                    <select class="form-control" data-toggle-control-visible>
+                        <option {{ form.depositPrice.vars.value ? 'selected' : '' }}
+                                value="{{ form.depositPrice.vars.id }}">
+                            значение указано в рублях
+                        </option>
+                        <option {{ form.depositPricePercent.vars.value ? 'selected' : '' }}
+                                value="{{ form.depositPricePercent.vars.id }}">
+                            значение указано в процентах от начальной стоимости
+                        </option>
+                        <option {{ form.depositPricePercentCurrent.vars.value ? 'selected' : '' }}
+                                value="{{ form.depositPricePercentCurrent.vars.id }}">
+                            значение указано в процентах от стоимости текущего периода
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Порядок снижения цены</legend>
+
+        {% for dropRule in lot.dropRules %}
+            <div class="row" data-root>
+                <div class="row">
+                    <div class="col-xs-2"><label>Срок действия правила</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2"><label>Период снижения</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <select class="form-control" disabled>
+                                <option>{{ dropRule.period ? 'значение указано в календарных днях' : 'значение указано в рабочих днях' }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2"><label>Процент снижения</label></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <select class="form-control" disabled>
+                                <option>{{ dropRule.order ? 'значение указано в процентах от начальной стоимости' : 'значение указано в процентах от стоимости текущего периода' }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+
+        <div  id="droprules">
+            {{ render(controller('BankrotSiteBundle:Lots:addDropRule', {'number' : 1})) }}
+        </div>
+        <span id="add-drop-rule" class="btn btn-primary">Добавить новое правило</span>
+
+    </fieldset>
+    <br />
+    <br />
+    <fieldset>
+        <legend>Расчет рентабельности</legend>
+        <div class="row">
+            <div class="col-sm-9">
+                {{ form_row(form.ViewCapitalization) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                {{ form_row(form.costPurchase) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_row(form.costAcquisition) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_row(form.periodPayback) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                {{ form_row(form.minCostCapitalization) }}
+            </div>
+            <div class="col-sm-3">
+                {{ form_row(form.maxCostCapitalization) }}
+            </div>
+            <div class="col-sm-3">
+                <div id="formula" style="height: 80px;display: table-cell;vertical-align: middle;"></div>
+            </div>
+        </div>
+    </fieldset>
+    <hr/>
+
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+    </div>
+
+    <div class="hidden">
+        {{ form_rest(form) }}
+    </div>
+
+    {{ form_end(form) }}
+    {#<script>#}
+        {#function resizeIframe(iframe) {#}
+            {#iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";#}
+        {#}#}
+    {#</script>#}
+    {#<iframe id="iframe-calendar" onload="resizeIframe(this)" src="{{ path('calendar_widget', {'year': , 'month': null, 'lotId' : lot.id }) }}" width="100%" height="320" style="border: 0; overflow: hidden" scrolling="no"></iframe>#}
+    <br />
+    {% if lot.dropRules | length > 0 %}
+        <iframe id="iframe-calendar" onload="resizeIframe(this)" src="{{ path('calendar',{'lotId' : lot.id }) }}" width="100%" height="800" style="border: 0; overflow: hidden;min-height: 1000px;" scrolling="no"></iframe>
+    {% endif %}
+
+
+{% endblock %}
+

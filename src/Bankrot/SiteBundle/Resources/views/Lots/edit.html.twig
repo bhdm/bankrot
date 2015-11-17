@@ -25,6 +25,30 @@
             });
 
             formula();
+            $('body').on("click", ".typeEnd", function(){
+                if ($(this).val() == 1){
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('add_drop_rule') }}",
+                        data: "number="+number,
+                        success: function(msg){
+                            $('#droprules').append(msg);
+                            $("#lot_newDropRuleLivePeriod_"+number).inputmask("99.99.9999 - 99.99.9999");
+                            $("select").selecter();
+                            number = number + 1;
+
+                        }
+                    });
+                }
+                if ($(this).val() == 0){
+                    console.log($(this).parent().parent().parent().attr('data-id'));
+                    console.log($('.itemDropRule').last().attr('data-id'));
+                    if ($('.itemDropRule').last().attr('data-id') != $(this).parent().parent().parent().attr('data-id')){
+                        $('.itemDropRule').last().remove();
+                    }
+                }
+            });
+
             var fileInputNumber = 2;
             $('#addfileinput').click(function(){
                 var txt = '<input type="file" id="file'+fileInputNumber+'" name="file['+fileInputNumber+']" /><br />';
@@ -80,6 +104,9 @@
                     {{ form_row(form.description) }}
                     <div class="row">
                         <div class="col-sm-8">{{ form_row(form.phone) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8">{{ form_row(form.email) }}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">{{ form_row(form.livePeriod) }}</div>
@@ -175,21 +202,20 @@
     </fieldset>
 
     <fieldset>
-        <legend>Порядок снижения цены</legend>
-
-        {% for dropRule in lot.dropRules %}
+        <legend>Порядок понижения цены</legend>
+        <div class="row" data-root>
+            <div class="row">
+                <div class="col-xs-3">Начальная цена действует </div>
+                <div class="col-xs-1"><input type="text" class="form-control" name="lot[dayOfFirstPeriod]" value="{{ form.dayOfFirstPeriod.vars.value }}"/></div>
+                <div class="col-xs-1">дней</div>
+            </div>
+        </div>
+        <br />
+        {% for dropRule in lot.dropRules   %}
             <div class="row" data-root>
                 <div class="row">
-                    <div class="col-xs-2"><label>Срок действия правила</label></div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <input class="form-control" value="{{ (dropRule.beginDate|date('d.m.Y'))~' - '~(dropRule.endDate|date('d.m.Y')) }}" disabled/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-2"><label>Период снижения</label></div>
-                    <div class="col-sm-3">
+                    <div class="col-xs-3"><label>Продолжительность периода</label></div>
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <input class="form-control" value="{{ dropRule.period~dropRule.periodWork }}" disabled/>
                         </div>
@@ -203,8 +229,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-2"><label>Процент снижения</label></div>
-                    <div class="col-sm-3">
+                    <div class="col-xs-3"><label>Ведичина снижения - на </label></div>
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <input class="form-control" value="{{ dropRule.order~dropRule.orderCurrent }}" disabled/>
                         </div>
@@ -217,6 +243,20 @@
                         </div>
                     </div>
                 </div>
+                Данный порядок действует до
+                <div class="row">
+                    <div class="col-xs-1"><input type="radio"  value="0" style=" width: 18px;height: 18px;"  class="typeEnd" {{ dropRule.isEnd == true ? 'checked="checked"' : '' }} disabled></div>
+                    <div class="col-xs-5">окончания торгов </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1"><input type="radio"  value="1" style=" width: 18px;height: 18px;" class="typeEnd" {{ dropRule.isEnd == false ? 'checked="checked"' : '' }} disabled></div>
+                    <div class="col-xs-2">снижения цены на  </div>
+                    <div class="col-xs-1"><input type="text" class="form-control" value="{{ dropRule.percentPeriod }}" disabled></div>
+                    <div class="col-xs-4">% от начальной стоимости</div>
+
+                </div>
+                <br />
+                <br />
 
             </div>
         {% endfor %}
@@ -224,7 +264,7 @@
         <div  id="droprules">
             {{ render(controller('BankrotSiteBundle:Lots:addDropRule', {'number' : 1})) }}
         </div>
-        <span id="add-drop-rule" class="btn btn-primary">Добавить новое правило</span>
+        {#<span id="add-drop-rule" class="btn btn-primary">Добавить новое правило</span>#}
 
     </fieldset>
     <br />

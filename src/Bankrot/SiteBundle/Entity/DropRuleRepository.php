@@ -13,15 +13,17 @@ class DropRuleRepository extends EntityRepository
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function search($lotId, $currentDate){
+    public function search($lotId, $lastDropRule){
+        if ($lastDropRule === null){
+            $lastDropRule = 0;
+        }
         $result = $this
             ->createQueryBuilder('dr')
             ->select('dr')
             ->where("dr.lot = :lotId")
-            ->andWhere("dr.beginDate <= :curDate")
-            ->andWhere("dr.endDate >= :curDate")
+            ->andWhere('dr.id > :lastDropRule')
             ->setParameter('lotId',$lotId)
-            ->setParameter('curDate',$currentDate->format('Y-m-d'))
+            ->setParameter('lastDropRule',$lastDropRule)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

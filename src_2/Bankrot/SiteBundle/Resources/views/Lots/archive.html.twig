@@ -1,0 +1,48 @@
+{% extends 'BankrotSiteBundle::layout.html.twig' %}
+
+{% block content_wrapper %}
+    <div class="navbar navbar-inverse navbar-fixed-top" style="margin-top:50px">
+        <div class="container">
+            {{ knp_menu_render('lots', { currentClass: 'active' }) }}
+            <div class="navbar-right">
+                <a href="{{ path('lots_add') }}" class="btn btn-primary navbar-btn">Добавить лот</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br /><br />
+    <br /><br />
+    <div class="container">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="{{ status == 9 ? 'active' : '' }}"><a href="{{ path('lots_list_archive',{'status' : 0}) }}" >Купленные мной</a></li>
+            <li class="{{ status == 10 ? 'active' : '' }}"><a href="{{ path('lots_list_archive',{'status' : 1}) }}" >Купленные не мной</a></li>
+        </ul>
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Категория</th>
+                        {#<th>Статус</th>#}
+                        <th>Рыночная стоимость</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for lot in lots %}
+                        <tr data-route="{{ path('lots', { id: lot.id }) }}">
+                            <td>{{ lot.name }}</td>
+                            <td>{{ lot.category }}</td>
+                            {#<td>{{ lot.lotStatus }}</td>#}
+                            <td>{{ lot.price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

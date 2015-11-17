@@ -19,19 +19,21 @@
         <div class="col-xs-6">
             <div class="tasks">
                 {% for t in tasks %}
-                    <div class="form-group" style="border-bottom: 1px solid #CCC; cursor: pointer; overflow: hidden" >
-                        <input type="checkbox" class="" value="{{ t.id }}" {{ t.isSuccess == true ? 'checked="checked"' : ''}} />
-                        {% if t.date %}
-                            {{ t.date |date('d.m.Y') }}:
-                        {% endif %}
-                        &nbsp;<span class="{{ t.isSuccess == true ? 'closedTask' : ''}}">{{ t.title }}</span>
-                        <div style="float: right">
-                            <button class="btn btn-primary task-edit" data-title="{{ t.title }}" data-date="{{ t.date |date('Y-m-d') }}"
-                                    data-id="{{ t.id }}"
-                                    ><span class="glyphicon glyphicon-wrench"></span></button>
-                            <a href="{{ path('task_delete',{'id' : t.id}) }}"><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></a>
+                    {% if t.isSuccess == false %}
+                        <div class="form-group" style="border-bottom: 1px solid #CCC; cursor: pointer; overflow: hidden" >
+                            <input type="checkbox" class="" value="{{ t.id }}" {{ t.isSuccess == true ? 'checked="checked"' : ''}} />
+                            {% if t.date %}
+                                {{ t.date |date('d.m.Y') }}:
+                            {% endif %}
+                            &nbsp;<span class="{{ t.isSuccess == true ? 'closedTask' : ''}}" style="{{ t.isSuccess == false and t.date | date('Y-m-d') < "now" | date('Y-m-d') ? 'color: #CC0000' : ''}}">{{ t.title }}</span>
+                            <div style="float: right">
+                                <button class="btn btn-primary task-edit" data-title="{{ t.title }}" data-date="{{ t.date |date('Y-m-d') }}"
+                                        data-id="{{ t.id }}"
+                                        ><span class="glyphicon glyphicon-wrench"></span></button>
+                                <a href="{{ path('task_delete',{'id' : t.id}) }}"><button class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button></a>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

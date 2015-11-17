@@ -63,6 +63,11 @@ class Lot
     protected $phone;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    protected $email;
+
+    /**
      * @ORM\Column(nullable=true, type="decimal", precision=14, scale=2)
      * @Assert\Range(min=0)
      */
@@ -161,7 +166,6 @@ class Lot
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\Date()
      */
     protected $periodPayback = 0;
 
@@ -180,6 +184,10 @@ class Lot
      */
     protected $maxCostCapitalization;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $dayOfFirstPeriod;
 
     public function __toString(){
         return $this->name;
@@ -447,6 +455,38 @@ class Lot
     public function setImages($images)
     {
         $this->images = $images;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDayOfFirstPeriod()
+    {
+        return $this->dayOfFirstPeriod;
+    }
+
+    /**
+     * @param mixed $dayOfFirstPeriod
+     */
+    public function setDayOfFirstPeriod($dayOfFirstPeriod)
+    {
+        $this->dayOfFirstPeriod = $dayOfFirstPeriod;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
 

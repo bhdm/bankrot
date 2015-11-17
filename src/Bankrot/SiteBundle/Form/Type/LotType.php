@@ -18,6 +18,7 @@ class LotType extends AbstractType
             ->add('category', 'entity', ['label' => 'Категория',  'class'=>'Bankrot\SiteBundle\Entity\Category',  'property'=>'name'])
             ->add('url', 'text', ['label' => 'Ссылка на лот', 'attr' => ['placeholder' => 'Введите ссылку на лот'],'required' => false,])
             ->add('phone', null, ['label' => 'Телефон', 'attr' => ['placeholder' => 'Введите телефон'],'required' => false,])
+            ->add('email', 'email', ['label' => 'Email', 'attr' => ['placeholder' => 'Введите Email'],'required' => false,])
             ->add('price', null, ['label' => 'Рыночная стоимость', 'attr' => ['placeholder' => 'Введите рыночную стоимость'],'required' => false,])
             ->add('address', null, ['label' => 'Адрес', 'attr' => ['placeholder' => 'Введите адрес'],'required' => false,])
             ->add('description', null, ['label' => 'Описание', 'attr' => ['rows' => 5, 'placeholder' => 'Введите описание'],'required' => false,])
@@ -28,6 +29,9 @@ class LotType extends AbstractType
             ->add('depositPricePercent', null, ['attr' => ['placeholder' => 'Введите значение в процентах от начальной стоимости'],'required' => false,])
             ->add('depositPricePercentCurrent', null, ['attr' => ['placeholder' => 'Введите значение в процентах от стоимости текущего периода'],'required' => false,])
             ->add('lotStatus', null, ['label' => 'Статус лота','required' => false,])
+            ->add('dayOfFirstPeriod', null, ['label' => 'Начальная цена действует','required' => false,])
+
+
 //            ->add('', null, ['label' => 'Статус лота', 'empty_value' => '-'])
             ->add('lotStatus', 'entity', ['label' => 'Статус лота',  'class'=>'Bankrot\SiteBundle\Entity\LotStatus',  'property'=>'name'])
 
@@ -36,6 +40,7 @@ class LotType extends AbstractType
                 'data-inputmask' => '99.99.9999 - 99.99.9999', 
                 'placeholder' => 'Введите начало приема заявок – окончание приема заявок',
             ],'required' => false,])
+
 
 
 //            ->add('newDropRulePeriod', 'text', ['mapped' => false, 'attr' => ['placeholder' => 'Введите период'], 'constraints' => [
