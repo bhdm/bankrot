@@ -534,7 +534,7 @@ class LotsController extends Controller
      * @Route("/api/v1/lots/{id}/drop-rules/{dr_id}/remove", requirements={"id": "\d+", "dr_id": "\d+"})
      * @ParamConverter("dropRule", class="BankrotSiteBundle:DropRule", options={"id": "dr_id"})
      */
-    public function removeDropRuleAction(Lot $lot, DropRule $dropRule)
+    public function todoremoveDropRuleAction(Lot $lot, DropRule $dropRule)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($dropRule);
@@ -593,7 +593,7 @@ class LotsController extends Controller
         $dr = null;
         $price = $lot->getInitialPrice();
         $depositPrice = $lot->getInitialPrice();
-//        $priceBeginPeriod = $lot->getInitialPrice();
+        $priceBeginPeriod = $lot->getInitialPrice();
         $lastDropRule = null;
         while (true){
 
@@ -624,7 +624,13 @@ class LotsController extends Controller
                     if ($dr){
                         # Если новый DR обнуляем период и начальная стоимость в этом периоде
                         $priceBeginPeriod = $price;
-                        $currentPeriod = -1;
+                        if ($dr->getPeriod()){
+                            $currentPeriod = $dr->getPeriod()+1;
+                        }elseif($dr->getPeriodWork()){
+                            $currentPeriod = $dr->getPeriodWork()+1;
+                        }else{
+                            $currentPeriod = -1;
+                        }
                     }
                 }
             }
@@ -632,9 +638,9 @@ class LotsController extends Controller
             if ($dr){
 
                 if ($dr->getPeriod()){
-                    $currentPeriod ++;
+                    $currentPeriod --;
                 }elseif($dr->getPeriodWork() && $dayOfWeek < 5){
-                    $currentPeriod ++;
+                    $currentPeriod --;
                 }
 
                 # Высчитываем price
@@ -695,8 +701,10 @@ class LotsController extends Controller
 
 
             if (isset($dr)){
-                if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || ($dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork())){
-                    $currentPeriod = 0;
+                if ($dr->getPeriod() && $currentPeriod == 1){
+                    $currentPeriod = $dr->getPeriod()+1;
+                }elseif($dr->getPeriodWork() && $currentPeriod == 1){
+                    $currentPeriod = $dr->getPeriodWork()+1;
                 }
             }
 
@@ -805,5 +813,25 @@ class LotsController extends Controller
             }
         }
         return ['number' => $number];
+    }
+
+    /**
+     * @Route("/lots/remove-period/{number}", name="remove_drop_rule")
+     * @Template("@BankrotSite/Lots/removeDropRule.html.twig")
+     */
+    public function removeDropRuleAction(Request $request, $number = null){
+        $em = $this->getDoctrine()->getManager();
+        $dropRule = $this->getDoctrine()->getRepository('BankrotSiteBundle:DropRule')->find($number);
+        $lot = $dropRule->getLot();
+        $session = $request->getSession();
+        if ($dropRule && $dropRule->getLot()->getOwner() == $this->getUser()){
+            $em->remove($dropRule);
+            $em->flush();
+            $session->getFlashBag()->add('notice', 'Период удален');
+        }else{
+            $session->getFlashBag()->add('notice', 'Ошибка удаления');
+        }
+
+        return $this->redirect($this->generateUrl('lots_edit',['id' => $lot->getId()]));
     }
 }
