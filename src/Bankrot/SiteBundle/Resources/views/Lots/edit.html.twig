@@ -206,7 +206,10 @@
         <div class="row" data-root>
             <div class="row">
                 <div class="col-xs-3">Начальная цена действует </div>
-                <div class="col-xs-1"><input type="text" class="form-control" name="lot[dayOfFirstPeriod]" value="{{ form.dayOfFirstPeriod.vars.value }}"/></div>
+                <div class="col-xs-1">
+                    {#<input type="text" class="form-control" name="lot[dayOfFirstPeriod]" value="{{ form.dayOfFirstPeriod.vars.value }}"/>#}
+                    {{ form_widget(form.dayOfFirstPeriod) }}
+                </div>
                 <div class="col-xs-1">дней</div>
             </div>
         </div>

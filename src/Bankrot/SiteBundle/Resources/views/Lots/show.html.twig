@@ -37,6 +37,13 @@
                     <div class="col-sm-8">
                         {{ form_row(form.lotStatus) }}
                     </div>
+                    <div class="col-sm-8">
+                        <a class="galery">
+                            <legend>Галерея</legend>
+                            {% for k,p in lot.photos %}
+                            <a href="/uploads/{{ p.photo }}" class="lot-photo" target="_blank"/>Ссылка на файл {{ k+1 }}</a><br />
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
