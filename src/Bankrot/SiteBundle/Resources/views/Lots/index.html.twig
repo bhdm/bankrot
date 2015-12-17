@@ -6,8 +6,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts filter='?closure'
-    'bundles/app/js/Lots/index.js' %}
+    {# javascripts filter='?closure'
+    'bundles/app/js/Lots/index.js' #}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
