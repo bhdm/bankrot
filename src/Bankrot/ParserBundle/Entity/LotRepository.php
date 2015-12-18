@@ -51,8 +51,8 @@ class LotRepository extends EntityRepository
             }
 
             $result = $dq->orderBy('r.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+//            ->getResult();
         return $result;
     }
 

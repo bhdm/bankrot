@@ -9,6 +9,7 @@ use Bankrot\SiteBundle\Entity\LotRepository;
 use Bankrot\SiteBundle\Entity\LotWatch;
 use Bankrot\SiteBundle\Entity\Task;
 use Bankrot\SiteBundle\Service\Calendar;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -29,6 +30,7 @@ class LotsController extends Controller
     /**
      * @Route("/lots", name="lots_list")
      * @Template()
+     * @Cache(expires="+2 hour")
      */
     public function indexAction(Request $request)
     {
