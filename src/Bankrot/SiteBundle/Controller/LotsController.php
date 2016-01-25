@@ -81,15 +81,15 @@ class LotsController extends Controller
             foreach ($monthTable[$rowKey] as $colKey => $element) {
                 if ($element) {
                     if ($element['number'])
-                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $element['number']. ' 00:00:00');
+                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonth() .'-'. $element['number']. ' 00:00:00');
                     # Находим таски на этот день и
                     # Теперь событиия по лотам
                     $tasks = $this->getDoctrine()->getRepository('BankrotSiteBundle:Task')->findTaskByDate($year, $month, $element['number'], $this->getUser()->getId());
-                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $element['number']. ' 00:00:00');
+                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonth() .'-'. $element['number']. ' 00:00:00');
                     $active = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'active', $this->getUser()->getId());
-                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $element['number']. ' 00:00:00');
+                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonth() .'-'. $element['number']. ' 00:00:00');
                     $control = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'control', $this->getUser()->getId());
-                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonthD() .'-'. $element['number']. ' 00:00:00');
+                    $date = new \DateTime($calendar->getYear() .'-'. $calendar->getMonth() .'-'. $element['number']. ' 00:00:00');
                     $arhive = $this->getDoctrine()->getRepository('BankrotSiteBundle:LotWatch')->findEvent($date, 'arhive', $this->getUser()->getId());
 
                     $tasks = count($tasks);
