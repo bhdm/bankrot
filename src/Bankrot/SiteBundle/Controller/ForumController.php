@@ -18,7 +18,6 @@ use Bankrot\SiteBundle\Form\ForumAnswerType;
 /**
  * Class ForumController
  * @package BankrotSiteBundle\Controller
- * @Security("has_role('ROLE_USER')")
  * @Route("/forum")
  *
  */
