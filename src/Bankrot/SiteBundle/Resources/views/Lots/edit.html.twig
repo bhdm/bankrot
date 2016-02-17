@@ -103,7 +103,7 @@
                     {{ form_row(form.address) }}
                     {{ form_row(form.description) }}
                     <div class="row">
-                        <div class="col-sm-8">{{ form_row(form.phone) }}</div>
+                        <div class="col-sm-8">{{ form_row(form.phone, {'attr' : {"data-inputmask" : "+7 (999) 999-99-99"}}) }}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-8">{{ form_row(form.email) }}</div>

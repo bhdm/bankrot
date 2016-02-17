@@ -17,7 +17,7 @@
                     {{ form_row(form.address) }}
                     {{ form_row(form.description) }}
                     <div class="row">
-                        <div class="col-sm-8">{{ form_row(form.phone) }}</div>
+                        <div class="col-sm-8">{{ form_row(form.phone, {'attr' : {"data-inputmask" : "+7 (999) 999-99-99"}}) }}</div>
                     </div>
                     <div class="row">
                         <div class="col-sm-8">{{ form_row(form.email) }}</div>
@@ -54,19 +54,21 @@
                 <div class="col-sm-3">
                     <div class="form-group {{ ((form.cutOffPrice.vars.errors|length) > 0
                     or (form.cutOffPricePercent.vars.errors|length) > 0) ? 'has-error' : '' }} ">
-                        <label class="control-label">Стоимость отсечения <a href="#" data-toggle="tooltip" title="Минимальная цена, по которой может быть продан лот. Указывается на ЭТП в описании лота">?</a></label>
-                        {{ form_widget(form.cutOffPrice) }}
+                        <label class="control-label">Стоимость отсечения
+                            <a href="#" data-toggle="tooltip" title="Минимальная цена, по которой может быть продан лот. Указывается на ЭТП в описании лота">?</a>
+                        </label>
                         {{ form_widget(form.cutOffPricePercent) }}
-                        {{ form_errors(form.cutOffPrice) }}
+                        {{ form_widget(form.cutOffPrice) }}
                         {{ form_errors(form.cutOffPricePercent) }}
+                        {{ form_errors(form.cutOffPrice) }}
                     </div>
                     <div class="form-group">
                         <select class="form-control" data-toggle-control-visible>
-                            <option {{ form.cutOffPrice.vars.value ? 'selected' : '' }} value="{{ form.cutOffPrice.vars.id }}">
-                                значение указано в рублях
-                            </option>
                             <option {{ form.cutOffPricePercent.vars.value ? 'selected' : '' }} value="{{ form.cutOffPricePercent.vars.id }}">
                                 значение указано в процентах от начальной стоимости
+                            </option>
+                            <option {{ form.cutOffPrice.vars.value ? 'selected' : '' }} value="{{ form.cutOffPrice.vars.id }}">
+                                значение указано в рублях
                             </option>
                         </select>
                     </div>

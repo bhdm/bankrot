@@ -617,7 +617,7 @@ class LotsController extends Controller
 
 
             # получаем DropRule
-            if ( $dr == null || (( $price <= $lot->getInitialPrice() /100 * $dr->getPercentPeriod() ) && $dr->getIsEnd() == false ) ){
+            if ( $dr == null || (( $price <= $lot->getInitialPrice() /100 * $dr->getPercentPeriod() && ($currentPeriod == 0) ) && $dr->getIsEnd() == false ) ){
                 if ($lot->getDayOfFirstPeriod() > 0){
                     $lot->setDayOfFirstPeriod(($lot->getDayOfFirstPeriod()-1));
                 }else{

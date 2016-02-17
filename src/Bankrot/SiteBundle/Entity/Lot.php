@@ -14,12 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Lot
 {
     /**
-     * @ORM\OneToMany(targetEntity="Bankrot\SiteBundle\Entity\Task", mappedBy="lot")
+     * @ORM\OneToMany(targetEntity="Bankrot\SiteBundle\Entity\Task", mappedBy="lot", orphanRemoval=true)
      */
     protected $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity="LotPhoto", mappedBy="lot")
+     * @ORM\OneToMany(targetEntity="LotPhoto", mappedBy="lot", orphanRemoval=true)
      */
     protected $photos;
 

@@ -278,7 +278,12 @@
         $(document).ready(function(){
             $('body').on('click','.tasks .form-group input', function(){
 //                $(this).parent().fadeOut();
-                $(this).parent().children('span').addClass('closedTask')
+
+                if ($(this).parent().children('span').hasClass('closedTask')){
+                    $(this).parent().children('span').removeClass('closedTask')
+                }else{
+                    $(this).parent().children('span').addClass('closedTask')
+                }
                 $.ajax({
                     url: Routing.generate('task_remove',{'id' : $(this).val() }),
                     cache: false,
