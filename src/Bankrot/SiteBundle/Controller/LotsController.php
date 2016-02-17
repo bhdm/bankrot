@@ -344,7 +344,11 @@ class LotsController extends Controller
 
 //            $oldDate = new \DateTime();
             for ($i = 10; $i >= 0 ; $i --){
-                if (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null){
+                if (
+                    (isset($request->request->get('newDropRulePeriod')[$i]) && $request->request->get('newDropRulePeriod')[$i] != null)
+                    ||
+                    (isset($request->request->get('newDropRulePeriodWork')[$i]) && $request->request->get('newDropRulePeriodWork')[$i] != null)
+                ){
                     $newDropRulePeriod = $request->request->get('newDropRulePeriod')[$i];
                     $newDropRulePeriodWork = $request->request->get('newDropRulePeriodWork')[$i];
                     $newDropRuleOrder = $request->request->get('newDropRuleOrder')[$i];
@@ -629,7 +633,7 @@ class LotsController extends Controller
                         if ($dr->getPeriod()){
                             $currentPeriod = $dr->getPeriod()+1;
                         }elseif($dr->getPeriodWork()){
-                            $currentPeriod = $dr->getPeriodWork()+1;
+                            $currentPeriod = $dr->getPeriodWork()+2;
                         }else{
                             $currentPeriod = -1;
                         }
@@ -646,7 +650,10 @@ class LotsController extends Controller
                 }
 
                 # Высчитываем price
-                if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod()) || ($dr->getPeriodWork() && $currentPeriod == $dr->getPeriodWork())){
+                if (($dr->getPeriod() && $currentPeriod == $dr->getPeriod())
+                    ||
+                    ($dr->getPeriodWork() && $currentPeriod == 1)){
+
                     if ($dr->getOrder()){
                         # в процентах от начальной суммы
                         $price -= ($lot->getInitialPrice()/100*$dr->getOrder());
